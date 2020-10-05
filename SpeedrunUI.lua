@@ -9,7 +9,6 @@ local previousSegment
 local currentRaid
 local bestPossibleTime
 
-
 -------------------------
 ---- Functions       ----
 -------------------------
@@ -20,11 +19,12 @@ end
 
 function Speedrun.ResetUI()
     SpeedRun_Timer_Container:SetHeight(0)
-    SpeedRun_TotalTimer_Title:SetText("00:00")
-    SpeedRun_Advanced_PreviousSegment:SetText("NA:NA")
+    SpeedRun_TotalTimer_Title:SetText(" ")
+    SpeedRun_Vitality_Label:SetText("  ")
+    SpeedRun_Advanced_PreviousSegment:SetText(" ")
     SpeedRun_Advanced_PreviousSegment:SetColor(unpack { 1, 1, 1 })
-    SpeedRun_Advanced_BestPossible_Value:SetText("NA:NA")
-    SpeedRun_Score_Label:SetText("NA'NA")
+    SpeedRun_Advanced_BestPossible_Value:SetText(" ")
+    SpeedRun_Score_Label:SetText(" ")
     if Speedrun.segments then
         for i,x in ipairs(Speedrun.segments) do
             local name = WM:GetControlByName(x:GetName())
@@ -57,6 +57,7 @@ end
 function Speedrun.SetUIHidden(hide)
     SpeedRun_Timer_Container:SetHidden(hide)
     SpeedRun_TotalTimer_Title:SetHidden(hide)
+    SpeedRun_Vitality_Label:SetHidden(hide)
     SpeedRun_Score_Label:SetHidden(hide)
     SpeedRun_Advanced:SetHidden(hide)
 end
@@ -65,6 +66,7 @@ function Speedrun.SetUIHidden(hide)
     if Speedrun.savedVariables.uiIsHidden == true then
         SpeedRun_Timer_Container:SetHidden(hide)
         SpeedRun_TotalTimer_Title:SetHidden(hide)
+        SpeedRun_Vitality_Label:SetHidden(hide)
         SpeedRun_Score_Label:SetHidden(hide)
         SpeedRun_Advanced:SetHidden(hide)
     end
@@ -73,15 +75,30 @@ end
 function Speedrun.UpdateGlobalTimer()
     SpeedRun_TotalTimer_Title:SetText(Speedrun.FormatRaidTimer(GetRaidDuration(), true))
 
-    if (bestPossibleTime == nil or Speedrun.segmentTimer[Speedrun.Step] == Speedrun.segmentTimer[Speedrun.Step + 1]) then 
+    if (bestPossibleTime == nil or Speedrun.segmentTimer[Speedrun.Step] == Speedrun.segmentTimer[Speedrun.Step + 1]) then
         Speedrun.UpdateCurrentScore()
     end
+end
 
+function Speedrun.UpdateCurrentVitality()
+    mVitality = GetCurrentRaidStartingReviveCounters()
+    cVitality = GetRaidReviveCountersRemaining()
+    if not mVitality then return end
+
+    SpeedRun_Vitality_Label:SetText(cVitality .. " / " .. mVitality)
+
+    if (cVitality == mVitality) then
+       SpeedRun_Vitality_Label:SetColor(0, 1, 0, 1)
+    elseif (cVitality > 0) then
+  	   SpeedRun_Vitality_Label:SetColor(1, 1, 1, 1)
+    else
+       SpeedRun_Vitality_Label:SetColor(1, 0, 0, 1)
+    end
 end
 
 function Speedrun.UpdateCurrentScore()
     local timer
-    if bestPossibleTime then 
+    if bestPossibleTime then
         if Speedrun.segmentTimer[Speedrun.Step] == Speedrun.segmentTimer[Speedrun.Step + 1] or Speedrun.segmentTimer[Speedrun.Step + 1] == nil  then
             timer = GetRaidDuration()/1000
         else
@@ -122,7 +139,8 @@ function Speedrun.CreateRaidSegment(id)
     end
 
     local raid = Speedrun.raidList[id]
-    SpeedRun_Timer_Container_Raid:SetText(zo_strformat(SI_ZONE_NAME, GetZoneNameById(formatID)))
+    SpeedRun_Timer_Container_Raid:SetText("|ce6b800" .. zo_strformat(SI_ZONE_NAME, GetZoneNameById(formatID)).. "|r")
+    -- SpeedRun_Timer_Container_Raid:SetColor("#e6b800")
 
     for i, x in ipairs(Speedrun.stepList[formatID]) do
 
@@ -150,10 +168,10 @@ function Speedrun.CreateRaidSegment(id)
             else
                 Speedrun.segmentTimer[i] = 0 + Speedrun.segmentTimer[i - 1]
             end
-            segmentRow:GetNamedChild('_Best'):SetText("NA:NA")
+            segmentRow:GetNamedChild('_Best'):SetText(" ")
 
             bestPossibleTime = 0
-            SpeedRun_Advanced_BestPossible_Value:SetText("NA:NA")
+            SpeedRun_Advanced_BestPossible_Value:SetText(" ")
         end
 
         if i == 1 then
@@ -164,11 +182,12 @@ function Speedrun.CreateRaidSegment(id)
         segmentRow:SetHidden(false)
         Speedrun.segments[i] = segmentRow;
     end
-    
+
     Speedrun.SetUIHidden(false)
     --d(SpeedRun_Timer_Container:GetWidth())
     SpeedRun_Timer_Container_Title:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
     SpeedRun_Timer_Container_Raid:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
+
 end
 
 function Speedrun.UpdateSegment(step, raid)
@@ -195,13 +214,13 @@ function Speedrun.UpdateSegment(step, raid)
     end
 
     --TODO IF NO PRESAVED TIME
-    if Speedrun.segmentTimer[table.getn(Speedrun.segmentTimer)] then 
+    if Speedrun.segmentTimer[table.getn(Speedrun.segmentTimer)] then
         bestPossibleTime = difference + Speedrun.segmentTimer[table.getn(Speedrun.segmentTimer)]
         SpeedRun_Advanced_BestPossible_Value:SetText(Speedrun.FormatRaidTimer(bestPossibleTime))
 
         Speedrun.UpdateCurrentScore()
     else
-        SpeedRun_Advanced_BestPossible_Value:SetText("NA:NA")
+        SpeedRun_Advanced_BestPossible_Value:SetText(" ")
     end
     SpeedRun_Advanced_PreviousSegment:SetText(Speedrun.FormatRaidTimer(previousSegementDif))
     if Speedrun.Step and Speedrun.currentRaidTimer[Speedrun.Step] and Speedrun.segments[Speedrun.Step] then
@@ -214,6 +233,8 @@ function Speedrun.UpdateSegment(step, raid)
     Speedrun.DifferenceColor(difference, segment)
     Speedrun.DifferenceColor(previousSegementDif, SpeedRun_Advanced_PreviousSegment)
 end
+
+
 
 function Speedrun.DifferenceColor(diff, segment)
     if diff > 0 then

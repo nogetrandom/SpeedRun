@@ -12,12 +12,12 @@
                     <Anchor point="BOTTOMRIGHT" offsetX="0" offsetY="0" />
                     <Edge edgeSize="1" />
                 </Backdrop>
-                <Label name="$(parent)_Title" horizontalAlignment="CENTER" font="ZoFontWinH5" text="Speed Run Timer:" wrapMode="TRUNCATE">
+                <Label name="$(parent)_Title" horizontalAlignment="CENTER" font="ZoFontWinH5" text="Speed|cdf4242Run|r" wrapMode="TRUNCATE">
                     <Anchor point="TOP" relativePoint="TOP" relativeTo="$(parent)" offsetX="2" offsetY="0" />
-                    <Dimensions y="20"/>
+                    <Dimensions x="280" y="20"/>
                 </Label>
-                <Label name="$(parent)_Raid"  horizontalAlignment="CENTER" font="ZoFontWinH5" text="Raid Name" wrapMode="TRUNCATE">
-                    <Dimensions y="20"/>
+                <Label name="$(parent)_Raid"  horizontalAlignment="CENTER" font="ZoFontWinH5" text="|ce6b800Raid Name|r" wrapMode="TRUNCATE">
+                    <Dimensions y="23"/>
                     <Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$(parent)_Title" offsetX="2" offsetY="0" />
                 </Label>
             </Controls>
@@ -28,16 +28,16 @@
             <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="0" offsetY="10" />
             <Controls>
                 <Label name="$(parent)_Name" horizontalAlignment="left" verticalAlignment="center" font="ZoFontWinH5" text="Boss_Name" wrapMode="TRUNCATE">
-                    <Dimensions x="150" y="20"/>
-                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetX="3" offsetY="0" />
+                    <Dimensions x="150" y="23"/>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$(parent)" offsetX="4" offsetY="5" />
                 </Label>
                 <Label name="$(parent)_Diff" horizontalAlignment="center" verticalAlignment="center" font="ZoFontWinH5" text="">
-                    <Dimensions x="75" y="20"/>
+                    <Dimensions x="75" y="23"/>
                     <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$(parent)_Name" offsetX="0" offsetY="0" />
                 </Label>
-                <Label name="$(parent)_Best" horizontalAlignment="right" verticalAlignment="center" font="ZoFontWinH5" text="00:00">
-                    <Dimensions x="55" y="20"/>
-                    <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$(parent)_Diff" offsetX="0" offsetY="0" />
+                <Label name="$(parent)_Best" horizontalAlignment="right" verticalAlignment="center" font="ZoFontWinH5" text="">
+                    <Dimensions x="55" y="23"/>
+                    <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$(parent)_Diff" offsetX="-5" offsetY="0" />
                 </Label>
             </Controls>
         </Control>
@@ -45,8 +45,8 @@
         <TopLevelControl name="SpeedRun_TotalTimer" mouseEnabled="true" movable="false" hidden="false">
             <Anchor point="TOPRIGHT" relativeTo="SpeedRun_Timer_Container" relativePoint="BOTTOMRIGHT" />
             <Controls>
-                <Label name="$(parent)_Title" hidden="true"  horizontalAlignment="RIGHT" font="ZoFontWinH1" text="0:00:00">
-                    <Anchor point="TOPRIGHT" relativePoint="BOTTOMLEFT" relativeTo="$(parent)" offsetX="-4" offsetY="0" />
+                <Label name="$(parent)_Title" hidden="true"  horizontalAlignment="RIGHT" font="ZoFontWinH2" text="">
+                    <Anchor point="TOPRIGHT" relativePoint="BOTTOMLEFT" relativeTo="$(parent)" offsetX="-3" offsetY="" />
                 </Label>
             </Controls>
         </TopLevelControl>
@@ -54,39 +54,48 @@
         <TopLevelControl name="SpeedRun_Score" mouseEnabled="true" movable="false" hidden="false">
             <Anchor point="TOPLEFT" relativeTo="SpeedRun_Timer_Container" relativePoint="BOTTOMLEFT" />
             <Controls>
-                <Label name="$(parent)_Label" hidden="true"  horizontalAlignment="LEFT" font="ZoFontWinH1" text="NA'NA">
-                    <Anchor point="TOPLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$(parent)" offsetX="30" />
+                <Label name="$(parent)_Label" hidden="true"  horizontalAlignment="LEFT" font="ZoFontWinH2" text="">
+                    <Anchor point="TOPLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$(parent)" offsetX="3" offsetY="1" />
+                </Label>
+            </Controls>
+        </TopLevelControl>
+
+        <TopLevelControl name="SpeedRun_Vitality" mouseEnabled="true" movable="false" hidden="false">
+            <Anchor point="CENTER" relativeTo="SpeedRun_Timer_Container" relativePoint="BOTTOM" />
+            <Controls>
+                <Label name="SpeedRun_Vitality_Label" hidden="true"  horizontalAlignment="CENTER" font="ZoFontWinH2" text="">
+                    <Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$(parent)" offsetX="0" offsetY="0" />
                 </Label>
             </Controls>
         </TopLevelControl>
 
         <TopLevelControl name="SpeedRun_Advanced" resizeToFitDescendents="true" mouseEnabled="true" movable="false" hidden="true">
-            <Anchor point="TOPRIGHT" relativeTo="SpeedRun_TotalTimer" relativePoint="BOTTOMRIGHT" offsetX="0" offsetY="0"/>
+            <Anchor point="TOPRIGHT" relativeTo="SpeedRun_TotalTimer" relativePoint="BOTTOMRIGHT" offsetX="0" offsetY="-10"/>
 
             <Controls>
                 <Label name="$(parent)_Label" horizontalAlignment="LEFT" font="ZoFontWinH5" text="Gain on Last Segment : ">
-                    <Dimensions x="150" y="20"/>
+                    <Dimensions x="160" y="20"/>
                     <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$(parent)" offsetX="-5" offsetY="0" />
                 </Label>
 
-                <Label name="$(parent)_PreviousSegment" horizontalAlignment="right" verticalAlignment="center" font="ZoFontWinH5" text="NA:NA">
-                    <Dimensions x="125" y="20"/>
+                <Label name="$(parent)_PreviousSegment" horizontalAlignment="right" verticalAlignment="center" font="ZoFontWinH5" text="">
+                    <Dimensions x="115" y="20"/>
                     <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$(parent)_Label" offsetX="2" offsetY="0" />
                 </Label>
             </Controls>
+
             <Controls>
                 <Label name="$(parent)_BestPossible_Label" horizontalAlignment="LEFT" font="ZoFontWinH5" text="Best Possible Time : ">
                     <Dimensions x="150" y="20"/>
                     <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$(parent)" offsetX="-5" offsetY="20" />
                 </Label>
 
-                <Label name="$(parent)_BestPossible_Value" horizontalAlignment="right" verticalAlignment="center" font="ZoFontWinH5" text="NA:NA">
+                <Label name="$(parent)_BestPossible_Value" horizontalAlignment="right" verticalAlignment="center" font="ZoFontWinH5" text="">
                     <Dimensions x="125" y="20"/>
                     <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$(parent)_BestPossible_Label" offsetX="2" offsetY="0" />
                 </Label>
             </Controls>
         </TopLevelControl>
 
-
     </Controls>
-</GuiXml>
+</GuiXml> -->

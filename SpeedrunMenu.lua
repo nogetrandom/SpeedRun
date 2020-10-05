@@ -68,7 +68,7 @@ function Speedrun.ResetData(raidID)
 end
 
 function Speedrun.CreateOptionTable(raidID, step)
-    local formatID = raidID 
+    local formatID = raidID
     if raidID == 677 then  --for vMA
         formatID = raidID .. GetUnitName("player")
         if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
@@ -170,7 +170,7 @@ function Speedrun.CreateSettingsWindow()
         type = "panel",
         name = "Speedrun",
         displayName = "Speed|cdf4242Run|r",
-        author = "Floliroy, Panaa",
+        author = "Floliroy, Panaa, |cc0c0c0@|rn|cc0c0c0ogetrandom|r",
         version = Speedrun.version,
         slashCommand = "/speedrun",
         registerForRefresh = true,
@@ -180,11 +180,11 @@ function Speedrun.CreateSettingsWindow()
     local cntrlOptionsPanel = LAM2:RegisterAddonPanel("Speedrun_Settings", panelData)
 
     local optionsData = {
-        {   type = "description",
-            text = zo_strformat(SI_SPEEDRUN_GLOBAL_DESC),
-        },
+
         {   type = "divider",
         },
+        -- {   type = "divider",
+        -- },
         --[[{   type = "checkbox",
             name = zo_strformat(SI_SPEEDRUN_ENABLE_NAME),
             tooltip = zo_strformat(SI_SPEEDRUN_ENABLE_DESC),
@@ -216,8 +216,40 @@ function Speedrun.CreateSettingsWindow()
                 Speedrun.SetUIHidden(newValue)
             end,
         },
-        {   type = "divider",
+        -- {   type = "checkbox",
+        --     name = "Simple Display",
+        --     tooltip = "Display only score, vitality and timer",
+        --     default = false,
+        --     getFunc = function() return Speedrun.uiSimple end,
+        --     setFunc = function(newValue)
+        --         Speedrun.uiSimple = newValue
+        --         Speedrun.savedVariables.uiSimple = newValue
+        --         Speedrun.ToggleUISimple(newValue)
+        --     end,
+        -- },
+        {
+            type = "header",
+            name = "Score Simulator and Records",
         },
+        {   type = "submenu",
+            name = "info",
+            controls = {
+            {   type = "description",
+                text = "Details are still under construction",
+            },
+            {   type = "description",
+                text = zo_strformat(SI_SPEEDRUN_GLOBAL_DESC),
+            },
+            {   type = "divider",
+            },
+            {   type = "description",
+                text = zo_strformat(SI_SPEEDRUN_AUTHOR_DESC),
+            },
+          },
+        },
+        {   type = "submenu",
+            name = "Trials",
+            controls = {
         Speedrun.CreateRaidMenu(638),
         Speedrun.CreateRaidMenu(636),
         Speedrun.CreateRaidMenu(639),
@@ -227,9 +259,16 @@ function Speedrun.CreateSettingsWindow()
         Speedrun.CreateRaidMenu(1051),
         Speedrun.CreateRaidMenu(1121),
         Speedrun.CreateRaidMenu(1196),
+          },
+        },
+        {     type = "submenu",
+              name = "Arenas",
+              controls = {
         Speedrun.CreateRaidMenu(1082),
         Speedrun.CreateRaidMenu(677),
         Speedrun.CreateRaidMenu(635),
+        },
+      },
     }
 
     LAM2:RegisterOptionControls("Speedrun_Settings", optionsData)

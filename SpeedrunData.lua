@@ -149,7 +149,8 @@ Speedrun.customTimerSteps = {
         [3] = "",
         [4] = "",
         [5] = "",
-        [6] = ""
+        [6] = "",
+        -- [7] = nil
     },
     [1082] = { --BRP
         [1] = "",
@@ -182,7 +183,6 @@ Speedrun.customTimerSteps = {
         [8] = "",
         [9] = "",
         [10] = "",
-        [11] = ""
     },
 }
 
@@ -269,6 +269,7 @@ Speedrun.stepList = {
         [4] = zo_strformat(SI_SPEEDRUN_KA_KILL_VROL),
         [5] = zo_strformat(SI_SPEEDRUN_KA_BEGIN_FALGRAVN),
         [6] = zo_strformat(SI_SPEEDRUN_KA_KILL_FALGRAVN),
+        -- [7] = "",
     },
     [1082] = { --BRP
         [1] = zo_strformat(SI_SPEEDRUN_ARENA_FIRST),
@@ -288,6 +289,7 @@ Speedrun.stepList = {
         [7] = zo_strformat(SI_SPEEDRUN_ARENA_SEVENTH),
         [8] = zo_strformat(SI_SPEEDRUN_ARENA_EIGHTH),
         [9] = zo_strformat(SI_SPEEDRUN_ARENA_NINTH),
+        [10] = zo_strformat(SI_SPEEDRUN_ARENA_TENTH),
     },
     [635] = { --DSA
         [1] = zo_strformat(SI_SPEEDRUN_ARENA_FIRST),
@@ -302,4 +304,3 @@ Speedrun.stepList = {
         [10] = zo_strformat(SI_SPEEDRUN_ARENA_TENTH),
     },
 }
-
