@@ -463,112 +463,112 @@ Speedrun.stepList = {
 
 Speedrun.scoreReasons = {
 		[0] = {
-				name = "Bonus Lost",
+				name = "No Bonus",
 				id = RAID_POINT_REASON_MIN_VALUE,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[1] = {
 				name = "Small adds",
 				id = RAID_POINT_REASON_KILL_NORMAL_MONSTER,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[2] = {
 				name = "Large add",
 				id = RAID_POINT_REASON_KILL_BANNERMEN,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[3] = {
 				name = "Elite add",
 				id = RAID_POINT_REASON_KILL_CHAMPION,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[4] = {
 				name = "Mini Boss",
 				id = RAID_POINT_REASON_KILL_MINIBOSS,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[5] = {
 				name = "Boss",
 				id = RAID_POINT_REASON_KILL_BOSS,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[6] = {
 				name = "Activity Bonus Low",
 				id = RAID_POINT_REASON_BONUS_ACTIVITY_LOW,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[7] = {
 				name = "Activity Bonus Medium",
 				id = RAID_POINT_REASON_BONUS_ACTIVITY_MEDIUM,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[8] = {
 				name = "Activity Bonus High",
 				id = RAID_POINT_REASON_BONUS_ACTIVITY_HIGH,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[9] = {
 				name = "Resurrections",
 				id = RAID_POINT_REASON_LIFE_REMAINING,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[10] = {
 				name = "Bonus Point Low",
 				id = RAID_POINT_REASON_BONUS_POINT_ONE,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[11] = {
 				name = "Bonus Point Low",
 				id = RAID_POINT_REASON_BONUS_POINT_TWO,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[12] = {
 				name = "Bonus Point Low",
 				id = RAID_POINT_REASON_BONUS_POINT_THREE,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[13] = {
 				name = "Sigil Bonus x1",
 				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_ONE,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[14] = {
 				name = "Sigil Bonus x2",
 				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_TWO,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[15] = {
 				name = "Sigil Bonus x3",
 				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_THREE,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[16] = {
 				name = "Sigil Bonus x4",
 				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_FOUR,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 		[17] = {
 				name = "Max Value",
 				id = RAID_POINT_REASON_MAX_VALUE,
-				times = {},
-				total = {},
+				times = 0,
+				total = 0,
 		},
 }
 
@@ -719,7 +719,7 @@ Speedrun.scoreReasons = {
 --
 -- 		elseif string.find(text, "This death is only temporary!") then
 -- 				Speedrun.Portal = redEnd
--- 
+--
 --
 --
 -- shadow warrior 2
