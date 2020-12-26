@@ -1,0 +1,12 @@
+<Bindings>
+	<Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
+		<Category name="SpeedRun">
+			<Action name="SR_TOGGLE_AUDIO">
+				<Down>Speedrun.AudioToggle()</Down>
+			</Action>
+			<Action name="SR_TOGGLE_HIDEGROUP">
+					<Down>Speedrun.HideGroupToggle()</Down>
+			</Action>
+		</Category>
+	</Layer>
+</Bindings>
