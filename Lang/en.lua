@@ -96,7 +96,7 @@
 	SI_SPEEDRUN_ARENA_EIGHTH 						= "Eighth Stage",
 	SI_SPEEDRUN_ARENA_NINTH 						= "Ninth Stage",
 	SI_SPEEDRUN_ARENA_TENTH 						= "Final Boss",
-	SI_SPEEDRUN_ARENA_COMPLETE 					= "Complete",
+	SI_SPEEDRUN_ARENA_COMPLETE 					= "Final Boss |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
 
 	----------------------
 	---- Menu Strings ----

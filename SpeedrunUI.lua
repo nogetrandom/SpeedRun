@@ -97,6 +97,7 @@ function Speedrun.UpdateCurrentVitality()
 end
 
 function Speedrun.UpdateCurrentScore()
+		-- if Speedrun.raidID == 1227 then return end
     local timer
     if bestPossibleTime then
         if Speedrun.segmentTimer[Speedrun.Step] == Speedrun.segmentTimer[Speedrun.Step + 1] or Speedrun.segmentTimer[Speedrun.Step + 1] == nil  then
@@ -110,7 +111,7 @@ function Speedrun.UpdateCurrentScore()
 
     local score
     if  IsRaidInProgress() then
-        score = math.floor(Speedrun.GetScore(timer+1,GetCurrentRaidLifeScoreBonus()/1000,Speedrun.raidID))
+        score = math.floor(Speedrun.GetScore(timer+0.1,GetCurrentRaidLifeScoreBonus()/1000,Speedrun.raidID))
         SpeedRun_Score_Label:SetText(Speedrun.FormatRaidScore(score))
     end
 end
@@ -233,8 +234,6 @@ function Speedrun.UpdateSegment(step, raid)
     Speedrun.DifferenceColor(difference, segment)
     Speedrun.DifferenceColor(previousSegementDif, SpeedRun_Advanced_PreviousSegment)
 end
-
-
 
 function Speedrun.DifferenceColor(diff, segment)
     if diff > 0 then

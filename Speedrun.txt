@@ -1,5 +1,5 @@
 ## Title: Speed|cdf4242Run|r
-## APIVersion: 100031 100032
+## APIVersion: 100033
 ## Author: Floliroy, Panaa, n|cccccccogetrandom|r
 ## Version: 0.1.8.1
 ## DependsOn: LibAddonMenu-2.0
@@ -23,3 +23,4 @@ SpeedrunMenu.lua
 SpeedrunUI.lua
 
 SpeedrunUI.xml
+bindings.xml

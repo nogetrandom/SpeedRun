@@ -39,7 +39,7 @@ function Speedrun.Simulate(raidID)
         vitality = 24
     elseif raidID == 725 or raidID == 975 or raidID == 1000 or raidID == 1051 or raidID == 1121 or raidID == 1196 then
         vitality = 36
-    elseif raidID == 677 then
+    elseif raidID == 677 or raidID == 1227 then 
         vitality = 15
     end
 
@@ -172,7 +172,7 @@ function Speedrun.CreateSettingsWindow()
         displayName = "Speed|cdf4242Run|r",
         author = "Floliroy, Panaa, |cc0c0c0@|rn|cc0c0c0ogetrandom|r",
         version = Speedrun.version,
-        slashCommand = "/speedrun",
+        slashCommand = "/speed",
         registerForRefresh = true,
         registerForDefaults = true,
     }
@@ -267,6 +267,7 @@ function Speedrun.CreateSettingsWindow()
         Speedrun.CreateRaidMenu(1082),
         Speedrun.CreateRaidMenu(677),
         Speedrun.CreateRaidMenu(635),
+				Speedrun.CreateRaidMenu(1227),
         },
       },
     }
