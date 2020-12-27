@@ -25,6 +25,14 @@ function Speedrun.ResetUI()
     SpeedRun_Advanced_PreviousSegment:SetColor(unpack { 1, 1, 1 })
     SpeedRun_Advanced_BestPossible_Value:SetText(" ")
     SpeedRun_Score_Label:SetText(" ")
+		-- SpeedRun_Adds_SA:SetText(" ")
+		-- SpeedRun_Adds_SA_Counter:SetText(" ")
+		-- SpeedRun_Adds_LA:SetText(" ")
+		-- SpeedRun_Adds_LA_Counter:SetText(" ")
+		-- SpeedRun_Adds_EA:SetText(" ")
+		-- SpeedRun_Adds_EA_Counter:SetText(" ")
+		-- Speedrun_Adds_Total:SetText(" ")
+		-- Speedrun_Adds_Total_Counter:SetText(" ")
     if Speedrun.segments then
         for i,x in ipairs(Speedrun.segments) do
             local name = WM:GetControlByName(x:GetName())
@@ -72,6 +80,18 @@ function Speedrun.SetUIHidden(hide)
     end
 end
 
+-- function Speedrun.SetAddsHidden()
+-- 		if GetZoneId(GetUnitZoneIndex("player")) ~= 1227 or Speedrun.savedVariables.uiIsHidden == true then
+-- 				Speedrun_Adds:SetHidden(true)
+-- 				return
+-- 		end
+-- 		Speedrun_Adds:SetHidden(false)
+-- end
+
+-- function Speedrun.ResetAdds()
+-- 		Speedrun.UpdateAdds(-1, -1)
+-- end
+
 function Speedrun.UpdateGlobalTimer()
     SpeedRun_TotalTimer_Title:SetText(Speedrun.FormatRaidTimer(GetRaidDuration(), true))
 
@@ -97,7 +117,6 @@ function Speedrun.UpdateCurrentVitality()
 end
 
 function Speedrun.UpdateCurrentScore()
-		-- if Speedrun.raidID == 1227 then return end
     local timer
     if bestPossibleTime then
         if Speedrun.segmentTimer[Speedrun.Step] == Speedrun.segmentTimer[Speedrun.Step + 1] or Speedrun.segmentTimer[Speedrun.Step + 1] == nil  then
@@ -183,12 +202,10 @@ function Speedrun.CreateRaidSegment(id)
         segmentRow:SetHidden(false)
         Speedrun.segments[i] = segmentRow;
     end
-
     Speedrun.SetUIHidden(false)
     --d(SpeedRun_Timer_Container:GetWidth())
     SpeedRun_Timer_Container_Title:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
     SpeedRun_Timer_Container_Raid:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
-
 end
 
 function Speedrun.UpdateSegment(step, raid)
@@ -196,7 +213,6 @@ function Speedrun.UpdateSegment(step, raid)
     if raid == nil then
         raid = GetZoneId(GetUnitZoneIndex("player"))
     end
-
     local difference
     if (Speedrun.segmentTimer[step] ~= nil and Speedrun.segmentTimer[step] ~= Speedrun.segmentTimer[step + 1])  then
         difference = Speedrun.currentRaidTimer[step] - Speedrun.segmentTimer[step]
@@ -218,7 +234,6 @@ function Speedrun.UpdateSegment(step, raid)
     if Speedrun.segmentTimer[table.getn(Speedrun.segmentTimer)] then
         bestPossibleTime = difference + Speedrun.segmentTimer[table.getn(Speedrun.segmentTimer)]
         SpeedRun_Advanced_BestPossible_Value:SetText(Speedrun.FormatRaidTimer(bestPossibleTime))
-
         Speedrun.UpdateCurrentScore()
     else
         SpeedRun_Advanced_BestPossible_Value:SetText(" ")
@@ -227,10 +242,8 @@ function Speedrun.UpdateSegment(step, raid)
     if Speedrun.Step and Speedrun.currentRaidTimer[Speedrun.Step] and Speedrun.segments[Speedrun.Step] then
         Speedrun.segments[Speedrun.Step]:GetNamedChild('_Best'):SetText(Speedrun.FormatRaidTimer(Speedrun.currentRaidTimer[Speedrun.Step]))
     end
-
     local segment = Speedrun.segments[Speedrun.Step]:GetNamedChild('_Diff')
     segment:SetText(Speedrun.FormatRaidTimer(difference, true))
-
     Speedrun.DifferenceColor(difference, segment)
     Speedrun.DifferenceColor(previousSegementDif, SpeedRun_Advanced_PreviousSegment)
 end
@@ -242,3 +255,36 @@ function Speedrun.DifferenceColor(diff, segment)
         segment:SetColor(unpack { 0, 1, 0 })
     end
 end
+
+-- function Speedrun.UpdateAdds(reason, total)
+-- 		local s = Speedrun.adds.small or 0
+-- 		local l = Speedrun.adds.large or 0
+-- 		local e = Speedrun.adds.elite or 0
+-- 		local t = Speedrun.adds.total or 0
+-- 		local sV = Speedrun.savedVariables.adds
+-- 		-- if reason < 0 and total < 0 then
+-- 		-- 		s = 0
+-- 		-- 		sV.s = s
+-- 		-- 		l = 0
+-- 		-- 		sV.l = l
+-- 		-- 		e = 0
+-- 		-- 		sV.e = e
+-- 		-- 		t = 0
+-- 		-- 		sV.t = t
+-- 		if reason == 1 then
+-- 				s = s + 1
+-- 				sV.small = s
+-- 				SpeedRun_Adds_SA_Counter:SetText(s .. " / 63")
+-- 		elseif reason == 2 then
+-- 				l = l + 1
+-- 				sV.large = l
+-- 				SpeedRun_Adds_LA_Counter:SetText(l .. " / 33")
+-- 		elseif reason == 3 then
+-- 				e = e + 1
+-- 				sV.elite = e
+-- 				SpeedRun_Adds_EA_Counter:SetText(e .. " / 14")
+-- 		end
+-- 		t = t + total
+-- 		sV.total = t
+-- 		Speedrun_Adds_Total_Counter:SetText(t)
+-- end

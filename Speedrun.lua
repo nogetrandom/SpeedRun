@@ -6,10 +6,17 @@ Speedrun = Speedrun or {}
 local Speedrun = Speedrun
 
 Speedrun.name = "Speedrun"
-Speedrun.version = "0.1.8.1"
+Speedrun.version = "0.1.8.2"
 
 Speedrun.segments = {}
 Speedrun.segmentTimer = {}
+
+-- Speedrun.adds = {
+-- 		small = 0,
+-- 		large = 0,
+-- 		elite = 0,
+-- 		total = 0,
+-- }
 
 Speedrun.currentRaidTimer = {}
 Speedrun.displayVitality = ""
@@ -18,15 +25,13 @@ Speedrun.raidID = 0
 Speedrun.isBossDead = true
 Speedrun.Step = 1
 Speedrun.stage = 0
-
-Speedrun.scoreReasons = {}
+-- Speedrun.subZone = ""
 
 -- Speedrun.Portal = {}
 
 Speedrun.slash      = "/speed"
 Speedrun.prefix     = "[Speedrun] "
 Speedrun.debugMode = 0
-
 ---------------------------
 ---- Variables Default ----
 ---------------------------
@@ -34,6 +39,7 @@ Speedrun.Default = {
     --table
     customTimerSteps = {},
     raidList = {},
+		scoreReasons = {},
 
     --UI
     segmentTimer = {},
@@ -43,14 +49,19 @@ Speedrun.Default = {
     uiIsHidden = true,
 
     --variables
+		-- adds = {
+		-- 		small = 0,
+		-- 		large = 0,
+		-- 		elite = 0,
+		-- 		total = 0,
+		-- },
     currentRaidTimer = {},
     lastBossName = "",
     raidID = 0,
     isBossDead = true,
     Step = 1,
     stage = 0,
-
-		scoreReasons = {},
+		-- subZone = "",
 
     --settings
     addsOnCR = true,
@@ -64,6 +75,7 @@ Speedrun.Default = {
 Speedrun.Default.customTimerSteps = Speedrun.customTimerSteps
 Speedrun.Default.raidList = Speedrun.raidList
 Speedrun.Default.scoreReasons = Speedrun.scoreReasons
+-- Speedrun.Default.adds = Speedrun.adds
 -------------------
 ---- Functions ----
 -------------------
@@ -145,7 +157,6 @@ function Speedrun.GetSavedTimer(raidID,step)
             formatID = raidID
         end
     end
-
     if tonumber(Speedrun.customTimerSteps[raidID][step]) then
         return tonumber(Speedrun.customTimerSteps[raidID][step])*1000
     else
@@ -155,7 +166,6 @@ end
 
 function Speedrun.FormatRaidTimer(timer, ms)
     ms = ms or true
-
     local raidDurationSec
     if ms then
 				if timer == 0 then
@@ -197,7 +207,6 @@ function Speedrun.GetScore(timer, vitality, raidID)
     if type(raidID) == "string" then --for vMA
         raidID = tonumber(string.sub(raidID,1,3))
     end
-
     if raidID == 638 then --AA
         return (124300 + (1000 * vitality)) * (1 + (900 - timer) / 10000)
     elseif raidID == 636 then --HRC
@@ -273,12 +282,39 @@ function Speedrun.ScoreUpdate(eventCode, scoreUpdateReason, scoreAmount, totalSc
 		local scoreTimer = GetRaidDuration()
 		local sT = Speedrun.FormatRaidTimer(scoreTimer, true)
 		local k = scoreUpdateReason
-		if Speedrun.scoreReasons[k] == k then
-				Speedrun.scoreReasons[k].times = Speedrun.scoreReasons[k].times + 1
-				Speedrun.scoreReasons[k].total = Speedrun.scoreReasons[k].total + scoreAmount
-		end
+		Speedrun.SetScoreReasons(scoreUpdateReason, scoreAmount)
+		-- if GetZoneId(GetUnitZoneIndex("player")) == 1227 then
+		-- 		if k > 0 and k < 4 then
+		-- 				Speedrun.UpdateAdds(k, scoreAmount)
+		-- 		end
+		-- end
 		if k ~= RAID_POINT_REASON_LIFE_REMAINING then
 				Speedrun:dbg(2, 'Score Updated at <<5>>\nReason: <<2>>. Amount: <<3>>. Total: <<4>>.', eventCode, k, scoreAmount, totalScore, sT)
+		end
+end
+
+function Speedrun.SetScoreReasons(k, v)
+		Speedrun.scoreReasons[k].times = Speedrun.scoreReasons[k].times + 1
+		Speedrun.savedVariables.scoreReasons[k].times = Speedrun.scoreReasons[k].times
+		Speedrun.scoreReasons[k].total = Speedrun.scoreReasons[k].total + v
+		Speedrun.savedVariables.scoreReasons[k].total = Speedrun.scoreReasons[k].total
+end
+
+function Speedrun.GetScoreReasons()
+		for reason, times in pairs(Speedrun.scoreReasons) do
+				local reason = Speedrun.scoreReasons[reason]
+				if reason ~= nil then
+						local times = Speedrun.scoreReasons[reason].times
+						local total = Speedrun.scoreReasons[reason].total
+						local name = Speedrun.scoreReasons[reason].name
+						if times > 0 then
+								Speedrun:dbg(1, '|cdf4242<<1>>|r (<<4>>) x<<2>> = <<3>> total', name, times, total, reason)
+						else
+								Speedrun:dbg(1, 'No |cdf4242<<1>>|r (<<2>>) registered', name, reason)
+						end
+				else
+						Speedrun:dbg(1, 'Reason <<1>> is nil', reason)
+				end
 		end
 end
 
@@ -287,10 +323,23 @@ end
 -- 		Speedrun.scoreUpdateReasons.total[Speedrun.scoreReasons[scoreUpdateReason]] + scoreAmount = scoreUpdateReason == Speedrun.scoreReasons[scoreUpdateReason]
 -- end
 
-function Speedrun.ZoneChange(_, zoneName, subZoneName, newSubzone, zoneId, subZoneId)
-		if Speedrun.IsInTrialZone() or (GetZoneId(GetUnitZoneIndex("player")) == 677) then
-				zo_callLater(Speedrun:dbg(1, "Subzone Changed: <<2>>\nSubzone name / id: <<1>> / <<3>>", subZoneName, newSubzone, subZoneId), 1000)
-		end
+Speedrun.ZoneChange = function(_, zoneName, subZoneName, newSubzone, zoneId, subZoneId)
+		-- local sN = subZoneName
+		-- local sId = subZoneId
+		-- if zoneID == 1227 then
+		-- 		Speedrun.SetAddsHidden()
+		-- end
+		Speedrun.GetLocation()
+		-- if Speedrun.IsInTrialZone() or (GetZoneId(GetUnitZoneIndex("player")) == 677) then
+		-- 		Speedrun:dbg(1, "Subzone Changed:\nSubzone name / id: <<1>> / <<2>>", sN, sId)
+		-- end
+end
+
+function Speedrun.GetLocation()
+		local sub = GetPlayerActiveSubzoneName()
+		local parent = GetPlayerActiveZoneName()
+		local map = GetPlayerLocationName()
+		Speedrun:dbg(1, "Location Changed! New Location:\n[Map: <<3>>] [Zone: <<1>>] [Subzone <<2>>]", parent, sub, map)
 end
 ----------------
 ---- Arenas ----
@@ -330,26 +379,21 @@ function Speedrun.MainCloudrest()
             else
                 currentTargetHP, maxTargetHP, effmaxTargetHP = GetUnitPower("boss" .. i, POWERTYPE_HEALTH)
             end
-
             local percentageHP = currentTargetHP / maxTargetHP
             if IsUnitInCombat("player") and  Speedrun.isBossDead == true then
                 if (Speedrun.Step == 1 and maxTargetHP >= 64000000) then --start fight with boss
                     Speedrun.UpdateWaypointNew(GetRaidDuration())
-
                     Speedrun.lastBossName = GetUnitName("boss" .. i)
                     Speedrun.savedVariables.lastBossName = Speedrun.lastBossName
                 end
                 if (percentageHP <= 0.75 and Speedrun.Step == 2) then
                     Speedrun.UpdateWaypointNew(GetRaidDuration())
-
                 end
                 if (percentageHP <= 0.5 and Speedrun.Step == 3) then
                     Speedrun.UpdateWaypointNew(GetRaidDuration())
-
                 end
                 if (percentageHP <= 0.25 and Speedrun.Step == 4) then
                     Speedrun.UpdateWaypointNew(GetRaidDuration())
-
                 end
                 if (GetUnitName("boss" .. i) ~= Speedrun.lastBossName and Speedrun.Step == 5) then
                     --ZMaja Shadow
@@ -379,23 +423,18 @@ function Speedrun.MainAsylum()
             --Olms got more than 99Million HP
             local currentTargetHP, maxTargetHP, effmaxTargetHP = GetUnitPower("boss" .. i, POWERTYPE_HEALTH)
             local percentageHP = currentTargetHP / maxTargetHP
-
             if IsUnitInCombat("player") and Speedrun.isBossDead == true then
                 if (Speedrun.Step == 1 and maxTargetHP >= 99000000) then --start fight with boss
                     Speedrun.UpdateWaypointNew(GetRaidDuration())
-
                 end
                 if (percentageHP <= 0.9 and Speedrun.Step == 2) then
                     Speedrun.UpdateWaypointNew(GetRaidDuration())
-
                 end
                 if (percentageHP <= 0.75 and Speedrun.Step == 3) then
                     Speedrun.UpdateWaypointNew(GetRaidDuration())
-
                 end
                 if (percentageHP <= 0.5 and Speedrun.Step == 4) then
                     Speedrun.UpdateWaypointNew(GetRaidDuration())
-
                 end
                 if (percentageHP <= 0.25 and Speedrun.Step == 5) then
                     Speedrun.UpdateWaypointNew(GetRaidDuration())
@@ -487,17 +526,17 @@ function Speedrun.MainBoss()
         end
     end
 end
-
-function Speedrun.CombatState()
-		if IsUnitInCombat("player") then
-				return true
-		end
-		return false
-end
 -----------------------
 ---- Base & Events ----
 -----------------------
 function Speedrun.Reset()
+		-- Speedrun.adds = {
+		-- 		small = 0,
+		-- 		large = 0,
+		-- 		elite = 0,
+		-- 		total = 0,
+		-- }
+		-- Speedrun.savedVariables.adds = Speedrun.adds
     Speedrun.currentRaidTimer = {}
     Speedrun.savedVariables.currentRaidTimer = Speedrun.currentRaidTimer
     Speedrun.displayVitality = ""
@@ -509,9 +548,8 @@ function Speedrun.Reset()
     Speedrun.savedVariables.Step = Speedrun.Step
     Speedrun.stage = 0
     Speedrun.savedVariables.stage = Speedrun.stage
-
 		Speedrun.scoreReasons = {}
-		Speedrun.savedVariables.scoreUpdateReasons = Speedrun.scoreUpdateReasons
+		Speedrun.savedVariables.scoreReasons = Speedrun.scoreReasons
 		-- Speedrun.Portal = {}
 end
 
@@ -580,16 +618,12 @@ Speedrun.OnTrialComplete = function(eventCode, trialName, score, totalTime)
     Speedrun.savedVariables.raidID = Speedrun.raidID
 		Speedrun:dbg(1, " Trial Complete")
 
-		for k, v in pairs(Speedrun.scoreReasons) do
-				local sR = Speedrun.scoreUpdateReasons[k]
-				if sR.times >= 1 then
-						Speedrun:dbg(1, '|cdf4242Reason <<1>>|r x<<2>> = <<3>> total', sR, sR.times, sR.total)
-				end
+		if Speedrun.debugMode >= 1 then
+				Speedrun.GetScoreReasons()
 		end
 end
 
 function Speedrun.OnTrialStarted()
-		-- Speedrun.ResetScoreReasons()
     Speedrun.Reset()
     Speedrun.RegisterTrialsEvents()
     Speedrun.UpdateCurrentScore()
@@ -607,6 +641,9 @@ function Speedrun.OnPlayerActivated()
         if Speedrun.raidID ~= zoneID then
             Speedrun.Reset()
             Speedrun.ResetUI()
+						-- if zoneID == 1227 then
+						-- 		peedrun.ResetAdds()
+						-- end
             Speedrun.raidID = zoneID
             Speedrun.savedVariables.raidID = Speedrun.raidID
         end
@@ -622,14 +659,17 @@ function Speedrun.OnPlayerActivated()
         Speedrun.savedVariables.raidID = Speedrun.raidID
         Speedrun.SetUIHidden(true)
         Speedrun.UnregisterTrialsEvents()
-				-- Speedrun:dbg(2, " Player is outside Trial Zone")
     end
-		EVENT_MANAGER:UnregisterForEvent(Speedrun.name .. "Activated")
+		-- Speedrun.SetAddsHidden()
 end
 
 function Speedrun.IsInTrialZone()
     local vet = IsUnitUsingVeteranDifficulty("player")
-    if not vet then return false end
+    if not vet then
+				-- Speedrun.Reset()
+				-- Speedrun.ResetUI()
+				return false
+		end
     for k, v in pairs(Speedrun.raidList) do
         if Speedrun.raidList[k].id == GetZoneId(GetUnitZoneIndex("player")) then
 						Speedrun.UpdateCurrentVitality()
@@ -652,6 +692,7 @@ function Speedrun:Initialize()
 
     -- UI
     Speedrun.ResetUI()
+		-- Speedrun.SetAddsHidden()
     Speedrun.ResetAnchors()
 
     --Init Variables
@@ -659,6 +700,7 @@ function Speedrun:Initialize()
     Speedrun.raidList = Speedrun.savedVariables.raidList
 
     Speedrun.segmentTimer = Speedrun.savedVariables.segmentTimer
+		-- Speedrun.adds = Speedrun.savedVariables.adds
 
     Speedrun.currentRaidTimer = Speedrun.savedVariables.currentRaidTimer
     Speedrun.lastBossName = Speedrun.savedVariables.lastBossName
@@ -674,7 +716,7 @@ function Speedrun:Initialize()
     -- Speedrun.uiSimple = Speedrun.savedVariables.uiSimple
 		Speedrun.debugMode = Speedrun.savedVariables.debugMode
 		-- Speedrun.Portal = Speedrun.savedVariables.Portal
-		Speedrun.scoreUpdateReasons = Speedrun.savedVariables.scoreUpdateReasons
+		Speedrun.scoreReasons = Speedrun.savedVariables.scoreReasons
 
     --Settings
     Speedrun.CreateSettingsWindow()
@@ -697,11 +739,6 @@ function Speedrun:Initialize()
     --EVENT_MANAGER:RegisterForEvent(Speedrun.name, EVENT_TARGET_CHANGED, Speedrun.Test)
 
 		SLASH_COMMANDS[Speedrun.slash] = Speedrun.SlashCommand
-
-		-- for scoreUpdateReason in pairs(Speedrun.scoreReasons) do
-		-- 		EVENT_MANAGER:RegisterForEvent(Speedrun.name .. Speedrun.scoreReasons[scoreUpdateReason].name, EVENT_RAID_TRIAL_SCORE_UPDATE, Speedrun.onScoreChanged)
-		-- 		EVENT_MANAGER:AddFilterForEvent(Speedrun.name .. Speedrun.scoreReasons[scoreUpdateReason].name, EVENT_RAID_TRIAL_SCORE_UPDATE, REGISTER_FILTER_RAID_POINT_REASON, Speedrun.scoreReasons[scoreUpdateReason].id)
-		-- end
 
     EVENT_MANAGER:UnregisterForEvent(Speedrun.name .. "Loaded", EVENT_ADD_ON_LOADED)
 end

@@ -419,7 +419,6 @@ Speedrun.stepList = {
         [23] = "5.3",
         [24] = "5.4",
 				[25] = "5th Complete", --"Final Boss",
-				-- [26] = "Final Boss |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
     },
     [677] = { --MA
         [1] = zo_strformat(SI_SPEEDRUN_ARENA_FIRST),
@@ -430,7 +429,7 @@ Speedrun.stepList = {
         [6] = zo_strformat(SI_SPEEDRUN_ARENA_SIXTH),
         [7] = zo_strformat(SI_SPEEDRUN_ARENA_SEVENTH),
         [8] = zo_strformat(SI_SPEEDRUN_ARENA_EIGHTH),
-				[9] = zo_strformat(SI_SPEEDRUN_ARENA_COMPLETE),
+				[9] = zo_strformat(SI_SPEEDRUN_ARENA_NINTH),	--zo_strformat(SI_SPEEDRUN_ARENA_COMPLETE),
     },
     [635] = { --DSA
         [1] = zo_strformat(SI_SPEEDRUN_ARENA_FIRST),
@@ -487,7 +486,7 @@ Speedrun.scoreReasons = {
 				total = 0,
 		},
 		[4] = {
-				name = "Mini Boss",
+				name = "Miniboss",
 				id = RAID_POINT_REASON_KILL_MINIBOSS,
 				times = 0,
 				total = 0,
@@ -523,19 +522,19 @@ Speedrun.scoreReasons = {
 				total = 0,
 		},
 		[10] = {
-				name = "Bonus Point Low",
+				name = "Bonus Point One",
 				id = RAID_POINT_REASON_BONUS_POINT_ONE,
 				times = 0,
 				total = 0,
 		},
 		[11] = {
-				name = "Bonus Point Low",
+				name = "Bonus Point Two",
 				id = RAID_POINT_REASON_BONUS_POINT_TWO,
 				times = 0,
 				total = 0,
 		},
 		[12] = {
-				name = "Bonus Point Low",
+				name = "Bonus Point Three",
 				id = RAID_POINT_REASON_BONUS_POINT_THREE,
 				times = 0,
 				total = 0,
@@ -565,7 +564,7 @@ Speedrun.scoreReasons = {
 				total = 0,
 		},
 		[17] = {
-				name = "Max Value",
+				name = "Max Value / Boss",
 				id = RAID_POINT_REASON_MAX_VALUE,
 				times = 0,
 				total = 0,
@@ -602,39 +601,22 @@ Speedrun.scoreReasons = {
 				RAID_POINT_REASON_KILL_NOXP_MONSTER
 				RAID_POINT_REASON_ITERATION_BEGIN
 			}
-
 1		= 	RAID_POINT_REASON_KILL_NORMAL_MONSTER
-
 2		= 	RAID_POINT_REASON_KILL_BANNERMEN
-
 3		=		RAID_POINT_REASON_KILL_CHAMPION
-
 4 	=		RAID_POINT_REASON_KILL_MINIBOSS
-
 5		= 	RAID_POINT_REASON_KILL_BOSS
-
 6		=		RAID_POINT_REASON_BONUS_ACTIVITY_LOW
-
 7		=		RAID_POINT_REASON_BONUS_ACTIVITY_MEDIUM
-
 8		=		RAID_POINT_REASON_BONUS_ACTIVITY_HIGH
-
 9		=		RAID_POINT_REASON_LIFE_REMAINING
-
 10	=		RAID_POINT_REASON_BONUS_POINT_ONE
-
 11	=		RAID_POINT_REASON_BONUS_POINT_TWO
-
 12	=		RAID_POINT_REASON_BONUS_POINT_THREE
-
 13	=		RAID_POINT_REASON_SOLO_ARENA_PICKUP_ONE
-
 14	=		RAID_POINT_REASON_SOLO_ARENA_PICKUP_TWO
-
 15	=		RAID_POINT_REASON_SOLO_ARENA_PICKUP_THREE
-
 16	=		RAID_POINT_REASON_SOLO_ARENA_PICKUP_FOUR
-
 17	=	{
 				RAID_POINT_REASON_ITERATION_END
 				RAID_POINT_REASON_MAX_VALUE
@@ -642,69 +624,6 @@ Speedrun.scoreReasons = {
 			}
 
 ]]
-
-
--- local vhScoreReasons = {}
-
--- function Speedrun.TrackScoreReasons(k, v)
---		local reasons = {}
---		for reasons = i+1,	Speedrun.vhScoreReasons do
---				Speedrun.vhScoreReasons[k].times[reasons]
---				if k == 1 then
---						local saTimes = Speedrun.vhScoreReasons[1].times
---						SpeedRun_VH_SA_Counter:SetText(saTimes)
---				elseif k == 2 then
---						local laTimes = Speedrun.vhScoreReasons[2].times
---						SpeedRun_VH_SA_Counter:SetText(laTimes)
---				elseif k == 3 then
---						local eaTimes = Speedrun.vhScoreReasons[3].times
---						SpeedRun_VH_SA_Counter:SetText(eaTimes)
-
-
-
--- 		local ti = Speedrun.vhScoreReasons[k].times
--- 		local to = Speedrun.vhScoreReasons[k].total
--- 		for ti, to in pairs(Speedrun.vhScoreReasons) do
--- 				ti = {}
--- 				to = {}
--- 				if k then
--- 						ti = ti + 1
--- 						to = to + a
--- 						Speedrun.PostScoreReasons(r)
--- 				end
--- 		end
--- end
---
--- function Speedrun.PostScoreReasons(reason)
--- 		for Speedrun.vhScoreReasons[reason] do
--- 				Speedrun:dbg(1,'<<1>>: <<2>> times = <<3>> points.' Speedrun.vhScoreReasons[reason].type, Speedrun.vhScoreReasons[reason].times, Speedrun.vhScoreReasons[reason].total)
--- 		end
--- end
---
--- function Speedrun.ResetScoreReasons()
--- 		local reason = Speedrun.vhScoreReasons[reason]
--- 		if reason.times ~= 0 then
--- 				reason.times = 0
--- 		end
--- 		if reason.total ~= 0 then
--- 				reason.total = 0
--- 		end
--- end
-
-
-
--- Speedrun.Arena = function(eventCode, scoreUpdateReason, scoreAmount, totalScore)
--- 		local step = {}
--- 		local r = scoreUpdateReason
--- 		local stage = 0
--- 		local round = 0
--- 		for r, step do
--- 				if r == 13 or r == 14 or r == 15 or r == 16 then
--- 						round = round + 1
--- 				elseif r == RAID_POINT_REASON_KILL_BOSS then
--- 						stage = stage + 1
--- 				end
-
 
 -- local function PortalStart(text)
 -- 		if string.find(text, "Welcome to the Wounding! A playground for Molag Bal's fiends.") then
