@@ -468,19 +468,19 @@ Speedrun.scoreReasons = {
 				-- total = 0,
 		},
 		[1] = {
-				name = "Small adds",
+				name = "Small adds:",
 				id = RAID_POINT_REASON_KILL_NORMAL_MONSTER,
 				times = 0,
 				-- total = 0,
 		},
 		[2] = {
-				name = "Large add",
+				name = "Large adds:",
 				id = RAID_POINT_REASON_KILL_BANNERMEN,
 				times = 0,
 				-- total = 0,
 		},
 		[3] = {
-				name = "Elite add",
+				name = "Elite adds:",
 				id = RAID_POINT_REASON_KILL_CHAMPION,
 				times = 0,
 				-- total = 0,

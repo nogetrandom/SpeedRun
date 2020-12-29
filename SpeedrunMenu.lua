@@ -39,7 +39,7 @@ function Speedrun.Simulate(raidID)
         vitality = 24
     elseif raidID == 725 or raidID == 975 or raidID == 1000 or raidID == 1051 or raidID == 1121 or raidID == 1196 then
         vitality = 36
-    elseif raidID == 677 or raidID == 1227 then 
+    elseif raidID == 677 or raidID == 1227 then
         vitality = 15
     end
 
@@ -261,9 +261,20 @@ function Speedrun.CreateSettingsWindow()
         Speedrun.CreateRaidMenu(1196),
           },
         },
-        {     type = "submenu",
-              name = "Arenas",
-              controls = {
+        {   type = "submenu",
+            name = "Arenas",
+            controls = {
+						{   type = "checkbox",
+			          name = "Enable Vateshran Hollows adds UI",
+								tooltip = "Enable the add kill counter UI section for Vateshran Hollows",
+			          default = true,
+			          getFunc = function() return Speedrun.addsAreHidden end,
+			          setFunc = function(newValue)
+			              Speedrun.addsAreHidden = newValue
+			              Speedrun.savedVariables.addsAreHidden = newValue
+			              Speedrun.HideAdds(newValue)
+			          end,
+						},
         Speedrun.CreateRaidMenu(1082),
         Speedrun.CreateRaidMenu(677),
         Speedrun.CreateRaidMenu(635),

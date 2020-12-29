@@ -8,7 +8,6 @@ local globalTimer
 local previousSegment
 local currentRaid
 local bestPossibleTime
-
 -------------------------
 ---- Functions       ----
 -------------------------
@@ -25,13 +24,6 @@ function Speedrun.ResetUI()
     SpeedRun_Advanced_PreviousSegment:SetColor(unpack { 1, 1, 1 })
     SpeedRun_Advanced_BestPossible_Value:SetText(" ")
     SpeedRun_Score_Label:SetText(" ")
-
-		-- SpeedRun_Adds_SA:SetText(" ")
-		-- SpeedRun_Adds_SA_Counter:SetText(" ")
-		-- SpeedRun_Adds_LA:SetText(" ")
-		-- SpeedRun_Adds_LA_Counter:SetText(" ")
-		-- SpeedRun_Adds_EA:SetText(" ")
-		-- SpeedRun_Adds_EA_Counter:SetText(" ")
 
     if Speedrun.segments then
         for i,x in ipairs(Speedrun.segments) do
@@ -55,10 +47,12 @@ function Speedrun.ToggleMovable()
         SpeedRun_Timer_Container:SetMovable(true)
 
         Speedrun.SetUIHidden(false)
+				Speedrun.HideAdds(false)
     else
         SpeedRun_Timer_Container:SetMovable(false)
 
         Speedrun.SetUIHidden(true)
+				Speedrun.HideAdds(true)
     end
 end
 
@@ -191,9 +185,13 @@ function Speedrun.CreateRaidSegment(id)
         Speedrun.segments[i] = segmentRow;
     end
     Speedrun.SetUIHidden(false)
-    --d(SpeedRun_Timer_Container:GetWidth())
     SpeedRun_Timer_Container_Title:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
     SpeedRun_Timer_Container_Raid:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
+		if raid == 1227 and (not Speedrun.savedVariables.addsAreHidden) then
+				Speedrun.ResetAddsUI()
+				Speedrun.UpdateAdds()
+				Speedrun.HideAdds(false)
+		end
 end
 
 function Speedrun.UpdateSegment(step, raid)
@@ -278,12 +276,21 @@ end
 -- 		end
 -- end
 
--- function Speedrun.HideAdds(hide)
--- 		SpeedRun_Adds:SetHidden(hide)
--- end
+function Speedrun.HideAdds(hide)
+		SpeedRun_Adds:SetHidden(hide)
+end
 
--- function Speedrun.HideAdds(hide)
--- 		if Speedrun.savedVariables.uiIsHidden == true then
--- 				SpeedRun_Adds:SetHidden(hide)
--- 		end
--- end
+function Speedrun.HideAdds(hide)
+		if Speedrun.savedVariables.addsAreHidden == true then
+				SpeedRun_Adds:SetHidden(hide)
+		end
+end
+
+function Speedrun.ResetAddsUI()
+		SpeedRun_Adds_SA:SetText(" ")
+		SpeedRun_Adds_SA_Counter:SetText(" ")
+		SpeedRun_Adds_LA:SetText(" ")
+		SpeedRun_Adds_LA_Counter:SetText(" ")
+		SpeedRun_Adds_EA:SetText(" ")
+		SpeedRun_Adds_EA_Counter:SetText(" ")
+end
