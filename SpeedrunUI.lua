@@ -25,14 +25,14 @@ function Speedrun.ResetUI()
     SpeedRun_Advanced_PreviousSegment:SetColor(unpack { 1, 1, 1 })
     SpeedRun_Advanced_BestPossible_Value:SetText(" ")
     SpeedRun_Score_Label:SetText(" ")
+
 		-- SpeedRun_Adds_SA:SetText(" ")
 		-- SpeedRun_Adds_SA_Counter:SetText(" ")
 		-- SpeedRun_Adds_LA:SetText(" ")
 		-- SpeedRun_Adds_LA_Counter:SetText(" ")
 		-- SpeedRun_Adds_EA:SetText(" ")
 		-- SpeedRun_Adds_EA_Counter:SetText(" ")
-		-- Speedrun_Adds_Total:SetText(" ")
-		-- Speedrun_Adds_Total_Counter:SetText(" ")
+
     if Speedrun.segments then
         for i,x in ipairs(Speedrun.segments) do
             local name = WM:GetControlByName(x:GetName())
@@ -79,18 +79,6 @@ function Speedrun.SetUIHidden(hide)
         SpeedRun_Advanced:SetHidden(hide)
     end
 end
-
--- function Speedrun.SetAddsHidden()
--- 		if GetZoneId(GetUnitZoneIndex("player")) ~= 1227 or Speedrun.savedVariables.uiIsHidden == true then
--- 				Speedrun_Adds:SetHidden(true)
--- 				return
--- 		end
--- 		Speedrun_Adds:SetHidden(false)
--- end
-
--- function Speedrun.ResetAdds()
--- 		Speedrun.UpdateAdds(-1, -1)
--- end
 
 function Speedrun.UpdateGlobalTimer()
     SpeedRun_TotalTimer_Title:SetText(Speedrun.FormatRaidTimer(GetRaidDuration(), true))
@@ -256,35 +244,46 @@ function Speedrun.DifferenceColor(diff, segment)
     end
 end
 
--- function Speedrun.UpdateAdds(reason, total)
--- 		local s = Speedrun.adds.small or 0
--- 		local l = Speedrun.adds.large or 0
--- 		local e = Speedrun.adds.elite or 0
--- 		local t = Speedrun.adds.total or 0
--- 		local sV = Speedrun.savedVariables.adds
--- 		-- if reason < 0 and total < 0 then
--- 		-- 		s = 0
--- 		-- 		sV.s = s
--- 		-- 		l = 0
--- 		-- 		sV.l = l
--- 		-- 		e = 0
--- 		-- 		sV.e = e
--- 		-- 		t = 0
--- 		-- 		sV.t = t
--- 		if reason == 1 then
--- 				s = s + 1
--- 				sV.small = s
--- 				SpeedRun_Adds_SA_Counter:SetText(s .. " / 63")
--- 		elseif reason == 2 then
--- 				l = l + 1
--- 				sV.large = l
--- 				SpeedRun_Adds_LA_Counter:SetText(l .. " / 33")
--- 		elseif reason == 3 then
--- 				e = e + 1
--- 				sV.elite = e
--- 				SpeedRun_Adds_EA_Counter:SetText(e .. " / 14")
+-- function Speedrun.UpdateAdds()
+-- 		local zoneID = GetZoneId(GetUnitZoneIndex("player"))
+-- 		if zoneID ~= 1227 then
+-- 				SpeedRun_Adds:SetHidden(true)
+-- 				SpeedRun_Adds_SA:SetText(" ")
+-- 				SpeedRun_Adds_SA_Counter:SetText(" ")
+-- 				SpeedRun_Adds_LA:SetText(" ")
+-- 				SpeedRun_Adds_LA_Counter:SetText(" ")
+-- 				SpeedRun_Adds_EA:SetText(" ")
+-- 				SpeedRun_Adds_EA_Counter:SetText(" ")
+-- 				Speedrun_Adds_Total:SetText(" ")
+-- 				Speedrun_Adds_Total_Counter:SetText(" ")
+-- 			 	return
+-- 		else
+-- 				Speedrun.scoreReasons = Speedrun.savedVariables.scoreReasons
+-- 				SpeedRun_Adds:SetHidden(false)
+-- 				for k, v in pairs(Speedrun.scoreReasons) do
+-- 						local reason = Speedrun.scoreReasons[k]
+-- 						if reason == 1 then
+-- 								SpeedRun_Adds_SA_Counter:SetText(reason.times .. " / 63")
+-- 								return
+-- 						elseif reason == 2 then
+-- 								SpeedRun_Adds_LA_Counter:SetText(reason.times .. " / 33")
+-- 								return
+-- 						elseif reason == 3 then
+-- 								SpeedRun_Adds_EA_Counter:SetText(reason.times .. " / 14")
+-- 								return
+-- 						-- else
+-- 						-- 		return
+-- 						end
+-- 				end
 -- 		end
--- 		t = t + total
--- 		sV.total = t
--- 		Speedrun_Adds_Total_Counter:SetText(t)
+-- end
+
+-- function Speedrun.HideAdds(hide)
+-- 		SpeedRun_Adds:SetHidden(hide)
+-- end
+
+-- function Speedrun.HideAdds(hide)
+-- 		if Speedrun.savedVariables.uiIsHidden == true then
+-- 				SpeedRun_Adds:SetHidden(hide)
+-- 		end
 -- end

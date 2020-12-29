@@ -7,7 +7,7 @@ if not HTCT then return end
 local MY_MODULE = HTCT:RegisterModule(MY_MODULE_NAME, MY_MODULE_VERSION)
 if not MY_MODULE then return end
 
-
+--Flo originals
 HTCT:RegisterTitle("@Floliroy", nil, 2075, {en = "Godplar"}, {color={"#F9E259", "#FE2008"}})
 HTCT:RegisterTitle("@Floliroy", nil, 92, {en = "Send Nudes"}, {color={"#C71585", "#800080"}})
 HTCT:RegisterTitle("@Nixir", nil, 2079, {en = "God's Mercenary", de = "Söldner der Götter", fr ="Mercenaire des Dieux"})
@@ -19,7 +19,7 @@ HTCT:RegisterTitle("@Nameless-X", nil, 92, {en = "Karma x Łułu's Łøvechild"}
 HTCT:RegisterTitle("@Nameless-X", nil, 1838, {en = "Retard of the Guild"}, {color="#AFFF4F"})
 HTCT:RegisterTitle("@Nameless-X", nil, 2467, {en = "Gødsłayer"}, {color={"#fef608", "#FFCC00"}})
 HTCT:RegisterTitle("@Nameless-X", nil, true, {en = "|c08FED5H|c07F4D9e W|c06EBDDhø |c05E1E1Sh|c04D8E5ał|c04CFEAł N|c03C5EEøt |c02BCF2Be |c01B2F6Na|c00A9FAme|c00A0FFd|r", hidden = true})
-
+--Stress Tested
 HTCT:RegisterTitle("@BigBadBlackBonsai", nil, 1391, {en = "Squirts Like a Fire Hose"})
 HTCT:RegisterTitle("@Vatrokion", nil, 92, {en = "SweetHeart"}, {color={"#C71585", "#800080"}})
 HTCT:RegisterTitle("@Deekri", nil, true, {en = "Trap"}, {color="#ff3333", hidden = true})
@@ -38,17 +38,17 @@ HTCT:RegisterTitle("@Tyreh", nil, true, {en = "Brad"}, {color="#ffb366", hidden 
 HTCT:RegisterTitle("@Pebbs", nil, true, {en = "Proper Northern Necro"}, {color="#cc66ff", hidden = true})
 HTCT:RegisterTitle("@Porkkanalaatikko", nil, true, {en = "Healthy Sleep Schedule"}, {color="#f8db3a", hidden = true})
 HTCT:RegisterTitle("@Saphorius", nil, true, {en = "Throwing for UA"}, {color="#df4242", hidden = true})
-
+--Homies
 HTCT:RegisterTitle("@alperr", nil, true, {en = "GAMING WARLORD"}, {color="#FF9933", hidden = true})
 HTCT:RegisterTitle("@WHoitsma", nil, true, {en = "Akatsuki"}, {color="#D10000", hidden = true})
 HTCT:RegisterTitle("@EstarossaOfLove", nil, true, {en = "|cFF6600Tri|r |cfff761Fo|r|c3366ffcus|r"}, {hidden = true})
-
-HTCT:RegisterTitle("@LadyYousha", nil, true, {en = "Mama Yousha"}, {color="#da5ee5", hidden = true})
+--Divinity
+HTCT:RegisterTitle("@LadyYousha", nil, true, {en = "Mama Mia"}, {color="#da5ee5", hidden = true})
 HTCT:RegisterTitle("@SimplyArmin", nil, true, {en = "Ｓェ爪やし∈ |cf2f20dД尺爪ェＮ|r"}, {hidden = true})
 HTCT:RegisterTitle("@Chaos'Knight", nil, true, {en = "Pepega Maestro"}, {color = "#D4AF37", hidden = true})
 HTCT:RegisterTitle("@Youse-1", nil, true, {en = "|cff471aKil Tibin|r *spits*"}, {hidden = true})
-HTCT:RegisterTitle("@Batu.Khan", nil, true, {en = "pls not sth gay"}, {color="ffb3ff", hidden = true})
-
+HTCT:RegisterTitle("@Batu.Khan", nil, true, {en = "Mosque Squatter"}, {color="ffb3ff", hidden = true})
+--Det Frie Folk
 HTCT:RegisterTitle("@Donlup", nil, true, {en = "|ccc0000P|r|ccc4400T|r|cff7733S|r|cffcc00Donlup|r"}, {hidden = true})
 HTCT:RegisterTitle("@Daarbak", nil, true, {en = "16 Seconds Taunt Cooldown"}, {color="#99cc00", hidden = true})
 HTCT:RegisterTitle("@Sami98", nil, true, {en = "Zoomer in Chat"}, {color="#66ff33", hidden = true})
@@ -58,3 +58,7 @@ HTCT:RegisterTitle("@Shadedrifter", nil, true, {en = "Healer"}, {color="#808080"
 HTCT:RegisterTitle("@Mille_W", nil, 2755, {en = "#1 T-Bagger"}, {color="#ffc61a"})
 HTCT:RegisterTitle("@Mille_W", nil, true, {en = "|cffe6ff(∩|cb3e6ff*|r|cffe6ff-|r|cb3e6ff*|r|cffe6ff)>|r|cffeee6--+|r|cb3e6ff. o ･ ｡ﾟ|r"},{hidden = true})
 HTCT:RegisterTitle("@Berthelsen21", nil, true, {en = "|c1a6600  En|r |cffffff |r |c002db3To |r |cffffff|r |ccca300Ørkensten|r"}, {hidden = true})
+--Others
+HTCT:RegisterTitle("@YungDoggo", nil, 94, {en = "|cffffffA|r|cfff0ffl|r|cffe8ffm|r|cffe0ffi|r|cffd9ffg|r|cffc9ffh|r|cffc2fft|r|cffbaffy|r |cffa3ffW|r|cff9cffe|r|cff7dffe|r|cff66ffb|r"})
+-- < @Kater_MD >, < Volunteer >, < account wide >, < Histidine >, <#6600cc >
+HTCT:RegisterTitle("@Kater_MD", nil, 92, {en = "Histidine"}, {color="#6600cc"})

@@ -1,6 +1,5 @@
 ﻿local strings = {
 	SI_SPEEDRUN_LANG = "en",
-
 	----------------------
 	---- Data Tables -----
 	----------------------
@@ -83,7 +82,6 @@
 	SI_SPEEDRUN_KA_KILL_VROL						= "Vrol |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
 	SI_SPEEDRUN_KA_BEGIN_FALGRAVN				= "Falgravn",
 	SI_SPEEDRUN_KA_KILL_FALGRAVN				= "Falgravn |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
-	-- SI_SPEEDRUN_KA_COMPLETE							= "Complete",
 
 	--ARENAS
 	SI_SPEEDRUN_ARENA_FIRST 						= "First Stage",
@@ -97,7 +95,6 @@
 	SI_SPEEDRUN_ARENA_NINTH 						= "Ninth Stage",
 	SI_SPEEDRUN_ARENA_TENTH 						= "Final Boss",
 	SI_SPEEDRUN_ARENA_COMPLETE 					= "Final Boss |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
-
 	----------------------
 	---- Menu Strings ----
 	----------------------
@@ -105,19 +102,17 @@
 	SI_SPEEDRUN_GLOBAL_DESC 						= "Below here you can calculate scores for each trial (without deaths).\nEach section will have options for each boss encounter:\n- Enter custom fight times (in seconds).\n- Leave the box blank to use your own best times recorded by SpeedRun.\n- Mouse over encounters to see your personnal best.",
 	SI_SPEEDRUN_AUTHOR_DESC							= "This addon is still a beta version and is currently being updated and maintained by a sub 70 IQ gamer with no education in programming.\nFeedback and suggestions are most welcome.\n@nogetrandom [PC-EU]",
 	SI_SPEEDRUN_ENABLE_NAME 						= "Enabled",
-	SI_SPEEDRUN_ENABLE_DESC 						= "Not working for now, it will always be enable",
+	SI_SPEEDRUN_ENABLE_DESC 						= "Not working for now, it will always be enabled",
 	SI_SPEEDRUN_LOCK_NAME 							= "Lock UI",
 	SI_SPEEDRUN_LOCK_DESC 							= "Unlock window to reposition it",
 	SI_SPEEDRUN_ENABLEUI_NAME           = "Enable UI",
 	SI_SPEEDRUN_ENABLEUI_DESC           = "Enable the display of Speedrun's UI. This won't disable the addon itself, only the display",
-
 	-- SI_SPEEDRUN_FOODBUFF_ENABLE					=	"Food Buff Reminder",
 	-- SI_SPEEDRUN_FOODBUFF_ENABLE_DESC		= "Alerts you when your food buff is about to expire",
 	-- SI_SPEEDRUN_FOODBUFF_INTERVAL				= "Alert Interval",
 	-- SI_SPEEDRUN_FOODBUFF_INTERVAL_DESC  =	"How often the alert will apear (in seconds)",
 	-- SI_SPEEDRUN_FOODBUFF_TIMER					= "'<<1>>' Will Expire In |cbd0000<<2>>|r Minutes!",
 	-- SI_SPEEDRUN_NO_FOODBUFF							= "|cdf4242You have no food buff active|r",
-
 	--Raids
 	SI_SPEEDRUN_STEP_NAME 							= "<<1>> (sec)",
 	SI_SPEEDRUN_STEP_DESC_EXIST 				= "Your best personnal time is <<1>> sec.\nEquivalent to <<2>>.",
@@ -135,11 +130,9 @@
 	SI_SPEEDRUN_RESET_NAME							= "Reset Data",
 	SI_SPEEDRUN_RESET_DESC							= "Reset all saved data for this trial. This will also reload your UI.",
 	SI_SPEEDRUN_RESET_WARNING						= "|cdf4242WARNING!|r If you reset your saved data you will not be able to recover them.\nWill also reload your UI.",
-
 	--Simulate function
 	SI_SPEEDRUN_SIMULATE_FUNCTION 			= "Your score with a time of <<1>> would be <<2>>.",
 }
-
 for stringId, stringValue in pairs(strings) do
 	ZO_CreateStringId(stringId, stringValue)
 	SafeAddVersion(stringId, 1)

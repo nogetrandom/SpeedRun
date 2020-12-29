@@ -465,109 +465,109 @@ Speedrun.scoreReasons = {
 				name = "No Bonus",
 				id = RAID_POINT_REASON_MIN_VALUE,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[1] = {
 				name = "Small adds",
 				id = RAID_POINT_REASON_KILL_NORMAL_MONSTER,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[2] = {
 				name = "Large add",
 				id = RAID_POINT_REASON_KILL_BANNERMEN,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[3] = {
 				name = "Elite add",
 				id = RAID_POINT_REASON_KILL_CHAMPION,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[4] = {
 				name = "Miniboss",
 				id = RAID_POINT_REASON_KILL_MINIBOSS,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[5] = {
 				name = "Boss",
 				id = RAID_POINT_REASON_KILL_BOSS,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[6] = {
 				name = "Activity Bonus Low",
 				id = RAID_POINT_REASON_BONUS_ACTIVITY_LOW,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[7] = {
 				name = "Activity Bonus Medium",
 				id = RAID_POINT_REASON_BONUS_ACTIVITY_MEDIUM,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[8] = {
 				name = "Activity Bonus High",
 				id = RAID_POINT_REASON_BONUS_ACTIVITY_HIGH,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[9] = {
 				name = "Resurrections",
 				id = RAID_POINT_REASON_LIFE_REMAINING,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[10] = {
 				name = "Bonus Point One",
 				id = RAID_POINT_REASON_BONUS_POINT_ONE,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[11] = {
 				name = "Bonus Point Two",
 				id = RAID_POINT_REASON_BONUS_POINT_TWO,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[12] = {
 				name = "Bonus Point Three",
 				id = RAID_POINT_REASON_BONUS_POINT_THREE,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[13] = {
 				name = "Sigil Bonus x1",
 				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_ONE,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[14] = {
 				name = "Sigil Bonus x2",
 				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_TWO,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[15] = {
 				name = "Sigil Bonus x3",
 				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_THREE,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[16] = {
 				name = "Sigil Bonus x4",
 				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_FOUR,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 		[17] = {
 				name = "Max Value / Boss",
 				id = RAID_POINT_REASON_MAX_VALUE,
 				times = 0,
-				total = 0,
+				-- total = 0,
 		},
 }
 
@@ -592,6 +592,70 @@ Speedrun.scoreReasons = {
 --         Speedrun.savedVariables.stage = Speedrun.stage
 --         Speedrun.UpdateWaypointNew(GetRaidDuration())
 --     end
+-- end
+
+-- Speedrun.BossDead = function(eventCode, scoreUpdateReason, scoreAmount, totalScore)
+--     if Speedrun.raidID == 635 then
+--         if scoreUpdateReason == RAID_POINT_REASON_BONUS_ACTIVITY_MEDIUM then
+--             Speedrun.UpdateWaypointNew(GetRaidDuration())
+--         elseif scoreUpdateReason == RAID_POINT_REASON_BONUS_ACTIVITY_LOW  then
+--             d("Need To Trigger on Low: " .. scoreUpdateReason)
+--         elseif scoreUpdateReason == RAID_POINT_REASON_BONUS_ACTIVITY_HIGH  then
+--             d("Need To Trigger on High: " .. scoreUpdateReason)
+--         end
+--         return
+--     end
+-- 		if Speedrun.raidID == 635 then
+-- 				if scoreUpdateReason == RAID_POINT_REASON_KILL_BOSS then
+--     				--finish arena
+--        			Speedrun.UpdateWaypointNew(GetRaidDuration())
+--        			Speedrun.isBossDead = true
+--        			Speedrun.savedVariables.isBossDead = Speedrun.isBossDead
+-- 				end
+--     end
+-- end
+
+
+-- Speedrun.MainVH = function(eventCode, scoreUpdateReason, scoreAmount, totalScore)
+-- 		local reasons = {}
+-- 		local scoreTime = GetRaidDuration()
+-- 		if Speedrun.Step <= 7 then
+-- 				reasons[scoreTime[scoreUpdateReason]] = (scoreUpdateReason == 13 or scoreUpdateReason == 14 or scoreUpdateReason == 15 or scoreUpdateReason == 16 or scoreUpdateReason == RAID_POINT_REASON_MIN_VALUE)	--scoreUpdateReason == 5 then
+-- 				for k, v in pairs(reasons) do
+-- 						if
+-- 						Speedrun.UpdateWaypointNew(GetRaidDuration())
+-- 		end
+-- end
+----------------------------------------------------------------------------------------------
+
+-- function Speedrun.SetScoreReasons(k, v)
+-- 		Speedrun.scoreReasons[k].times = Speedrun.scoreReasons[k].times + 1
+-- 		Speedrun.savedVariables.scoreReasons[k].times = Speedrun.scoreReasons[k].times
+-- 		Speedrun.scoreReasons[k].total = Speedrun.scoreReasons[k].total + v
+-- 		Speedrun.savedVariables.scoreReasons[k].total = Speedrun.scoreReasons[k].total
+-- end
+--
+-- function Speedrun.GetScoreReasons()
+-- 		for reason, times in pairs(Speedrun.scoreReasons) do
+-- 				local reason = Speedrun.scoreReasons[reason]
+-- 				if reason ~= nil then
+-- 						local times = Speedrun.scoreReasons[reason].times
+-- 						local total = Speedrun.scoreReasons[reason].total
+-- 						local name = Speedrun.scoreReasons[reason].name
+-- 						if times > 0 then
+-- 								Speedrun:dbg(1, '|cdf4242<<1>>|r (<<4>>) x<<2>> = <<3>> total', name, times, total, reason)
+-- 						else
+-- 								Speedrun:dbg(1, 'No |cdf4242<<1>>|r (<<2>>) registered', name, reason)
+-- 						end
+-- 				else
+-- 						Speedrun:dbg(1, 'Reason <<1>> is nil', reason)
+-- 				end
+-- 		end
+-- end
+
+-- function Speedrun.onScoreChanged(eventCode, scoreUpdateReason, scoreAmount, totalScore)
+-- 		Speedrun.scoreUpdateReasons.times[Speedrun.scoreReasons[scoreUpdateReason]] + 1 = scoreUpdateReason == Speedrun.scoreReasons[scoreUpdateReason]
+-- 		Speedrun.scoreUpdateReasons.total[Speedrun.scoreReasons[scoreUpdateReason]] + scoreAmount = scoreUpdateReason == Speedrun.scoreReasons[scoreUpdateReason]
 -- end
 
 --[[ SCORE UPDATE REASONS
