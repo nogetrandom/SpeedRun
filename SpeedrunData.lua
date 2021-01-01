@@ -1,6 +1,5 @@
 Speedrun = Speedrun or { }
 local Speedrun = Speedrun
-
 -------------------
 ---- Raid List ----
 -------------------
@@ -71,7 +70,6 @@ Speedrun.raidList = {
 				timerSteps = {},
 		},
 }
-
 -----------------------
 ---- Custom Timers ----
 -----------------------
@@ -214,93 +212,8 @@ Speedrun.customTimerSteps = {
         [5] = "",
         [6] = "",
         [7] = ""
-				-- [1] = {
-				-- 		["Blue 1"] = "",
-				-- 		["Red 1"] = "",
-				-- 		["Green 1"] = "",
-				-- }, -- "",
-        -- [2] = {
-				-- 		["Blue 2"] = "",
-				-- 		["Red 2"] = "",
-				-- 		["Green 2"] = "",
-				-- }, -- "",
-        -- [3] = {
-				-- 		["Blue 3"] = "",
-				-- 		["Red 3"] = "",
-				-- 		["Green 3"] = "",
-				-- }, -- "",
-        -- [4] = "",
-        -- [5] = "",
-        -- [6] = "",
-        -- [7] = "",
-        -- [8] = "",
     },
 }
-
--- Speedrun.customArenaTimers = {
--- 		stageList = {
---				[1082] = { --BRP
--- 						[1] = "",
--- 						[2] = "",
--- 						[3] = "",
--- 						[4] = "",
--- 						[5] = ""
---				},
---				[677] = { --MA
--- 						[1] = "",
--- 						[2] = "",
--- 						[3] = "",
--- 						[4] = "",
--- 						[5] = "",
--- 						[6] = "",
--- 						[7] = "",
--- 						[8] = "",
--- 						[9] = ""
---				},
--- 		},
--- 		roundList = {
---				[1082] = { --BRP
--- 						[1] = "",
--- 						[2] = "",
--- 						[3] = "",
--- 						[4] = "",
--- 						[5] = "",
--- 						[6] = "",
--- 						[7] = "",
--- 						[8] = "",
--- 						[9] = "",
--- 						[10] = "",
--- 						[11] = "",
--- 						[12] = "",
--- 						[13] = "",
--- 						[14] = "",
--- 						[15] = "",
--- 						[16] = "",
--- 						[17] = "",
--- 						[18] = "",
--- 						[19] = "",
--- 						[20] = "",
--- 						[21] = "",
--- 						[22] = "",
--- 						[23] = "",
--- 						[24] = "",
--- 						[25] = ""
--- 				},
---				[677] = { --MA
--- 						[1] = "",
--- 						[2] = "",
--- 						[3] = "",
--- 						[4] = "",
--- 						[5] = "",
--- 						[6] = "",
--- 						[7] = "",
--- 						[8] = "",
--- 						[9] = "",
--- 						[10] = ""
---				},
--- 		},
--- }
-
 -------------------
 ---- Step List ----
 -------------------
@@ -387,13 +300,6 @@ Speedrun.stepList = {
         -- [7] = "",
     },
     [1082] = { --BRP
-				-- [1] = zo_strformat(SI_SPEEDRUN_ARENA_FIRST),
-				-- [2] = zo_strformat(SI_SPEEDRUN_ARENA_SECOND),
-				-- [3] = zo_strformat(SI_SPEEDRUN_ARENA_THIRD),
-				-- [4] = zo_strformat(SI_SPEEDRUN_ARENA_FOURTH),
-				-- [5] = zo_strformat(SI_SPEEDRUN_ARENA_FIFTH),
-				-- [6] = zo_strformat(SI_SPEEDRUN_ARENA_COMPLETE),
-
         [1] = "1.1",
         [2] = "1.2",
         [3] = "1.3",
@@ -418,7 +324,7 @@ Speedrun.stepList = {
         [22] = "5.2",
         [23] = "5.3",
         [24] = "5.4",
-				[25] = "5th Complete", --"Final Boss",
+				[25] = "5th Complete",
     },
     [677] = { --MA
         [1] = zo_strformat(SI_SPEEDRUN_ARENA_FIRST),
@@ -445,266 +351,143 @@ Speedrun.stepList = {
 				-- [11] = zo_strformat(SI_SPEEDRUN_ARENA_COMPLETE),
     },
 		[1227] = { --Vateshran Hollows
-        [1] = "Boss 1", -- |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
-        [2] = "Boss 2", -- |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
-        [3] = "Boss 3", -- |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
-        [4] = "Boss 4", -- |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
-        [5] = "Boss 5", -- |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
-        [6] = "Boss 6", -- |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
+        [1] = "Boss 1",
+        [2] = "Boss 2",
+        [3] = "Boss 3",
+        [4] = "Boss 4",
+        [5] = "Boss 5",
+        [6] = "Boss 6",
 				[7] = "Maebroogha |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
-				-- [8] = "Last Boss Dead",
-				-- [1] = "Portal 1", -- |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
-        -- [2] = "Portal 2", -- |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
-        -- [3] = "Portal 3", -- |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
-				-- [4] = "Maebroogha |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
 		},
 }
-
-Speedrun.scoreReasons = {
+--------------------
+---- Score List ----
+--------------------
+Speedrun.scoreReasonList = {
 		[0] = {
 				name = "No Bonus",
 				id = RAID_POINT_REASON_MIN_VALUE,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "event",
 		},
 		[1] = {
 				name = "Small adds:",
 				id = RAID_POINT_REASON_KILL_NORMAL_MONSTER,
 				times = 0,
-				-- total = 0,
+				display = true,
+				type = "add",
 		},
 		[2] = {
 				name = "Large adds:",
 				id = RAID_POINT_REASON_KILL_BANNERMEN,
 				times = 0,
-				-- total = 0,
+				display = true,
+				type = "add",
 		},
 		[3] = {
 				name = "Elite adds:",
 				id = RAID_POINT_REASON_KILL_CHAMPION,
 				times = 0,
-				-- total = 0,
+				display = true,
+				type = "add",
 		},
 		[4] = {
 				name = "Miniboss",
 				id = RAID_POINT_REASON_KILL_MINIBOSS,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "boss",
 		},
 		[5] = {
 				name = "Boss",
 				id = RAID_POINT_REASON_KILL_BOSS,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "boss",
 		},
 		[6] = {
 				name = "Activity Bonus Low",
 				id = RAID_POINT_REASON_BONUS_ACTIVITY_LOW,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "event",
 		},
 		[7] = {
 				name = "Activity Bonus Medium",
 				id = RAID_POINT_REASON_BONUS_ACTIVITY_MEDIUM,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "event",
 		},
 		[8] = {
 				name = "Activity Bonus High",
 				id = RAID_POINT_REASON_BONUS_ACTIVITY_HIGH,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "event",
 		},
 		[9] = {
 				name = "Resurrections",
 				id = RAID_POINT_REASON_LIFE_REMAINING,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "vitality",
 		},
 		[10] = {
 				name = "Bonus Point One",
 				id = RAID_POINT_REASON_BONUS_POINT_ONE,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "event",
 		},
 		[11] = {
 				name = "Bonus Point Two",
 				id = RAID_POINT_REASON_BONUS_POINT_TWO,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "event",
 		},
 		[12] = {
 				name = "Bonus Point Three",
 				id = RAID_POINT_REASON_BONUS_POINT_THREE,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "event",
 		},
 		[13] = {
 				name = "Sigil Bonus x1",
 				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_ONE,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "sigil",
 		},
 		[14] = {
 				name = "Sigil Bonus x2",
 				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_TWO,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "sigil",
 		},
 		[15] = {
 				name = "Sigil Bonus x3",
 				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_THREE,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "sigil",
 		},
 		[16] = {
 				name = "Sigil Bonus x4",
 				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_FOUR,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "sigil",
 		},
 		[17] = {
 				name = "Max Value / Boss",
 				id = RAID_POINT_REASON_MAX_VALUE,
 				times = 0,
-				-- total = 0,
+				display = false,
+				type = "complete",
 		},
 }
-
--- function Speedrun.MainBRP() --copied from BRHelper thx @andy.s
---     local x, y = GetMapPlayerPosition("player");
---     local stage
---     if IsUnitInCombat("player") and x > 0.54 and x < 0.64 and y > 0.79 and y < 0.89 then
---         stage = 1
---     elseif x > 0.3 and x < 0.4 and y > 0.69 and y < 0.8 then
---         stage = 2
---     elseif x > 0.41 and x < 0.52 and y > 0.43 and y < 0.53 then
---         stage = 3
---     elseif x > 0.63 and x < 0.73 and y > 0.22 and y < 0.32 then
---         stage = 4
---     elseif x > 0.4 and x < 0.5 and y > 0.08 and y < 0.18 then
---         stage = 5
---     else
---         stage = 0
---     end
---     if Speedrun.stage == stage - 1 then
---         Speedrun.stage = stage
---         Speedrun.savedVariables.stage = Speedrun.stage
---         Speedrun.UpdateWaypointNew(GetRaidDuration())
---     end
--- end
-
--- Speedrun.BossDead = function(eventCode, scoreUpdateReason, scoreAmount, totalScore)
---     if Speedrun.raidID == 635 then
---         if scoreUpdateReason == RAID_POINT_REASON_BONUS_ACTIVITY_MEDIUM then
---             Speedrun.UpdateWaypointNew(GetRaidDuration())
---         elseif scoreUpdateReason == RAID_POINT_REASON_BONUS_ACTIVITY_LOW  then
---             d("Need To Trigger on Low: " .. scoreUpdateReason)
---         elseif scoreUpdateReason == RAID_POINT_REASON_BONUS_ACTIVITY_HIGH  then
---             d("Need To Trigger on High: " .. scoreUpdateReason)
---         end
---         return
---     end
--- 		if Speedrun.raidID == 635 then
--- 				if scoreUpdateReason == RAID_POINT_REASON_KILL_BOSS then
---     				--finish arena
---        			Speedrun.UpdateWaypointNew(GetRaidDuration())
---        			Speedrun.isBossDead = true
---        			Speedrun.savedVariables.isBossDead = Speedrun.isBossDead
--- 				end
---     end
--- end
-
-
--- Speedrun.MainVH = function(eventCode, scoreUpdateReason, scoreAmount, totalScore)
--- 		local reasons = {}
--- 		local scoreTime = GetRaidDuration()
--- 		if Speedrun.Step <= 7 then
--- 				reasons[scoreTime[scoreUpdateReason]] = (scoreUpdateReason == 13 or scoreUpdateReason == 14 or scoreUpdateReason == 15 or scoreUpdateReason == 16 or scoreUpdateReason == RAID_POINT_REASON_MIN_VALUE)	--scoreUpdateReason == 5 then
--- 				for k, v in pairs(reasons) do
--- 						if
--- 						Speedrun.UpdateWaypointNew(GetRaidDuration())
--- 		end
--- end
-----------------------------------------------------------------------------------------------
-
--- function Speedrun.SetScoreReasons(k, v)
--- 		Speedrun.scoreReasons[k].times = Speedrun.scoreReasons[k].times + 1
--- 		Speedrun.savedVariables.scoreReasons[k].times = Speedrun.scoreReasons[k].times
--- 		Speedrun.scoreReasons[k].total = Speedrun.scoreReasons[k].total + v
--- 		Speedrun.savedVariables.scoreReasons[k].total = Speedrun.scoreReasons[k].total
--- end
---
--- function Speedrun.GetScoreReasons()
--- 		for reason, times in pairs(Speedrun.scoreReasons) do
--- 				local reason = Speedrun.scoreReasons[reason]
--- 				if reason ~= nil then
--- 						local times = Speedrun.scoreReasons[reason].times
--- 						local total = Speedrun.scoreReasons[reason].total
--- 						local name = Speedrun.scoreReasons[reason].name
--- 						if times > 0 then
--- 								Speedrun:dbg(1, '|cdf4242<<1>>|r (<<4>>) x<<2>> = <<3>> total', name, times, total, reason)
--- 						else
--- 								Speedrun:dbg(1, 'No |cdf4242<<1>>|r (<<2>>) registered', name, reason)
--- 						end
--- 				else
--- 						Speedrun:dbg(1, 'Reason <<1>> is nil', reason)
--- 				end
--- 		end
--- end
-
--- function Speedrun.onScoreChanged(eventCode, scoreUpdateReason, scoreAmount, totalScore)
--- 		Speedrun.scoreUpdateReasons.times[Speedrun.scoreReasons[scoreUpdateReason]] + 1 = scoreUpdateReason == Speedrun.scoreReasons[scoreUpdateReason]
--- 		Speedrun.scoreUpdateReasons.total[Speedrun.scoreReasons[scoreUpdateReason]] + scoreAmount = scoreUpdateReason == Speedrun.scoreReasons[scoreUpdateReason]
--- end
-
---[[ SCORE UPDATE REASONS
-
-0 	=	{
-				RAID_POINT_REASON_MIN_VALUE
-				RAID_POINT_REASON_KILL_NOXP_MONSTER
-				RAID_POINT_REASON_ITERATION_BEGIN
-			}
-1		= 	RAID_POINT_REASON_KILL_NORMAL_MONSTER
-2		= 	RAID_POINT_REASON_KILL_BANNERMEN
-3		=		RAID_POINT_REASON_KILL_CHAMPION
-4 	=		RAID_POINT_REASON_KILL_MINIBOSS
-5		= 	RAID_POINT_REASON_KILL_BOSS
-6		=		RAID_POINT_REASON_BONUS_ACTIVITY_LOW
-7		=		RAID_POINT_REASON_BONUS_ACTIVITY_MEDIUM
-8		=		RAID_POINT_REASON_BONUS_ACTIVITY_HIGH
-9		=		RAID_POINT_REASON_LIFE_REMAINING
-10	=		RAID_POINT_REASON_BONUS_POINT_ONE
-11	=		RAID_POINT_REASON_BONUS_POINT_TWO
-12	=		RAID_POINT_REASON_BONUS_POINT_THREE
-13	=		RAID_POINT_REASON_SOLO_ARENA_PICKUP_ONE
-14	=		RAID_POINT_REASON_SOLO_ARENA_PICKUP_TWO
-15	=		RAID_POINT_REASON_SOLO_ARENA_PICKUP_THREE
-16	=		RAID_POINT_REASON_SOLO_ARENA_PICKUP_FOUR
-17	=	{
-				RAID_POINT_REASON_ITERATION_END
-				RAID_POINT_REASON_MAX_VALUE
-				RAID_POINT_REASON_SOLO_ARENA_COMPLETE
-			}
-
-]]
-
--- local function PortalStart(text)
--- 		if string.find(text, "Welcome to the Wounding! A playground for Molag Bal's fiends.") then
--- 				local blueStart = GetRaidDuration()/1000
--- 				if string.find(text, "Phew! That last one was a big guy!") then
--- 						local blueEnd = (GetRaidDuration()/1000) - blueStart
---
--- 				end
---
--- 		elseif string.find(text, "Hmm, the Brimstone Den. Sorry about the heat. It doesn't bother me so much due to my being, well, dead.") then
--- 				Speedrun.Portal = redStart
---
--- 		elseif string.find(text, "This death is only temporary!") then
--- 				Speedrun.Portal = redEnd
---
---
---
--- shadow warrior 2
---
--- a way out

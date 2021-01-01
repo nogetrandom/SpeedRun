@@ -102,7 +102,7 @@
             <Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="SpeedRun_TotalTimer" offsetX="0" offsetY="80"/>
 
 						<Controls>
-                <Label name="$(parent)_SA_Counter" horizontalAlignment="RIGHT" font="ZoFontWinH5" text="0 / 63">
+                <Label name="$(parent)_SA_Counter" horizontalAlignment="RIGHT" font="ZoFontWinH5" text="0 / 68">
                     <Dimensions x="160" y="20"/>
                     <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" relativeTo="$(parent)" offsetX="-4" offsetY="0" />
                 </Label>

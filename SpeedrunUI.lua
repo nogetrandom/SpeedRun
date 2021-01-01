@@ -1,5 +1,5 @@
 -------------------------
----- Variables    ----
+---- Variables    -------
 -------------------------
 Speedrun = Speedrun or {}
 local Speedrun = Speedrun
@@ -9,7 +9,7 @@ local previousSegment
 local currentRaid
 local bestPossibleTime
 -------------------------
----- Functions       ----
+---- Functions 		-------
 -------------------------
 function Speedrun.SaveLoc()
     Speedrun.savedVariables["speedrun_container_OffsetX"] = SpeedRun_Timer_Container:GetLeft()
@@ -111,8 +111,8 @@ function Speedrun.UpdateCurrentScore()
     end
 
     local score
-    if  IsRaidInProgress() then
-        score = math.floor(Speedrun.GetScore(timer+0.1,GetCurrentRaidLifeScoreBonus()/1000,Speedrun.raidID))
+    if Speedrun.IsInTrialZone() and (GetRaidDuration() > 0) then -- IsRaidInProgress() then
+        score = math.floor(Speedrun.GetScore(timer+1,GetCurrentRaidLifeScoreBonus()/1000,Speedrun.raidID))
         SpeedRun_Score_Label:SetText(Speedrun.FormatRaidScore(score))
     end
 end
@@ -163,7 +163,11 @@ function Speedrun.CreateRaidSegment(id)
             segmentRow:GetNamedChild('_Best'):SetText(Speedrun.FormatRaidTimer(Speedrun.segmentTimer[i], true))
 
             bestPossibleTime = Speedrun.segmentTimer[i]
-            SpeedRun_Advanced_BestPossible_Value:SetText(Speedrun.FormatRaidTimer(Speedrun.segmentTimer[i], true))
+						local bestTime = Speedrun.FormatRaidTimer(Speedrun.segmentTimer[i], true)
+            SpeedRun_Advanced_BestPossible_Value:SetText(bestTime)
+
+						-- local score = Speedrun.Simulate(Speedrun.raidID)
+		        SpeedRun_Score_Label:SetText(Speedrun.BestPossible(Speedrun.raidID)) --(Speedrun.FormatRaidScore(score))
         else
             if i == 1 then
                 Speedrun.segmentTimer[i] = 0
@@ -187,11 +191,11 @@ function Speedrun.CreateRaidSegment(id)
     Speedrun.SetUIHidden(false)
     SpeedRun_Timer_Container_Title:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
     SpeedRun_Timer_Container_Raid:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
-		if raid == 1227 and (not Speedrun.savedVariables.addsAreHidden) then
-				Speedrun.ResetAddsUI()
-				Speedrun.UpdateAdds()
-				Speedrun.HideAdds(false)
-		end
+		-- if raid == 1227 and (not Speedrun.savedVariables.addsAreHidden) then
+		-- 		Speedrun.ResetAddsUI()
+		-- 		Speedrun.UpdateAdds()
+		-- 		Speedrun.HideAdds(false)
+		-- end
 end
 
 function Speedrun.UpdateSegment(step, raid)
@@ -242,39 +246,14 @@ function Speedrun.DifferenceColor(diff, segment)
     end
 end
 
--- function Speedrun.UpdateAdds()
--- 		local zoneID = GetZoneId(GetUnitZoneIndex("player"))
--- 		if zoneID ~= 1227 then
--- 				SpeedRun_Adds:SetHidden(true)
--- 				SpeedRun_Adds_SA:SetText(" ")
--- 				SpeedRun_Adds_SA_Counter:SetText(" ")
--- 				SpeedRun_Adds_LA:SetText(" ")
--- 				SpeedRun_Adds_LA_Counter:SetText(" ")
--- 				SpeedRun_Adds_EA:SetText(" ")
--- 				SpeedRun_Adds_EA_Counter:SetText(" ")
--- 				Speedrun_Adds_Total:SetText(" ")
--- 				Speedrun_Adds_Total_Counter:SetText(" ")
--- 			 	return
--- 		else
--- 				Speedrun.scoreReasons = Speedrun.savedVariables.scoreReasons
--- 				SpeedRun_Adds:SetHidden(false)
--- 				for k, v in pairs(Speedrun.scoreReasons) do
--- 						local reason = Speedrun.scoreReasons[k]
--- 						if reason == 1 then
--- 								SpeedRun_Adds_SA_Counter:SetText(reason.times .. " / 63")
--- 								return
--- 						elseif reason == 2 then
--- 								SpeedRun_Adds_LA_Counter:SetText(reason.times .. " / 33")
--- 								return
--- 						elseif reason == 3 then
--- 								SpeedRun_Adds_EA_Counter:SetText(reason.times .. " / 14")
--- 								return
--- 						-- else
--- 						-- 		return
--- 						end
--- 				end
--- 		end
--- end
+function Speedrun.ResetAddsUI()
+	SpeedRun_Adds_SA:SetText(" ")
+	SpeedRun_Adds_SA_Counter:SetText(" ")
+	SpeedRun_Adds_LA:SetText(" ")
+	SpeedRun_Adds_LA_Counter:SetText(" ")
+	SpeedRun_Adds_EA:SetText(" ")
+	SpeedRun_Adds_EA_Counter:SetText(" ")
+end
 
 function Speedrun.HideAdds(hide)
 		SpeedRun_Adds:SetHidden(hide)
@@ -284,13 +263,4 @@ function Speedrun.HideAdds(hide)
 		if Speedrun.savedVariables.addsAreHidden == true then
 				SpeedRun_Adds:SetHidden(hide)
 		end
-end
-
-function Speedrun.ResetAddsUI()
-		SpeedRun_Adds_SA:SetText(" ")
-		SpeedRun_Adds_SA_Counter:SetText(" ")
-		SpeedRun_Adds_LA:SetText(" ")
-		SpeedRun_Adds_LA_Counter:SetText(" ")
-		SpeedRun_Adds_EA:SetText(" ")
-		SpeedRun_Adds_EA_Counter:SetText(" ")
 end

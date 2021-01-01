@@ -18,6 +18,8 @@ Lang/en.lua
 Lang/$(language).lua
 
 SpeedrunData.lua
+SpeedrunDefaults.lua
+SpeedrunExtra.lua
 Speedrun.lua
 SpeedrunMenu.lua
 SpeedrunUI.lua
