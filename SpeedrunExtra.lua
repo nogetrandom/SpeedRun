@@ -82,13 +82,13 @@ function Speedrun.PrintScoreReasons()
 		Speedrun:dbg(0, "Current Trial Score Points:")
 		for k, v in pairs(Speedrun.scores) do
 				local score = Speedrun.scores[k]
-				if score.display == true and score.times > 0 then
+				-- if score.display == true and score.times > 0 then
+				-- 		d('|cdf4242' .. score.name .. ' |r' .. ' x ' .. score.times)
+				-- else
+				if score.times > 0 then
 						d('|cdf4242' .. score.name .. ' |r' .. ' x ' .. score.times)
-				else
-						if score.times > 0 then
-								d('|cdf4242' .. score.name .. ' |r' .. ' x ' .. score.times)
-						end
 				end
+				-- end
 		end
 end
 

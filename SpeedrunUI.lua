@@ -247,8 +247,8 @@ function Speedrun.ResetAddsUI()
 		SpeedRun_Adds_LA_Counter:SetText(" ")
 		SpeedRun_Adds_EA:SetText(" ")
 		SpeedRun_Adds_EA_Counter:SetText(" ")
-		SpeedRun_Adds_Boss1:SetText(" ")
-		SpeedRun_Adds_Boss2:SetText(" ")
+		-- SpeedRun_Adds_Boss1:SetText(" ")
+		-- SpeedRun_Adds_Boss2:SetText(" ")
 end
 
 function Speedrun.HideAdds(hide)
