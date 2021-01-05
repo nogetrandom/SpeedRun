@@ -65,17 +65,11 @@ Changes: Rewrote how custom titles are added and stored to help reduce conflict 
 HowToCustomTitle = HowToCustomTitle or {}
 local HowToCustomTitle = HowToCustomTitle
 
-local libName = "HowToCustomTitle"
-EVENT_MANAGER:UnregisterForEvent(libName, EVENT_ADD_ON_LOADED)
-
 local HTCT = HowToCustomTitle
 HTCT.name = "HowToCustomTitle"
 HTCT.version = 22
--- local LibCustomTitles, oldminor = LibStub:NewLibrary(LIB_NAME, VERSION)
 if not HTCT then return end
 --
-local titles = {}
-
 HowToCustomTitleModules = HowToCustomTitleModules or {}
 function HowToCustomTitle:RegisterModule(name, version)
 
@@ -325,7 +319,6 @@ end
 local function OnAddonLoaded()
 	if not libLoaded then
 		libLoaded = true
-		-- local HTCTI = HTCT.name
 		HowToCustomTitle:Init()
 		EVENT_MANAGER:UnregisterForEvent(HTCT.name, EVENT_ADD_ON_LOADED)
 	end

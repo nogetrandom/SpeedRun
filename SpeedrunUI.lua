@@ -166,8 +166,7 @@ function Speedrun.CreateRaidSegment(id)
 						local bestTime = Speedrun.FormatRaidTimer(Speedrun.segmentTimer[i], true)
             SpeedRun_Advanced_BestPossible_Value:SetText(bestTime)
 
-						-- local score = Speedrun.Simulate(Speedrun.raidID)
-		        SpeedRun_Score_Label:SetText(Speedrun.BestPossible(Speedrun.raidID)) --(Speedrun.FormatRaidScore(score))
+		        SpeedRun_Score_Label:SetText(Speedrun.BestPossible(Speedrun.raidID))
         else
             if i == 1 then
                 Speedrun.segmentTimer[i] = 0
@@ -191,11 +190,6 @@ function Speedrun.CreateRaidSegment(id)
     Speedrun.SetUIHidden(false)
     SpeedRun_Timer_Container_Title:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
     SpeedRun_Timer_Container_Raid:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
-		-- if raid == 1227 and (not Speedrun.savedVariables.addsAreHidden) then
-		-- 		Speedrun.ResetAddsUI()
-		-- 		Speedrun.UpdateAdds()
-		-- 		Speedrun.HideAdds(false)
-		-- end
 end
 
 function Speedrun.UpdateSegment(step, raid)
@@ -247,12 +241,14 @@ function Speedrun.DifferenceColor(diff, segment)
 end
 
 function Speedrun.ResetAddsUI()
-	SpeedRun_Adds_SA:SetText(" ")
-	SpeedRun_Adds_SA_Counter:SetText(" ")
-	SpeedRun_Adds_LA:SetText(" ")
-	SpeedRun_Adds_LA_Counter:SetText(" ")
-	SpeedRun_Adds_EA:SetText(" ")
-	SpeedRun_Adds_EA_Counter:SetText(" ")
+		SpeedRun_Adds_SA:SetText(" ")
+		SpeedRun_Adds_SA_Counter:SetText(" ")
+		SpeedRun_Adds_LA:SetText(" ")
+		SpeedRun_Adds_LA_Counter:SetText(" ")
+		SpeedRun_Adds_EA:SetText(" ")
+		SpeedRun_Adds_EA_Counter:SetText(" ")
+		SpeedRun_Adds_Boss1:SetText(" ")
+		SpeedRun_Adds_Boss2:SetText(" ")
 end
 
 function Speedrun.HideAdds(hide)

@@ -126,9 +126,9 @@
             </Controls>
 
 						<Controls>
-								<Label name="$(parent)_EA_Counter" horizontalAlignment="RIGHT" font="ZoFontWinH5" text="0 / 14">
+								<Label name="$(parent)_EA_Counter" horizontalAlignment="RIGHT" font="ZoFontWinH5" text="0 / 15">
                     <Dimensions x="160" y="20"/>
-                    <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" relativeTo="$(parent)" offsetX="-4" offsetY="40" />
+                    <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" relativeTo="$(parent)" offsetX="-4" offsetY="42" />
                 </Label>
 
 								<Label name="$(parent)_EA" horizontalAlignment="LEFT" verticalAlignment="center" font="ZoFontWinH5" text="Elite Adds : ">
@@ -136,6 +136,17 @@
                     <Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$(parent)_EA_Counter" offsetX="-2" offsetY="0" />
                 </Label>
             </Controls>
+
+						<!-- <Controls>
+								<Label name="$(parent)_Boss1" horizontalAlignment="LEFT" font="ZoFontWinH5" text="|cffcc00Boss|r">
+                    <Dimensions x="160" y="20"/>
+                    <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$(parent)_EA" offsetX="0" offsetY="4" />
+                </Label>
+								<Label name="$(parent)_Boss2" horizontalAlignment="LEFT" font="ZoFontWinH5" text="|c00ff00Boss|r">
+                    <Dimensions x="160" y="20"/>
+                    <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$(parent)_Boss1" offsetX="0" offsetY="4" />
+                </Label>
+            </Controls> -->
 
 						<!-- <Controls>
                 <Label name="$(parent)_Total_Counter" horizontalAlignment="RIGHT" font="ZoFontWinH5" text=text="0">

@@ -11,91 +11,22 @@ Speedrun.segments 				= {}
 Speedrun.segmentTimer 		= {}
 
 Speedrun.currentRaidTimer = {}
+Speedrun.finalScore 			= 0
 Speedrun.displayVitality 	= ""
 Speedrun.lastBossName 		= ""
+Speedrun.currentBossName	= ""
 Speedrun.raidID 					= 0
 Speedrun.isBossDead 			= true
 Speedrun.Step 						= 1
 Speedrun.stage 						= 0
-Speedrun.subZone 					= ""
-
-Speedrun.slash      			= "/speed"
-Speedrun.prefix     			= "[Speedrun] "
-Speedrun.debugMode 				= 0
 ---------------------------
 ---- Variables Default ----
 ---------------------------
--- Speedrun.Default = {
---     --table
---     customTimerSteps = {},
---     raidList = {},
--- 		scores = {},
---
---     --UI
---     segmentTimer = {},
---     speedrun_container_OffsetX = 500,
---     speedrun_container_OffsetY = 500,
---     isMovable = true,
---     uiIsHidden = true,
--- 		addsAreHidden = true,
---
---     --variables
---     currentRaidTimer = {},
---     lastBossName = "",
---     raidID = 0,
---     isBossDead = true,
---     Step = 1,
---     stage = 0,
---
--- 		subZone = "",
---
---     --settings
---     addsOnCR = true,
---     hmOnSS = 4,
--- 		debugMode = 0,
---
--- 		nameplates = GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_NAMEPLATES),
--- 		healthBars = GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_HEALTHBARS),
--- 		groupHidden = false,
--- }
 Speedrun.Default.customTimerSteps = Speedrun.customTimerSteps
 Speedrun.Default.raidList = Speedrun.raidList
 -------------------
 ---- Functions ----
 -------------------
--- function Speedrun.SlashCommand(command)
---     -- Debug Options ----------------------------------------------------------
---     if command == "dbg 0" then
---         d(Speedrun.prefix .. "Debug Mode: Off")
---         Speedrun.debugMode = 0
---         Speedrun.savedVariables.debugMode = 0
---     elseif command == "dbg 1" then
---         d(Speedrun.prefix .. "Debug Mode: low (only checkpoints)")
---         Speedrun.debugMode = 1
---         Speedrun.savedVariables.debugMode = 1
--- 		elseif command == "dbg 2" then
--- 	       d(Speedrun.prefix .. "Debug Mode: high (all score updates)")
--- 	       Speedrun.debugMode = 2
--- 	       Speedrun.savedVariables.debugMode = 2
--- 		-- Hide Group -------------------------------------------------------------
--- 		elseif command == "hg" or command == "hidegroup" then
--- 				Speedrun.HideGroupToggle()
---     -- Adds -------------------------------------------------------------------
--- 	elseif command == "scores" then
--- 				Speedrun.PrintScoreReasons()
--- 		-- Default ----------------------------------------------------------------
---     else
---         d(Speedrun.prefix .. " Command not recognized!\nCommand options are:\n--[ /speed dbg 0-2 ]-- To post selection in chat:\n<<	0 >> = Only specific settings confirmations.\n<<	1 >> = Checkpoint Score Updates.\n<< 2 >> = Every score update (adds included).\n--[ /speed hg ]--[ /speed hidegroup ]-- To toggle function on/off.")
---     end
--- end
---
--- function Speedrun:dbg(debugLevel, ...)
---     if debugLevel <= Speedrun.debugMode then
---         local message = zo_strformat(...)
---         d(Speedrun.prefix .. message)
---     end
--- end
-
 function Speedrun.GetSavedTimer(raidID,step)
     local formatID = raidID
     if raidID == 677 then --for vMA
@@ -219,7 +150,8 @@ function Speedrun.UpdateWaypointNew(raidDuration)
         Speedrun.Step = Speedrun.Step + 1
         Speedrun.savedVariables.Step = Speedrun.Step
 				local sT = Speedrun.FormatRaidTimer(GetRaidDuration(), true)
-				Speedrun:dbg(1, '<<1>>: Step <<2>> at <<3>>.', raid, waypoint, sT)
+				local trial = GetUnitZone('player')
+				Speedrun:dbg(1, '[<<1>>] Step <<2>> at <<3>>.', trial, waypoint, sT)
         return
     end
 end
@@ -229,8 +161,6 @@ Speedrun.ScoreUpdate = function(eventCode, scoreUpdateReason, scoreAmount, total
 		local sT = Speedrun.FormatRaidTimer(scoreTimer, true)
 		if scoreUpdateReason ~= 9 then
 				Speedrun:dbg(2, 'Score Updated at <<5>>\nReason: <<2>>. Amount: <<3>>. Total: <<4>>.', eventCode, scoreUpdateReason, scoreAmount, totalScore, sT)
-		-- elseif scoreUpdateReason == RAID_POINT_REASON_LIFE_REMAINING and GetRaidReviveCountersRemaining() > 0 then
-		-- 		Speedrun:dbg(2, 'Vitality Lost')
 		end
 		for k, v in pairs(Speedrun.scores) do
         if Speedrun.scores[k] == scoreUpdateReason or Speedrun.scores[k].id == scoreUpdateReason then
@@ -254,24 +184,16 @@ function Speedrun.UpdateAdds()
 						SpeedRun_Adds_LA_Counter:SetText(score.times .. " / 33")
 				elseif score == 3 or score.id == RAID_POINT_REASON_KILL_CHAMPION then
 						SpeedRun_Adds_EA:SetText(score.name)
-						SpeedRun_Adds_EA_Counter:SetText(score.times .. " / 14")
+						SpeedRun_Adds_EA_Counter:SetText(score.times .. " / 15")
 				end
 		end
-end
-
-function Speedrun.GetScoreReasonTimes(reason)
-		return Speedrun.scores[reason].times
-end
-
-function Speedrun.GetScoreReasonNames(reason)
-		return Speedrun.scores[reason].name
 end
 ----------------
 ---- Arenas ----
 ----------------
 Speedrun.MainArena = function(eventCode, scoreUpdateReason, scoreAmount, totalScore)
 		if Speedrun.raidID == 677 then --MA
-			 	if Speedrun.Step <= 9 and scoreUpdateReason == 17 then
+			 	if Speedrun.Step <= 8 and scoreUpdateReason == 17 then
 						Speedrun.UpdateWaypointNew(GetRaidDuration())
 				end
 				if scoreUpdateReason == RAID_POINT_REASON_SOLO_ARENA_COMPLETE then
@@ -296,54 +218,118 @@ Speedrun.MainArena = function(eventCode, scoreUpdateReason, scoreAmount, totalSc
        			Speedrun.isBossDead = true
        			Speedrun.savedVariables.isBossDead = Speedrun.isBossDead
 				end
-		else --VH last boss
-				if scoreUpdateReason == RAID_POINT_REASON_SOLO_ARENA_COMPLETE then
-						Speedrun.UpdateWaypointNew(GetRaidDuration())
-						Speedrun.isBossDead = true
-						Speedrun.savedVariables.isBossDead = Speedrun.isBossDead
-				end
 		end
+		--arena last boss
+		-- if scoreUpdateReason == RAID_POINT_REASON_SOLO_ARENA_COMPLETE then
+		-- 		Speedrun.UpdateWaypointNew(GetRaidDuration())
+		-- 		Speedrun.isBossDead = true
+		-- 		Speedrun.savedVariables.isBossDead = Speedrun.isBossDead
+		-- end
 end
-
+--[[	GetMapName
+local mapN = GetMapName()
+if mapN ~= nil then
+		SR.mapName = mapN
+		SpeedRun_Zone_5:SetText("Map Name: |ce6b800" .. SR.mapName .. "|r")
+		sV.mapName = SR.mapName
+else
+		SpeedRun_Zone_5:SetText("mapN: nil")
+end
+]]
 function Speedrun.MainVH()
+		-- Speedrun.currentBossName = ""
 		for i = 1, MAX_BOSSES do
-				if DoesUnitExist("boss" .. i) then
+				if DoesUnitExist("boss" .. i) then -- and IsUnitInCombat("player") then
+						--local currentTargetHP, maxTargetHP, effmaxTargetHP = 1, 1, 1
+								--currentTargetHP, maxTargetHP, effmaxTargetHP = GetUnitPower("boss" .. i, POWERTYPE_HEALTH)
+								--if (currentTargetHP >= 0 and
+						Speedrun.currentBossName = GetUnitName("boss" .. i)
+						-- SpeedRun_Adds_Boss1:SetText("|cffcc00" .. Speedrun.currentBossName .. "|r")
 						local currentTargetHP, maxTargetHP, effmaxTargetHP = 1, 1, 1
 						currentTargetHP, maxTargetHP, effmaxTargetHP = GetUnitPower("boss" .. i, POWERTYPE_HEALTH)
-						if (currentTargetHP <= 0 and Speedrun.Step <= 7) then
-								local boss = GetUnitName("boss" .. i)
-								local lastBoss = Speedrun.lastBossName
-								if lastBoss == boss then
+						if Speedrun.Step <= 6 then
+								if Speedrun.currentBossName == Speedrun.lastBossName then
 										return
 								end
-								if boss == "Leptfire Keeper" or boss == "Xobutar of His Deep Graces" or boss == "Mynar Metron" then
+								-- if IsUnitInCombat("player") then
+
+								if currentTargetHP <= 0 and (boss == "Leptfire Keeper" or boss == "Xobutar of His Deep Graces" or boss == "Mynar Metron") then
 										local sT = Speedrun.FormatRaidTimer(GetRaidDuration(), true)
 										Speedrun.dbg(1, "<<1>> killed at <<2>>", boss, sT)
 										return
 								end
-								if boss == "Zakuryn the Sculptor" or boss == "Flesh Abomination" then
-										EVENT_MANAGER:RegisterForEvent(Speedrun.name .. "ArenaBoss", EVENT_RAID_TRIAL_SCORE_UPDATE, Speedrun.arenaBoss)
-										return
+
+								-- if boss == "Rahdgarak" then
+										-- 		if currentTargetHP > 0 then
+										-- 				return
+										-- 		end
+										-- 		if currentTargetHP <= 0 then
+										-- 				Speedrun.lastBossName = Speedrun.currentBossName
+										-- 				Speedrun.savedVariables.lastBossName = Speedrun.lastBossName
+										-- 				Speedrun.UpdateWaypointNew(GetRaidDuration())
+										-- 				return
+										-- 		end
+										-- end
+										--
+										-- if boss == "The Pyrelord" then
+										-- 		if currentTargetHP >= 1 then
+										-- 				return
+										-- 		end
+										-- 		if currentTargetHP <= 0 then
+										-- 				Speedrun.lastBossName = Speedrun.currentBossName
+										-- 				Speedrun.savedVariables.lastBossName = Speedrun.lastBossName
+										-- 				Speedrun.UpdateWaypointNew(GetRaidDuration())
+										-- 				return
+										-- 		end
+										-- end
+								if IsUnitInCombat("player") then
+										if Speedrun.lastBossName ~= Speedrun.currentBossName then
+												-- EVENT_MANAGER:UnregisterForUpdate(Speedrun.name .. "VHBoss")
+												EVENT_MANAGER:RegisterForEvent(Speedrun.name .. "ArenaBoss", EVENT_RAID_TRIAL_SCORE_UPDATE, Speedrun.arenaBoss)
+										else
+												return
+										end
 								end
-								if boss == "Maebroogha the Void Lich" then
-										EVENT_MANAGER:RegisterForEvent(Speedrun.name .. "BossDead", EVENT_RAID_TRIAL_SCORE_UPDATE, Speedrun.MainArena)
-										return
-								end
-								if lastBoss ~= boss then
-										Speedrun.UpdateWaypointNew(GetRaidDuration())
-										Speedrun.lastBossName = boss
-										Speedrun.savedVariables.lastBossName = Speedrun.lastBossName
-								end
+								-- if boss == "Maebroogha the Void Lich" then
+										-- 		EVENT_MANAGER:RegisterForEvent(Speedrun.name .. "BossDead", EVENT_RAID_TRIAL_SCORE_UPDATE, Speedrun.MainArena)
+										-- 		return
+										-- end
+										-- if lastBoss ~= boss then
+										-- 		Speedrun.UpdateWaypointNew(GetRaidDuration())
+										-- 		Speedrun.lastBossName = boss
+										-- 		Speedrun.savedVariables.lastBossName = Speedrun.lastBossName
+										-- 		if Speedrun.Step == 6 then
+										-- 				EVENT_MANAGER:UnregisterForUpdate(Speedrun.name .. "VHBoss")
+										-- 		end
+										-- end
+								-- if Speedrun.Step == 6 then
+								-- 		zo_callLater(function()
+								-- 				EVENT_MANAGER:UnregisterForUpdate(Speedrun.name .. "VHBoss")
+								-- 		end, 5000)
 						end
+				else
+						Speedrun.currentBossName = ""
 				end
 		end
 end
 
 Speedrun.arenaBoss = function(eventCode, scoreUpdateReason, scoreAmount, totalScore)
 		 if scoreUpdateReason == 13 or scoreUpdateReason == 14 or scoreUpdateReason == 15 or scoreUpdateReason == 16 or scoreUpdateReason == RAID_POINT_REASON_MIN_VALUE then
+			 	Speedrun.lastBossName = Speedrun.currentBossName
+			 	Speedrun.savedVariables.lastBossName = Speedrun.lastBossName
+				-- SpeedRun_Adds_Boss2:SetText("|c00ff00" .. Speedrun.lastBossName .. "|r")
 				Speedrun.UpdateWaypointNew(GetRaidDuration())
 				EVENT_MANAGER:UnregisterForEvent(Speedrun.name .. "ArenaBoss", EVENT_RAID_TRIAL_SCORE_UPDATE)
+
+				zo_callLater(function()
+						EVENT_MANAGER:UnregisterForUpdate(Speedrun.name .. "VHBoss")
+						EVENT_MANAGER:RegisterForUpdate(Speedrun.name .. "VHBoss", 333, Speedrun.MainVH)
+				end, 2000)
 		end
+end
+
+function Speedrun.BossFightVH()
+
 end
 ----------------
 ---- Trials ----
@@ -490,11 +476,15 @@ end
 -----------------------
 function Speedrun.Reset()
 		if GetRaidDuration() > 0 then return end
+		Speedrun.finalScore = 0
+		Speedrun.savedVariables.finalScore = Speedrun.finalScore
     Speedrun.currentRaidTimer = {}
     Speedrun.savedVariables.currentRaidTimer = Speedrun.currentRaidTimer
     Speedrun.displayVitality = ""
     Speedrun.lastBossName = ""
     Speedrun.savedVariables.lastBossName = Speedrun.lastBossName
+		Speedrun.currentBossName = ""
+		Speedrun.savedVariables.currentBossName = Speedrun.currentBossName
     Speedrun.isBossDead = true
     Speedrun.savedVariables.isBossDead = Speedrun.isBossDead
     Speedrun.Step = 1
@@ -503,7 +493,6 @@ function Speedrun.Reset()
     Speedrun.savedVariables.stage = Speedrun.stage
 		Speedrun.scores = Speedrun.GetDefaultScores()
 		Speedrun.savedVariables.scores = Speedrun.scores
-
 		Speedrun.raidID = 0
     Speedrun.savedVariables.raidID = Speedrun.raidID
 end
@@ -558,16 +547,20 @@ function Speedrun.OnTrialFailed(eventCode, trialName, score)
 end
 
 Speedrun.OnTrialComplete = function(eventCode, trialName, score, totalTime)
-    if Speedrun.raidID == 636 or Speedrun.raidID == 1000 or Speedrun.raidID == 1051 then
-        Speedrun.UpdateWaypointNew(totalTime)
+    if Speedrun.raidID == 636 or Speedrun.raidID == 1000 or Speedrun.raidID == 1051 or Speedrun.raidID == 1082 or Speedrun.raidID == 1227 then
+				zo_callLater(function()
+						Speedrun.UpdateWaypointNew(GetRaidDuration())
+				end, 1000)
     end
-    SpeedRun_Score_Label:SetText(Speedrun.FormatRaidScore(score))
+		Speedrun.finalScore = Speedrun.FormatRaidScore(score)
+    SpeedRun_Score_Label:SetText(Speedrun.finalScore)
     SpeedRun_TotalTimer_Title:SetText(Speedrun.FormatRaidTimer(GetRaidDuration() +1000, true))
 
     Speedrun.UnregisterTrialsEvents()
     -- Speedrun.raidID = 0
     -- Speedrun.savedVariables.raidID = Speedrun.raidID
-		Speedrun:dbg(1, " Trial Complete")
+		local trial = GetUnitZone('player')
+		Speedrun:dbg(1, "|c00ff00<<3>>|r Complete!\n[Time: |c00ff00<<1>>|r]  [Score: |c00ff00<<2>>|r]", Speedrun.FormatRaidTimer(GetRaidDuration() +1000, true), Speedrun.finalScore, trial)
 end
 
 function Speedrun.OnTrialStarted()
@@ -581,7 +574,8 @@ function Speedrun.OnTrialStarted()
 				Speedrun.UpdateAdds()
 				Speedrun.HideAdds(false)
 		end
-		Speedrun:dbg(1, "Trial Started")
+		local trial = GetUnitZone('player')
+		Speedrun:dbg(1, "Trial: |c00ff00<<1>>|r Started!", trial)
 end
 
 function Speedrun.OnPlayerActivated()
@@ -647,12 +641,6 @@ function Speedrun:Initialize()
     --Saved Variables
     Speedrun.savedVariables = ZO_SavedVars:NewAccountWide("SpeedrunVariables", 2, nil, Speedrun.Default)
 
-		if GetDisplayName() == "@nogetrandom" then
-				ZO_CreateStringId("SI_BINDING_NAME_SR_TOGGLE_AUDIO", "Toggle Audio")
-				CALLBACK_MANAGER:RegisterCallback("OnWorldMapChanged", Speedrun.OnZoneChanged)
-				EVENT_MANAGER:RegisterForUpdate(Speedrun.name .. "OnSubZoneChanged",  EVENT_CURRENT_SUBZONE_LIST_CHANGED, Speedrun.OnZoneChanged)
-		end
-
 		ZO_CreateStringId("SI_BINDING_NAME_SR_TOGGLE_HIDEGROUP", "Toggle Hide Group")
 
     -- UI
@@ -660,6 +648,7 @@ function Speedrun:Initialize()
     Speedrun.ResetAnchors()
 
     --Init Variables
+		Speedrun.finalScore = Speedrun.savedVariables.finalScore
     Speedrun.customTimerSteps = Speedrun.savedVariables.customTimerSteps
     Speedrun.raidList = Speedrun.savedVariables.raidList
 		Speedrun.scores = Speedrun.savedVariables.scores
@@ -668,11 +657,11 @@ function Speedrun:Initialize()
 
     Speedrun.currentRaidTimer = Speedrun.savedVariables.currentRaidTimer
     Speedrun.lastBossName = Speedrun.savedVariables.lastBossName
+		Speedrun.currentBossName = Speedrun.savedVariables.currentBossName
     Speedrun.raidID = Speedrun.savedVariables.raidID
     Speedrun.isBossDead = Speedrun.savedVariables.isBossDead
     Speedrun.Step = Speedrun.savedVariables.Step
     Speedrun.stage = Speedrun.savedVariables.stage
-		Speedrun.subZone = Speedrun.savedVariables.subZone
 
     Speedrun.addsOnCR = Speedrun.savedVariables.addsOnCR
     Speedrun.hmOnSS = Speedrun.savedVariables.hmOnSS
@@ -681,6 +670,8 @@ function Speedrun:Initialize()
 		Speedrun.addsAreHidden = Speedrun.savedVariables.addsAreHidden
 		Speedrun.debugMode = Speedrun.savedVariables.debugMode
 		Speedrun.groupHidden = Speedrun.savedVariables.groupHidden
+
+		Speedrun.mapName = Speedrun.savedVariables.mapName
 
     --Settings
     Speedrun.CreateSettingsWindow()
@@ -700,6 +691,11 @@ function Speedrun:Initialize()
 						Speedrun.HideGroup(Speedrun.savedVariables.groupHidden)
 				end
 		end) -- For after porting
+
+		if GetDisplayName() == "@nogetrandom" or GetDisplayName() == "@Mille_W" then
+				ZO_CreateStringId("SI_BINDING_NAME_SR_TOGGLE_AUDIO", "Toggle Audio")
+				ZO_CreateStringId("SI_BINDING_NAME_SR_CANCEL_CAST", "Cancel Cast")
+		end
 
     EVENT_MANAGER:UnregisterForEvent(Speedrun.name .. "Loaded", EVENT_ADD_ON_LOADED)
 end

@@ -8,21 +8,25 @@ Speedrun.Default = {
     customTimerSteps = {},
     raidList = {},
 		scores = {},
-    --UI
+
+	  --UI
+		finalScore = 0,
     segmentTimer = {},
     speedrun_container_OffsetX = 500,
     speedrun_container_OffsetY = 500,
     isMovable = true,
     uiIsHidden = true,
 		addsAreHidden = true,
-    --variables
+
+		--variables
     currentRaidTimer = {},
     lastBossName = "",
+		currentBossName = "",
     raidID = 0,
     isBossDead = true,
     Step = 1,
     stage = 0,
-		subZone = "",
+
     --settings
     addsOnCR = true,
     hmOnSS = 4,
@@ -30,6 +34,8 @@ Speedrun.Default = {
 		nameplates = GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_NAMEPLATES),
 		healthBars = GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_HEALTHBARS),
 		groupHidden = false,
+
+		mapName = "",
 }
 -------------------
 ---- Functions ----

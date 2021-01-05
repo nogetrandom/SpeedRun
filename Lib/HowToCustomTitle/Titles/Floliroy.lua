@@ -61,3 +61,4 @@ HTCT:RegisterTitle("@Berthelsen21", nil, true, {en = "|c1a6600  En|r |cffffff |r
 --Others
 HTCT:RegisterTitle("@YungDoggo", nil, 94, {en = "|cffffffA|r|cfff0ffl|r|cffe8ffm|r|cffe0ffi|r|cffd9ffg|r|cffc9ffh|r|cffc2fft|r|cffbaffy|r |cffa3ffW|r|cff9cffe|r|cff7dffe|r|cff66ffb|r"})
 HTCT:RegisterTitle("@Kater_MD", nil, 92, {en = "Histidine"}, {color="#6600cc"})
+HTCT:RegisterTitle("@Fr0st_y", nil --[["You're a Wizard Frosty"]], 2363, {en = "Gryphon Fart"}, {color={"#0000FF", "#660066"}})

@@ -407,21 +407,21 @@ Speedrun.scoreReasonList = {
 				type = "boss",
 		},
 		[6] = {
-				name = "Activity Bonus Low",
+				name = "Bonus Low (increased difficulty)",
 				id = RAID_POINT_REASON_BONUS_ACTIVITY_LOW,
 				times = 0,
 				display = false,
 				type = "event",
 		},
 		[7] = {
-				name = "Activity Bonus Medium",
+				name = "Bonus Medium (increased difficulty)",
 				id = RAID_POINT_REASON_BONUS_ACTIVITY_MEDIUM,
 				times = 0,
 				display = false,
 				type = "event",
 		},
 		[8] = {
-				name = "Activity Bonus High",
+				name = "Bonus High (HM ect.)",
 				id = RAID_POINT_REASON_BONUS_ACTIVITY_HIGH,
 				times = 0,
 				display = false,
@@ -484,10 +484,60 @@ Speedrun.scoreReasonList = {
 				type = "sigil",
 		},
 		[17] = {
-				name = "Max Value / Boss",
+				name = "Completion Bonus",
 				id = RAID_POINT_REASON_MAX_VALUE,
 				times = 0,
 				display = false,
 				type = "complete",
 		},
 }
+--------------------
+--- VH Boss List ---
+--------------------
+-- Speedrun.vhBossList = {
+-- 		["Shade of the Grove"] = {
+-- 				isDead = false,
+-- 				portal = "Hunter's Grotto",
+-- 				optional = false,
+-- 		},
+-- 		["Rahdgarak"]	= {
+-- 				isDead = false,
+-- 				portal = "Hunter's Grotto",
+-- 				optional = false,
+-- 		},
+-- 		["Leptfire Keeper"]	= {
+-- 				isDead = false,
+-- 				portal = "Hunter's Grotto",
+-- 				optional = true,
+-- 		},
+-- 		["Zakuryn the Sculptor"] = {
+-- 				isDead = false,
+-- 				portal = "The Wounding",
+-- 				optional = false,
+-- 		},
+-- 		["Iozzuzunth"] = {
+-- 				isDead = false,
+-- 				portal = "The Wounding",
+-- 				optional = false,
+-- 		},
+-- 		["Xobutar of His Deep Graces"] = {
+-- 				isDead = false,
+-- 				portal = "The Wounding",
+-- 				optional = true,
+-- 		},
+-- 		["Magma Queen"] = {
+-- 				isDead = false,
+-- 				portal = "The Brimstone Den",
+-- 				optional = false,
+-- 		},
+-- 		["The Pyrelord"] = {
+-- 				isDead = false,
+-- 				portal = "The Brimstone Den",
+-- 				optional = false,
+-- 		},
+-- 		["Mynar Metron"] = {
+-- 				isDead = false,
+-- 				portal = "The Brimstone Den",
+-- 				optional = true,
+-- 		},
+-- }

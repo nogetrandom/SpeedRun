@@ -1,8 +1,11 @@
 Speedrun = Speedrun or {}
--------------------------
----- Variables    -------
--------------------------
 local Speedrun = Speedrun
+
+Speedrun.slash      					= "/speed"
+Speedrun.prefix     					= "|cffffffSpeed|r|cdf4242Run|r: "
+Speedrun.debugMode 						= 0
+
+Speedrun.mapName 							= ""
 -------------------------
 ---- Functions    -------
 -------------------------
@@ -24,11 +27,11 @@ function Speedrun.SlashCommand(command)
 		elseif command == "hg" or command == "hidegroup" then
 				Speedrun.HideGroupToggle()
     -- Adds -------------------------------------------------------------------
-	elseif command == "scores" then
+		elseif command == "score" then
 				Speedrun.PrintScoreReasons()
 		-- Default ----------------------------------------------------------------
     else
-        d(Speedrun.prefix .. " Command not recognized!\nCommand options are:\n--[ /speed dbg 0-2 ]-- To post selection in chat:\n<<	0 >> = Only specific settings confirmations.\n<<	1 >> = Checkpoint Score Updates.\n<< 2 >> = Every score update (adds included).\n--[ /speed hg ]--[ /speed hidegroup ]-- To toggle function on/off.")
+        d(Speedrun.prefix .. " Command not recognized!\n[ |cffffff/speed|r (|cffffffcommand|r) ] options are:\n[ |cffffffdbg|r |cffffff0|r - |cffffff2|r ] To post selection in chat.\n    [ |cffffff0|r ]: Only a few updates.\n    [ |cffffff1|r ]: Trial Checkpoint Updates.\n    [ |cffffff2|r ]: Every score update (adds included).\n[ |cffffffhg|r ] or [ |cffffffhidegroup|r ]: Toggle function on/off.\n[ |cffffffscore|r ]: List current trial score variables in chat")
     end
 end
 
@@ -76,41 +79,17 @@ function Speedrun.HideGroup(hide) --copied from HideGroup by Wheels - thanks!
 end
 
 function Speedrun.PrintScoreReasons()
+		Speedrun:dbg(0, "Current Trial Score Points:")
 		for k, v in pairs(Speedrun.scores) do
 				local score = Speedrun.scores[k]
-				if score.display == true then
+				if score.display == true and score.times > 0 then
 						d('|cdf4242' .. score.name .. ' |r' .. ' x ' .. score.times)
 				else
 						if score.times > 0 then
-								Speedrun:dbg(2, '<<1>> x 0', score.name)
+								d('|cdf4242' .. score.name .. ' |r' .. ' x ' .. score.times)
 						end
 				end
 		end
-		Speedrun:dbg(2, "Printing Complete")
-end
-
-function Speedrun.OnZoneChanged()
-		if Speedrun.savedVariables.debugMode ~= 2 then return end
-		local zoneName = GetUnitZone('player')
-		-- local sub = GetPlayerActiveSubzoneName()
-		local map = GetPlayerLocationName()
-		-- local parent = GetPlayerActiveZoneName()
-		if Speedrun.savedVariables.subZone ~= map then
-				Speedrun:dbg(2, "[Zone: <<1>>] [Subzone: <<2>>]", zoneName, map)
-				Speedrun.subZone = map
-				Speedrun.savedVariables.subZone = Speedrun.subZone
-		else
-				Speedrun.subZone = map
-				Speedrun.savedVariables.subZone = Speedrun.subZone
-		end
-		if zoneName:find("NOT_A_VALID_ZONE_NAME") then
-				Speedrun:dbg(2, 'derp')
-  	end
-		CALLBACK_MANAGER:UnregisterCallback("OnWorldMapChanged", Speedrun.OnZoneChanged)
-		zo_callLater(function()
-				EVENT_MANAGER:UnregisterForUpdate(Speedrun.name .. "zone")
-				EVENT_MANAGER:RegisterForUpdate(Speedrun.name .. "zone", 2500, Speedrun.OnZoneChanged)
-		end, 1000)
 end
 
 function Speedrun.BestPossible(raidID)
