@@ -111,6 +111,7 @@ function Speedrun.UpdateCurrentScore()
     end
 
     local score
+		-- in case trial is completed but player is only moving between areas inside the trial.
     if Speedrun.IsInTrialZone() and (GetRaidDuration() > 0) then -- IsRaidInProgress() then
         score = math.floor(Speedrun.GetScore(timer+1,GetCurrentRaidLifeScoreBonus()/1000,Speedrun.raidID))
         SpeedRun_Score_Label:SetText(Speedrun.FormatRaidScore(score))
@@ -136,7 +137,9 @@ function Speedrun.CreateRaidSegment(id)
         if Speedrun.raidList[id] == nil then
             Speedrun.raidList[id] = Speedrun.raidList[formatID]
             Speedrun.raidList[id].timerSteps = {}
-            Speedrun.savedVariables.raidList = Speedrun.raidList
+            -- Speedrun.savedVariables.raidList = Speedrun.raidList
+						-- local c = GetUnitName("player")
+						Speedrun.Character.raidList = Speedrun.raidList
         end
     end
 
@@ -247,8 +250,6 @@ function Speedrun.ResetAddsUI()
 		SpeedRun_Adds_LA_Counter:SetText(" ")
 		SpeedRun_Adds_EA:SetText(" ")
 		SpeedRun_Adds_EA_Counter:SetText(" ")
-		-- SpeedRun_Adds_Boss1:SetText(" ")
-		-- SpeedRun_Adds_Boss2:SetText(" ")
 end
 
 function Speedrun.HideAdds(hide)

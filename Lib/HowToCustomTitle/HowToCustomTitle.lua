@@ -57,7 +57,7 @@ Changes: Rewrote how custom titles are added and stored to help reduce conflict 
 
  Author: nogetrandom
  version 22
- Changes: Deleted a few letters and added a couple of new ones, and this is now independant from
+ Changes: Deleted a few letters and added a couple of new ones, and this is now independent from
  LibCustomTitles and LibStub.
 
 ]]--
@@ -74,7 +74,7 @@ HowToCustomTitleModules = HowToCustomTitleModules or {}
 function HowToCustomTitle:RegisterModule(name, version)
 
 	local module = HowToCustomTitleModules[name]
-	if (module and module.version and module.version > version) then
+	if module and (module.version > version) then
 		return nil
 	end
 

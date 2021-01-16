@@ -5,13 +5,10 @@ local Speedrun = Speedrun
 ---------------------------
 Speedrun.Default = {
     --table
-    customTimerSteps = {},
-    raidList = {},
 		scores = {},
+		raidList = {},
 
 	  --UI
-		finalScore = 0,
-    segmentTimer = {},
     speedrun_container_OffsetX = 500,
     speedrun_container_OffsetY = 500,
     isMovable = true,
@@ -19,24 +16,32 @@ Speedrun.Default = {
 		addsAreHidden = true,
 
 		--variables
-    currentRaidTimer = {},
-    lastBossName = "",
+		currentRaidTimer = {},
+		lastBossName = "",
 		currentBossName = "",
-    raidID = 0,
-    isBossDead = true,
-    Step = 1,
-    stage = 0,
+		raidID = 0,
+		Step = 1,
+		isBossDead = true,
+		--UI
+		segmentTimer = {},
 
     --settings
     addsOnCR = true,
     hmOnSS = 4,
 		debugMode = 0,
+		groupHidden = false,
 		nameplates = GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_NAMEPLATES),
 		healthBars = GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_HEALTHBARS),
-		groupHidden = false,
 
-		mapName = "",
+		-- mapName = "",
 }
+
+Speedrun.svDefault = {
+		--Table
+		raidList = {},
+		customTimerSteps = {},
+}
+
 -------------------
 ---- Functions ----
 -------------------
@@ -48,6 +53,7 @@ function Speedrun:GenerateDefaultScores()
 						name = Speedrun.scoreReasonList[k].name,
 						id = Speedrun.scoreReasonList[k].id,
 						times = 0,
+						total = 0,
 						display = Speedrun.scoreReasonList[k].display,
 						type = Speedrun.scoreReasonList[k].type,
         }

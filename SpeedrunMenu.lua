@@ -52,6 +52,24 @@ function Speedrun.Simulate(raidID)
     d(zo_strformat(SI_SPEEDRUN_SIMULATE_FUNCTION, Speedrun.GetTime(totalTime), score))
 end
 
+function Speedrun.Overwrite(raidID)
+		local formatID = raidID
+		if raidID == 677 then  --for vMA
+				formatID = raidID .. GetUnitName("player")
+				if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
+						formatID = raidID
+				end
+		end
+		for k, v in pairs(Speedrun.raidList[formatID]) do
+				if Speedrun.customTimerSteps[formatID][k] then
+						Speedrun.sV.raidList[formatID][k] = Speedrun.customTimerSteps[formatID][k]
+				end
+		end
+		if Speedrun.IsInTrialZone() then
+				ReloadUI("ingame")
+		end
+end
+
 function Speedrun.ResetData(raidID)
     local formatID = raidID
     if raidID == 677 then  --for vMA
@@ -62,7 +80,7 @@ function Speedrun.ResetData(raidID)
     end
     if Speedrun.raidList[formatID].timerSteps then
         Speedrun.raidList[formatID].timerSteps = {}
-        Speedrun.savedVariables.raidList = Speedrun.raidList
+        Speedrun.sV.raidList = Speedrun.raidList
         ReloadUI("ingame")
     end
 end
@@ -82,7 +100,7 @@ function Speedrun.CreateOptionTable(raidID, step)
             default = "",
             getFunc = function() return tostring(Speedrun.customTimerSteps[raidID][step]) end,
             setFunc = function(newValue)
-                Speedrun.savedVariables.customTimerSteps[raidID][step] = newValue
+                Speedrun.sV.customTimerSteps[raidID][step] = newValue
                 Speedrun.customTimerSteps[raidID][step] = newValue
             end,
     }
@@ -144,6 +162,17 @@ function Speedrun.CreateRaidMenu(raidID)
                                     Speedrun.Simulate(raidID)
                                 end,
                                 width = "half",
+    })
+
+		table.insert(raidMenu, {    type = "button",
+                                name = "Apply Times",
+                                tooltip = "Overwrite current saved times with entered custom times",
+                                func = function()
+                                    Speedrun.Overwrite(raidID)
+                                end,
+                                width = "half",
+																isDangerous = true,
+                                warning = "Confirm Changes.\n|cff0000If you are currently in a trial you this will also reload ui|r  ",
     })
 
     table.insert(raidMenu, {    type = "button",
@@ -243,7 +272,7 @@ function Speedrun.CreateSettingsWindow()
 						{   type = "divider",
 						},
 						{		type = "description",
-								text = "Available [|cffffff/speed|r] commands are:\n[ |cffffffdbg|r |cffffff0|r - |cffffff2|r ] To post selection in chat.\n    [ |cffffff0|r ]: Only a few updates.\n    [ |cffffff1|r ]: Trial Checkpoint Updates.\n    [ |cffffff2|r ]: Every score update (adds included).\n[ |cffffffhg|r ] or [ |cffffffhidegroup|r ]: Toggle function on/off.\n[ |cffffffscore|r ]: List current trial score variables in chat",
+								text = "Available [|cffffff/speed|r] commands are:\n[ |cfffffftrack|r |cffffff0|r - |cffffff2|r ] To post selection in chat.\n    [ |cffffff0|r ]: Only a few updates.\n    [ |cffffff1|r ]: Trial Checkpoint Updates.\n    [ |cffffff2|r ]: Every score update (adds included).\n[ |cffffffhg|r ] or [ |cffffffhidegroup|r ]: Toggle function on/off.\n[ |cffffffscore|r ]: List current trial score variables in chat",
 						},
             {   type = "divider",
             },
