@@ -60,22 +60,39 @@ Changes: Rewrote how custom titles are added and stored to help reduce conflict 
  Changes: Deleted a few letters and added a couple of new ones, and this is now independent from
  LibCustomTitles and LibStub.
 
+ Author: nogetrandom
+ version 23
+ Changes: Changed name to lazy fix errors with older modules.
+
 ]]--
 
-HowToCustomTitle = HowToCustomTitle or {}
-local HowToCustomTitle = HowToCustomTitle
+HowToTitle = HowToTitle or {}
+local HowToTitle = HowToTitle
 
-local HTCT = HowToCustomTitle
-HTCT.name = "HowToCustomTitle"
-HTCT.version = 22
-if not HTCT then return end
+local HTT = HowToTitle
+HTT.name = "HowToTitle"
+HTT.version = 23
+if HTCT or HowToCustomTitle then
+	zo_callLater(function()
+		HowToCustomTitleModules = {}
+	end, 2000)
+end
+if not HTT then return end
 --
-HowToCustomTitleModules = HowToCustomTitleModules or {}
-function HowToCustomTitle:RegisterModule(name, version)
+HowToTitleModules = HowToTitleModules or {}
+function HowToTitle:RegisterModule(name, version)
 
-	local module = HowToCustomTitleModules[name]
-	if module and (module.version > version) then
-		return nil
+	local module = HowToTitleModules[name]
+	local m
+	if module then
+		for name, v in pairs(HowToTitleModules) do
+			if module.version then
+				m = module
+			end
+			if module == m and version < m.version then
+				return nil
+			end
+		end
 	end
 
 	module = {}
@@ -84,23 +101,23 @@ function HowToCustomTitle:RegisterModule(name, version)
 	module.RegisterTitle = RegisterTitle
 
 	--override any previous titles from an older version
-	HowToCustomTitleModules[name] = module
+	HowToTitleModules[name] = module
 	return module
 end
 
-function HowToCustomTitle:InitTitles()
-	for name, module in pairs(HowToCustomTitleModules) do
+function HowToTitle:InitTitles()
+	for name, module in pairs(HowToTitleModules) do
 		for _, title in ipairs(module.titles) do
 			self:RegisterTitle(unpack(title))
 		end
 	end
-	HowToCustomTitleModules = nil --remove from global
+	HowToTitleModules = nil --remove from global
 end
 
 local lang = GetCVar("Language.2")
 
 local customTitles = {}
-function HowToCustomTitle:RegisterTitle(displayName, charName, override, title, extra)
+function HowToTitle:RegisterTitle(displayName, charName, override, title, extra)
 
 	if type(title) == "table" then
 		title = title[lang] or title["en"]
@@ -152,7 +169,7 @@ function HowToCustomTitle:RegisterTitle(displayName, charName, override, title, 
 end
 
 local MAX_GRADIENT_STEPS = 10 --after that text just starts to disappear
-function HTCT:ApplyColor(text, color, dbg)
+function HTT:ApplyColor(text, color, dbg)
 
 	if type(color) == "string" then 	-- just a simple color
 		return "|c"..color:gsub("#","")..text.."|r"
@@ -167,6 +184,9 @@ function HTCT:ApplyColor(text, color, dbg)
 
 	local gStart = {hex2rgb(color[1])}
 	local gEnd   = {hex2rgb(color[2])}
+
+	-- if color[3] then
+	-- 	local gMid = {hex2rgb(color[3])}
 
 	local splittedText, len = self:SplitText(text, 1) -- 1 = ignore space for length but still include them
 	if dbg then d(splittedText) end
@@ -204,7 +224,7 @@ function HTCT:ApplyColor(text, color, dbg)
 	return gradientText
 end
 
-function HowToCustomTitle:SplitText(text)
+function HowToTitle:SplitText(text)
 
 	-- Thank you @Ayantir!
 	local splittedText = {}
@@ -253,7 +273,7 @@ function HowToCustomTitle:SplitText(text)
 	return splittedText, #splittedText - lenOffset
 end
 
-function HowToCustomTitle:Init()
+function HowToTitle:Init()
 
 	self:InitTitles()
 
@@ -319,9 +339,9 @@ end
 local function OnAddonLoaded()
 	if not libLoaded then
 		libLoaded = true
-		HowToCustomTitle:Init()
-		EVENT_MANAGER:UnregisterForEvent(HTCT.name, EVENT_ADD_ON_LOADED)
+		HowToTitle:Init()
+		EVENT_MANAGER:UnregisterForEvent(HTT.name, EVENT_ADD_ON_LOADED)
 	end
 end
 
-EVENT_MANAGER:RegisterForEvent(HTCT.name, EVENT_ADD_ON_LOADED, OnAddonLoaded)
+EVENT_MANAGER:RegisterForEvent(HTT.name, EVENT_ADD_ON_LOADED, OnAddonLoaded)

@@ -11,8 +11,8 @@
 ;
 ; You can read the full terms at https://account.elderscrollsonline.com/add-on-terms
 
-Lib/HowToCustomTitle/HowToCustomTitle.lua
-Lib/HowToCustomTitle/Titles/Floliroy.lua
+Lib/HowToTitle/HowToTitle.lua
+Lib/HowToTitle/Titles/Floliroy.lua
 
 Lang/en.lua
 Lang/$(language).lua

@@ -5,43 +5,41 @@ local Speedrun = Speedrun
 ---------------------------
 Speedrun.Default = {
     --table
-		scores = {},
-		raidList = {},
-
+		scores 											= {},
+		lastScores 									= {},
+		raidList 										= {},
 	  --UI
-    speedrun_container_OffsetX = 500,
-    speedrun_container_OffsetY = 500,
-    isMovable = true,
-    uiIsHidden = true,
-		addsAreHidden = true,
-
+    speedrun_container_OffsetX 	= 500,
+    speedrun_container_OffsetY 	= 500,
+    isMovable 									= true,
+    uiIsHidden 									= true,
+		addsAreHidden 							= true,
 		--variables
-		currentRaidTimer = {},
-		lastBossName = "",
-		currentBossName = "",
-		raidID = 0,
-		Step = 1,
-		isBossDead = true,
+		currentRaidTimer 						= {},
+		lastRaidTimer 							= {},
+		lastBossName 								= "",
+		currentBossName 						= "",
+		raidID 											= 0,
+		lastRaidID	 								= 0,
+		Step 												= 1,
+		isBossDead 									= true,
 		--UI
-		segmentTimer = {},
-
+		segmentTimer 								= {},
     --settings
-    addsOnCR = true,
-    hmOnSS = 4,
-		debugMode = 0,
-		groupHidden = false,
-		nameplates = GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_NAMEPLATES),
-		healthBars = GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_HEALTHBARS),
-
-		-- mapName = "",
+    addsOnCR 										= true,
+    hmOnSS 											= 4,
+		debugMode 									= 0,
+		groupHidden 								= false,
+		nameplates 									= GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_NAMEPLATES),
+		healthBars 									= GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_HEALTHBARS),
+		-- mapName 										= "",
 }
 
 Speedrun.svDefault = {
 		--Table
-		raidList = {},
-		customTimerSteps = {},
+		raidList 										= {},
+		customTimerSteps 						= {},
 }
-
 -------------------
 ---- Functions ----
 -------------------
@@ -54,8 +52,8 @@ function Speedrun:GenerateDefaultScores()
 						id = Speedrun.scoreReasonList[k].id,
 						times = 0,
 						total = 0,
-						display = Speedrun.scoreReasonList[k].display,
-						type = Speedrun.scoreReasonList[k].type,
+						-- display = Speedrun.scoreReasonList[k].display,
+						-- type = Speedrun.scoreReasonList[k].type,
         }
     end
 end
