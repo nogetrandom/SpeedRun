@@ -1,7 +1,89 @@
 Speedrun = Speedrun or {}
-local Speedrun = Speedrun
-local LAM2 = LibAddonMenu2
+local Speedrun 					= Speedrun
+local LAM2 							= LibAddonMenu2
 
+--[[TODO]]
+-- ------------------------
+-- PROFILE FUNCTIONS
+-- ------------------------
+--[[
+local profileCopyList		= {}
+local profileCopyToCopy, profileCopyDropRef
+local tinsert	 					= table.insert
+local tsort		 					= table.sort
+
+local function PopulateProfileLists()
+		local currentPlayer		= tostring(GetCurrentCharacterId())
+		local svVersion				= Speedrun.savedVariables.version
+
+		for account, accountData in pairs(Speedrun.Default) do
+				for key, data in pairs(accountData) do
+						local profile = (data.lastCharname) and data.lastCharname or "" -- use human readable names instead of ID's for selection lists (Phinix)
+
+						if (profile ~= nil) or (profile ~= "") then
+								if (data.version == svVersion) then -- only populate current DB version
+										if key ~= "$AccountWide" then
+												if data.frameVersion and data.frameVersion >= 1.08 then -- only populate non-accountwide from accounts that have converted to ID format (Phinix)
+														tinsert(profileCopyList, profile) -- don't add accountwide to copy selection
+												end
+
+										elseif (key ~= currentPlayer) then -- don't add current player to copy selection
+												if key ~= "$AccountWide" then
+														tinsert(profileCopyList, profile) -- don't add accountwide or current player to copy selection
+												end
+										end
+								end
+						end
+				end
+		end
+		tsort(profileCopyList)
+		tsort(profileDeleteList)
+end
+
+local function CopyTable(src, dest)
+		if (type(dest) ~= 'table') then
+				dest = {}
+		end
+
+		if (type(src) == 'table') then
+				for k, v in pairs(src) do
+						if (type(v) == 'table') then
+								CopyTable(v, dest[k])
+						end
+
+						dest[k] = v
+				end
+		end
+end
+
+local function CopyProfile()
+		local destProfile	= zo_strformat(SI_UNIT_NAME, GetUnitName("player"))
+		local sourceData, destData
+		local tAcct = profileCopyToCopy
+		if profileCopyToCopy == nil or profileCopyToCopy == "" then return end
+
+		for account, accountData in pairs(Speedrun.svDefault) do tAcct = tAcct:gsub(account,'') end
+		tAcct = tAcct:gsub('%(',''):gsub('%)','') -- remove formatting used for tagging which global account profile is selected (Phinix)
+
+		for account, accountData in pairs(Speedrun.svDefault) do
+				for profile, data in pairs(accountData) do
+						if data.lastCharname == profileCopyToCopy then
+								sourceData = data -- get source data to copy
+						end
+						if data.lastCharname == destProfile then
+								destData = data
+						end
+				end
+		end
+		if (not sourceData or not destData) then -- something went wrong, abort
+				Speedrun:dbg(0, "Error During Copy")
+		else
+				CopyTable(sourceData, destData)
+				Speedrun.savedVariables.lastCharname = zo_strformat(SI_UNIT_NAME, GetUnitName("player"))
+				ReloadUI()
+		end
+end
+]]
 function Speedrun.GetTime(seconds)
     if seconds then
         if seconds < 3600 then

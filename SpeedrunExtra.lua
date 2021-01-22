@@ -94,10 +94,10 @@ function Speedrun.PrintScoreReasons()
 				local score = Speedrun.scores[k]
 				if score.id ~= RAID_POINT_REASON_LIFE_REMAINING then
 						if score.times > 0 then
-								d('|cdf4242' .. score.name .. '|r' .. ' x ' .. score.times .. ' = ' .. score.total .. ' points.')
+								Speedrun:dbg(0,'|cdf4242' .. score.name .. '|r' .. ' x ' .. score.times .. ' = ' .. score.total .. ' points.')
 						end
 				else
-						d('|cdf4242' .. score.name .. '|r' .. ' x ' .. score.times)
+						Speedrun:dbg(0,'|cdf4242' .. score.name .. '|r' .. ' x ' .. score.times)
 				end
 		end
 end
@@ -108,10 +108,10 @@ function Speedrun.PrintLastScoreReasons()
 				local lastScore = Speedrun.lastScores[k]
 				if lastScore.id ~= RAID_POINT_REASON_LIFE_REMAINING then
 						if lastScore.times > 0 then
-								d('|cdf4242' .. lastScore.name .. '|r' .. ' x ' .. lastScore.times .. ' = ' .. lastScore.total .. ' points.')
+								Speedrun:dbg(0,'|cdf4242' .. lastScore.name .. '|r' .. ' x ' .. lastScore.times .. ' = ' .. lastScore.total .. ' points.')
 						end
 				else
-						d('|cdf4242' .. lastScore.name .. '|r' .. ' x ' .. lastScore.times)
+						Speedrun:dbg(0,'|cdf4242' .. lastScore.name .. '|r' .. ' x ' .. lastScore.times)
 				end
 		end
 end
@@ -135,7 +135,7 @@ function Speedrun.BestPossible(raidID)
     return score
 end
 
--- fallback functions to use for debugging for now
+-- fallback functions to use for debugging
 function Speedrun.SetLastTrial()
 		Speedrun.lastScores = Speedrun.scores
 		Speedrun.savedVariables.lastScores = Speedrun.lastScores

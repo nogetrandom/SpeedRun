@@ -23,8 +23,8 @@ HTT:RegisterTitle("@Nameless-X", nil, true, {en = "|c08FED5H|c07F4D9e W|c06EBDDh
 -- Symbolic
 HTT:RegisterTitle("@Vatrokion", nil, 92, {en = "SweetHeart"}, {color={"#C71585", "#800080"}})
 HTT:RegisterTitle("@Deekri", nil, true, {en = "Trap"}, {color="#ff3333", hidden = true})
--- HTT:RegisterTitle("@nogetrandom", nil, 2746, {en = ":PeepoPing:"}, {color="#FE2008"})
--- HTT:RegisterTitle("@nogetrandom", nil, true, {en = "|c999999lower|r |c999999case|r n ツ"}, {hidden = true})
+HTT:RegisterTitle("@nogetrandom", nil, 2746, {en = ":PeepoPing:"}, {color="#FE2008"})
+HTT:RegisterTitle("@nogetrandom", nil, true, {en = "|c999999lower|r |c999999case|r n ツ"}, {hidden = true})
 HTT:RegisterTitle("@alperr", nil, true, {en = "GAMING WARLORD"}, {color="#FF9933", hidden = true})
 HTT:RegisterTitle("@a_lx", nil, true, {en = "Krankenschwester"}, {color="#ffcce6", hidden = true})
 HTT:RegisterTitle("@Schäffo", nil, true, {en = "On Coffee Break"}, {color="#996600", hidden = true})
@@ -62,7 +62,6 @@ HTT:RegisterTitle("@Daarbak", nil, true, {en = "16 Seconds Taunt Cooldown"}, {co
 HTT:RegisterTitle("@Sami98", nil, true, {en = "Zoomer in Chat"}, {color="#66ff33", hidden = true})
 HTT:RegisterTitle("@HappyLicious", nil, true, {en = "Quick vAS"}, {color="#9933ff", hidden = true})
 HTT:RegisterTitle("@anle", nil, true, {en = "zzzZZzzZZ"}, {color={"#FFE3A6", "#FFAE00", hidden = true}})
--- HTT:RegisterTitle("@anle", nil, true, {en = "|cfffa94z|r|cffe680z|r|cffd16bz|r|cffb24cZ|r|cff9933Z|r|cffb24cZ|r|cffd16bz|r|cffe680z|r|cffd16bz|r|cffb24cZ|r|cff9933Z|r|cffb24cZ|r|cffd16bz|r|cffe680z|r|cfffa94z|r"}, {hidden = true})
 HTT:RegisterTitle("@Shadedrifter", nil, true, {en = "Healer"}, {color="#808080", hidden = true})
 HTT:RegisterTitle("@Mille_W", nil, 2755, {en = "#1 T-Bagger"}, {color="#ffc61a"})
 HTT:RegisterTitle("@Mille_W", nil, true, {en = "|cffe6ff(∩|cb3e6ff*|r|cffe6ff-|r|cb3e6ff*|r|cffe6ff)>|r|cffeee6--+|r|cb3e6ff. o ･ ｡ﾟ|r"},{hidden = true})

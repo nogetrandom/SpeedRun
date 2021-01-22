@@ -4,7 +4,7 @@
 Speedrun = Speedrun or {}
 local Speedrun = Speedrun
 Speedrun.name 						= "Speedrun"
-Speedrun.version 					= "0.1.8.2"
+Speedrun.version 					= "0.1.8.3"
 Speedrun.segments 				= {}
 Speedrun.segmentTimer 		= {}
 Speedrun.currentRaidTimer = {}
@@ -451,11 +451,11 @@ end
 ---- Base & Events ----
 -----------------------
 function Speedrun.Reset()
-		if GetRaidDuration() > 0 or GetRaidDuration() == nil then
-				d(Speedrun.prefix .. " Reset Aborted (Trial Active)")
+		if --[[GetRaidDuration() > 0 or ]]GetRaidDuration() == nil then
+				Speedrun:dbg(1, "Reset Aborted (Trial is completed)")
 				return
 		end
-		d(Speedrun.prefix .. " Resetting")
+		Speedrun:dbg(1, "Resetting: |ce6b800<<1>>|r", GetUnitZone('player'))	)
 		Speedrun.scores = Speedrun.GetDefaultScores()
 		Speedrun.savedVariables.scores = Speedrun.scores
     Speedrun.displayVitality = ""
@@ -474,7 +474,7 @@ function Speedrun.Reset()
 end
 
 function Speedrun.UnregisterTrialsEvents()
-		d(Speedrun.prefix .. " Unregistering")
+		Speedrun:dbg(1, "Unregistering (not in trial)")
     EVENT_MANAGER:UnregisterForEvent(Speedrun.name .. "BossChange", EVENT_BOSSES_CHANGED)
     EVENT_MANAGER:UnregisterForEvent(Speedrun.name .. "Combat", EVENT_PLAYER_COMBAT_STATE)
     EVENT_MANAGER:UnregisterForEvent(Speedrun.name .. "MainArena", EVENT_RAID_TRIAL_SCORE_UPDATE)
@@ -510,17 +510,18 @@ function Speedrun.RegisterTrialsEvents()
     EVENT_MANAGER:RegisterForEvent(Speedrun.name .. "DeathScore", EVENT_RAID_REVIVE_COUNTER_UPDATE, Speedrun.UpdateCurrentScore)
     EVENT_MANAGER:RegisterForEvent(Speedrun.name .. "VitalityLost", EVENT_RAID_REVIVE_COUNTER_UPDATE, Speedrun.UpdateCurrentVitality)
 		EVENT_MANAGER:RegisterForEvent(Speedrun.name .. "ScoreUpdate", EVENT_RAID_TRIAL_SCORE_UPDATE, Speedrun.ScoreUpdate)
+		Speedrun:dbg(1, "Entered new |ce6b800<<1>>|r: Resetting variables", GetUnitZone('player'))
 end
 
 function Speedrun.OnTrialFailed(eventCode, trialName, score)
+		Speedrun.SetLastTrial()
     Speedrun.Reset()
     Speedrun.ResetUI()
     Speedrun.UnregisterTrialsEvents()
-		Speedrun:dbg(1, '|ce6b800<<1>>|r Resetting', trialName)
+		Speedrun:dbg(1, '|ce6b800<<1>>|r Resetting (failed)', trialName)
 end
 
 Speedrun.OnTrialComplete = function(eventCode, trialName, score, totalTime)
-		Speedrun.SetLastTrial()
 	  if Speedrun.raidID == 636 or Speedrun.raidID == 677 or Speedrun.raidID == 1000 or Speedrun.raidID == 1082 or Speedrun.raidID == 1227 then
 				zo_callLater(function()
 						Speedrun.UpdateWaypointNew(GetRaidDuration())
@@ -535,6 +536,7 @@ Speedrun.OnTrialComplete = function(eventCode, trialName, score, totalTime)
 		local s = Speedrun.FormatRaidScore(score)
     SpeedRun_Score_Label:SetText(s)
     SpeedRun_TotalTimer_Title:SetText(Speedrun.FormatRaidTimer(GetRaidDuration() +1000, true))
+		Speedrun.SetLastTrial()
 		zo_callLater(function()
 				Speedrun.UnregisterTrialsEvents()
 				Speedrun.raidID = 0
@@ -615,11 +617,9 @@ function Speedrun.IsInTrialZone()
 								Speedrun.ResetUI()
 								Speedrun.SetUIHidden(true)
 								Speedrun.HideAdds(true)
-								d(Speedrun.prefix .. " Entered <<1>>: Resetting variables", Speedrun.raidList[k].name)
 								return false
 						end
 						Speedrun.UpdateCurrentVitality()
-						-- d(Speedrun.prefix .. "Tracking [" .. Speedrun.raidList[k].id .. "]")
 						return true
         end
     end
@@ -633,7 +633,7 @@ function Speedrun:Initialize()
 		--Account
     Speedrun.savedVariables = ZO_SavedVars:NewAccountWide("SpeedrunVariables", 2, nil, Speedrun.Default)
 		--Character
-		Speedrun.sV = ZO_SavedVars:New("SpeedrunVariables", 2, nil, Speedrun.svDefault)
+		Speedrun.sV = ZO_SavedVars:New("SpeedrunVariables", 3, nil, Speedrun.svDefault)
 	--Keybinds
 		ZO_CreateStringId("SI_BINDING_NAME_SR_TOGGLE_HIDEGROUP", "Toggle Hide Group")
 		ZO_CreateStringId("SI_BINDING_NAME_SR_CANCEL_CAST", "Cancel Cast")
