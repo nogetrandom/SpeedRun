@@ -1,6 +1,5 @@
 Speedrun = Speedrun or { }
 local Speedrun = Speedrun
-
 -------------------
 ---- Raid List ----
 -------------------
@@ -55,18 +54,35 @@ Speedrun.raidList = {
         id = 1082,
         timerSteps = {},
     },
-    [677] = {
-        name = "MA",
-        id = 677,
-        timerSteps = {},
-    },
     [635] = {
         name = "DSA",
         id = 635,
         timerSteps = {},
     },
+		[677] = {
+			name = "MA",
+			id = 677,
+			timerSteps = {},
+		},
+		[1227] = {
+				name = "VH",
+				id = 1227,
+				timerSteps = {},
+		},
 }
 
+-- Speedrun.arenaList = {
+-- 		[677] = {
+-- 			name = "MA",
+-- 			id = 677,
+-- 			timerSteps = {},
+-- 		},
+-- 		[1227] = {
+-- 				name = "VH",
+-- 				id = 1227,
+-- 				timerSteps = {},
+-- 		},
+-- }
 -----------------------
 ---- Custom Timers ----
 -----------------------
@@ -157,19 +173,26 @@ Speedrun.customTimerSteps = {
         [3] = "",
         [4] = "",
         [5] = "",
-        [6] = ""
-    },
-    [677] = { --MA
-        [1] = "",
-        [2] = "",
-        [3] = "",
-        [4] = "",
-        [5] = "",
         [6] = "",
-        [7] = "",
+				[7] = "",
         [8] = "",
         [9] = "",
-        [10] = ""
+        [10] = "",
+        [11] = "",
+        [12] = "",
+				[13] = "",
+        [14] = "",
+        [15] = "",
+        [16] = "",
+        [17] = "",
+        [18] = "",
+				[19] = "",
+        [20] = "",
+        [21] = "",
+        [22] = "",
+        [23] = "",
+        [24] = "",
+				[25] = ""
     },
     [635] = { --DSA
         [1] = "",
@@ -181,11 +204,52 @@ Speedrun.customTimerSteps = {
         [7] = "",
         [8] = "",
         [9] = "",
-        [10] = "",
-        [11] = ""
+        [10] = ""
+    },
+		[677] = { --MA
+				[1] = "",
+				[2] = "",
+				[3] = "",
+				[4] = "",
+				[5] = "",
+				[6] = "",
+				[7] = "",
+				[8] = "",
+				[9] = ""
+		},
+		[1227] = { --Vateshran Hollows
+				[1] = "",
+        [2] = "",
+        [3] = "",
+        [4] = "",
+        [5] = "",
+        [6] = "",
+        [7] = ""
     },
 }
 
+-- Speedrun.customArenaSteps = {
+-- 		[677] = { --MA
+-- 				[1] = "",
+-- 				[2] = "",
+-- 				[3] = "",
+-- 				[4] = "",
+-- 				[5] = "",
+-- 				[6] = "",
+-- 				[7] = "",
+-- 				[8] = "",
+-- 				[9] = ""
+-- 		},
+-- 		[1227] = { --Vateshran Hollows
+-- 				[1] = "",
+-- 				[2] = "",
+-- 				[3] = "",
+-- 				[4] = "",
+-- 				[5] = "",
+-- 				[6] = "",
+-- 				[7] = ""
+-- 		},
+-- }
 -------------------
 ---- Step List ----
 -------------------
@@ -269,14 +333,34 @@ Speedrun.stepList = {
         [4] = zo_strformat(SI_SPEEDRUN_KA_KILL_VROL),
         [5] = zo_strformat(SI_SPEEDRUN_KA_BEGIN_FALGRAVN),
         [6] = zo_strformat(SI_SPEEDRUN_KA_KILL_FALGRAVN),
+        -- [7] = "",
     },
     [1082] = { --BRP
-        [1] = zo_strformat(SI_SPEEDRUN_ARENA_FIRST),
-        [2] = zo_strformat(SI_SPEEDRUN_ARENA_SECOND),
-        [3] = zo_strformat(SI_SPEEDRUN_ARENA_THIRD),
-        [4] = zo_strformat(SI_SPEEDRUN_ARENA_FOURTH),
-        [5] = zo_strformat(SI_SPEEDRUN_ARENA_FIFTH),
-        [6] = zo_strformat(SI_SPEEDRUN_ARENA_COMPLETE),
+        [1] = "1.1",
+        [2] = "1.2",
+        [3] = "1.3",
+        [4] = "1.4",
+        [5] = "1st Complete",
+        [6] = "2.1",
+				[7] = "2.2",
+        [8] = "2.3",
+        [9] = "2.4",
+        [10] = "2nd Complete",
+        [11] = "3.1",
+        [12] = "3.2",
+				[13] = "3.3",
+        [14] = "3.4",
+        [15] = "3rd Complete",
+        [16] = "4.1",
+        [17] = "4.2",
+        [18] = "4.3",
+				[19] = "4.4",
+        [20] = "4th Complete",
+        [21] = "5.1",
+        [22] = "5.2",
+        [23] = "5.3",
+        [24] = "5.4",
+				[25] = "5th Complete",
     },
     [677] = { --MA
         [1] = zo_strformat(SI_SPEEDRUN_ARENA_FIRST),
@@ -287,7 +371,7 @@ Speedrun.stepList = {
         [6] = zo_strformat(SI_SPEEDRUN_ARENA_SIXTH),
         [7] = zo_strformat(SI_SPEEDRUN_ARENA_SEVENTH),
         [8] = zo_strformat(SI_SPEEDRUN_ARENA_EIGHTH),
-        [9] = zo_strformat(SI_SPEEDRUN_ARENA_NINTH),
+				[9] = zo_strformat(SI_SPEEDRUN_ARENA_NINTH),	--zo_strformat(SI_SPEEDRUN_ARENA_COMPLETE),
     },
     [635] = { --DSA
         [1] = zo_strformat(SI_SPEEDRUN_ARENA_FIRST),
@@ -300,6 +384,128 @@ Speedrun.stepList = {
         [8] = zo_strformat(SI_SPEEDRUN_ARENA_EIGHTH),
         [9] = zo_strformat(SI_SPEEDRUN_ARENA_NINTH),
         [10] = zo_strformat(SI_SPEEDRUN_ARENA_TENTH),
+				-- [11] = zo_strformat(SI_SPEEDRUN_ARENA_COMPLETE),
     },
+		[1227] = { --Vateshran Hollows
+        [1] = "Boss 1",
+        [2] = "Boss 2",
+        [3] = "Boss 3",
+        [4] = "Boss 4",
+        [5] = "Boss 5",
+        [6] = "Boss 6",
+				[7] = "Maebroogha |t20:20:esoui\\art\\icons\\poi\\poi_groupboss_incomplete.dds|t",
+		},
 }
-
+--------------------
+---- Score List ----
+--------------------
+Speedrun.scoreReasonList = {
+		[0] = {
+				name = "No Bonus",
+				id = RAID_POINT_REASON_MIN_VALUE,
+				times = 0,
+				total = 0,
+		},
+		[1] = {
+				name = "Small adds:",
+				id = RAID_POINT_REASON_KILL_NORMAL_MONSTER,
+				times = 0,
+				total = 0,
+		},
+		[2] = {
+				name = "Large adds:",
+				id = RAID_POINT_REASON_KILL_BANNERMEN,
+				times = 0,
+				total = 0,
+		},
+		[3] = {
+				name = "Elite adds:",
+				id = RAID_POINT_REASON_KILL_CHAMPION,
+				times = 0,
+				total = 0,
+		},
+		[4] = {
+				name = "Miniboss",
+				id = RAID_POINT_REASON_KILL_MINIBOSS,
+				times = 0,
+				total = 0,
+		},
+		[5] = {
+				name = "Boss",
+				id = RAID_POINT_REASON_KILL_BOSS,
+				times = 0,
+				total = 0,
+		},
+		[6] = {
+				name = "Bonus Low (increased difficulty)",
+				id = RAID_POINT_REASON_BONUS_ACTIVITY_LOW,
+				times = 0,
+				total = 0,
+		},
+		[7] = {
+				name = "Bonus Medium (increased difficulty)",
+				id = RAID_POINT_REASON_BONUS_ACTIVITY_MEDIUM,
+				times = 0,
+				total = 0,
+		},
+		[8] = {
+				name = "Bonus High (HM)",
+				id = RAID_POINT_REASON_BONUS_ACTIVITY_HIGH,
+				times = 0,
+				total = 0,
+		},
+		[9] = {
+				name = "Revives & Resurrections",
+				id = RAID_POINT_REASON_LIFE_REMAINING,
+				times = 0,
+				total = 0,
+		},
+		[10] = {
+				name = "Bonus Point One",
+				id = RAID_POINT_REASON_BONUS_POINT_ONE,
+				times = 0,
+				total = 0,
+		},
+		[11] = {
+				name = "Bonus Point Two",
+				id = RAID_POINT_REASON_BONUS_POINT_TWO,
+				times = 0,
+				total = 0,
+		},
+		[12] = {
+				name = "Bonus Point Three",
+				id = RAID_POINT_REASON_BONUS_POINT_THREE,
+				times = 0,
+				total = 0,
+		},
+		[13] = {
+				name = "Remaining Sigils Bonus x1",
+				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_ONE,
+				times = 0,
+				total = 0,
+		},
+		[14] = {
+				name = "Remaining Sigils Bonus x2",
+				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_TWO,
+				times = 0,
+				total = 0,
+		},
+		[15] = {
+				name = "Remaining Sigils Bonus x3",
+				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_THREE,
+				times = 0,
+				total = 0,
+		},
+		[16] = {
+				name = "Remaining Sigils Bonus x4",
+				id = RAID_POINT_REASON_SOLO_ARENA_PICKUP_FOUR,
+				times = 0,
+				total = 0,
+		},
+		[17] = {
+				name = "Completion Bonus (Stage / Trial)",
+				id = RAID_POINT_REASON_MAX_VALUE,
+				times = 0,
+				total = 0,
+		},
+}
