@@ -123,20 +123,10 @@ end
 function Speedrun.CreateRaidSegment(id)
     --Reset segment control
     Speedrun.segmentTimer = {}
-    local formatID = id
-    -- if type(formatID) == "string" then --for vMA
-        -- formatID = tonumber(string.sub(formatID,1,3))
-        -- if Speedrun.raidList[id] == nil then
-            -- Speedrun.raidList[id] = Speedrun.raidList[formatID]
-            -- Speedrun.raidList[id].timerSteps = {}
-            -- Speedrun.savedVariables.raidList = Speedrun.raidList
-						-- Speedrun.sV.raidList = Speedrun.raidList
-        -- end
-    -- end
     local raid = Speedrun.raidList[id]
-    SpeedRun_Timer_Container_Raid:SetText("|ce6b800" .. zo_strformat(SI_ZONE_NAME, GetZoneNameById(formatID)).. "|r")
+    SpeedRun_Timer_Container_Raid:SetText("|ce6b800" .. zo_strformat(SI_ZONE_NAME, GetZoneNameById(id)).. "|r")
     -- SpeedRun_Timer_Container_Raid:SetColor("#e6b800")
-    for i, x in ipairs(Speedrun.stepList[formatID]) do
+    for i, x in ipairs(Speedrun.stepList[id]) do
         local segmentRow
         if WM:GetControlByName("SpeedRun_Segment", i) then
             segmentRow = WM:GetControlByName("SpeedRun_Segment", i)
@@ -154,7 +144,7 @@ function Speedrun.CreateRaidSegment(id)
             bestPossibleTime = Speedrun.segmentTimer[i]
 						local bestTime = Speedrun.FormatRaidTimer(Speedrun.segmentTimer[i], true)
             SpeedRun_Advanced_BestPossible_Value:SetText(bestTime)
-		        SpeedRun_Score_Label:SetText(Speedrun.BestPossible(Speedrun.raidID))
+		        -- SpeedRun_Score_Label:SetText(Speedrun.BestPossible(Speedrun.raidID))
         else
             if i == 1 then
                 Speedrun.segmentTimer[i] = 0
@@ -217,7 +207,7 @@ function Speedrun.UpdateSegment(step, raid)
 end
 
 function Speedrun.DifferenceColor(diff, segment)
-    if diff > 0 then
+    if diff > (-0.001) then
         segment:SetColor(unpack { 1, 0, 0 })
     else
         segment:SetColor(unpack { 0, 1, 0 })

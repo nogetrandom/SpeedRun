@@ -8,6 +8,7 @@ Speedrun.Default = {
 		scores 											= {},
 		lastScores 									= {},
 		raidList 										= {},
+		customTimerSteps 						= {},
 	  --UI
     speedrun_container_OffsetX 	= 500,
     speedrun_container_OffsetY 	= 500,
@@ -23,6 +24,7 @@ Speedrun.Default = {
 		lastRaidID	 								= 0,
 		Step 												= 1,
 		isBossDead 									= true,
+		totalTime										= 0,
 		--UI
 		segmentTimer 								= {},
     --settings
@@ -32,7 +34,6 @@ Speedrun.Default = {
 		groupHidden 								= false,
 		nameplates 									= GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_NAMEPLATES),
 		healthBars 									= GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_HEALTHBARS),
-		-- mapName 										= "",
 }
 
 Speedrun.svDefault = {
@@ -52,8 +53,6 @@ function Speedrun:GenerateDefaultScores()
 						id = Speedrun.scoreReasonList[k].id,
 						times = 0,
 						total = 0,
-						-- display = Speedrun.scoreReasonList[k].display,
-						-- type = Speedrun.scoreReasonList[k].type,
         }
     end
 end

@@ -22,15 +22,19 @@ function Speedrun.SlashCommand(command)
 	       Speedrun.debugMode = 2
 	       Speedrun.savedVariables.debugMode = 2
 		-- UI Options -------------------------------------------------------------
-		elseif command == "lock" or command == "unlock" then
+		elseif command == "move" or command == "lock" or command == "unlock" then
 				Speedrun.isMoveable = not Speedrun.isMoveable
+				Speedrun.savedVariables.isMoveable = Speedrun.isMoveable
 				Speedrun.ToggleMovable()
 		elseif command == "hide" or command == "show" then
-				Speedrun.SetUIHidden(not Speedrun.uiIsHidden)
+				Speedrun.uiIsHidden = not Speedrun.uiIsHidden
+				Speedrun.savedVariables.uiIsHidden = Speedrun.uiIsHidden
+				Speedrun.SetUIHidden(Speedrun.uiIsHidden)
 				if GetZoneId(GetUnitZoneIndex("player")) == 1227 then
-						Speedrun.HideAdds(not Speedrun.uiIsHidden)
+						Speedrun.addsAreHidden = not Speedrun.addsAreHidden
+						Speedrun.savedVariables.addsAreHidden = Speedrun.addsAreHidden
+						Speedrun.HideAdds(Speedrun.uiIsHidden)
 				end
-				Speedrun.savedVariables.uiIsHidden = not Speedrun.uiIsHidden
 		-- Hide Group -------------------------------------------------------------
 		elseif command == "hg" or command == "hidegroup" then
 				Speedrun.HideGroupToggle()
@@ -118,9 +122,6 @@ end
 
 function Speedrun.BestPossible(raidID)
 		local totalTime = 0
-		-- if type(raidID) == "string" then --for vMA
-        -- raidID = tonumber(string.sub(raidID,1,3))
-    -- end
     for i, x in pairs(Speedrun.customTimerSteps[raidID]) do
         if Speedrun.GetSavedTimer(raidID,i) then
             totalTime = math.floor(Speedrun.GetSavedTimer(raidID,i) / 1000) + totalTime
@@ -129,6 +130,9 @@ function Speedrun.BestPossible(raidID)
 		local vL = GetRaidReviveCountersRemaining()
 		local vitality = vL or 0
 		local score = tostring(math.floor(Speedrun.GetScore(totalTime, vitality, raidID)))
+		if raidID == 1051 then
+				score = score - 2250 + Speedrun.scores[3].total
+		end
     local fScore = string.sub(score,string.len(score)-2,string.len(score))
     local dScore = string.gsub(score,fScore,"")
     score = dScore .. "'" .. fScore

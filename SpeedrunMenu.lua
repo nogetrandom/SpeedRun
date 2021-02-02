@@ -134,12 +134,6 @@ end
 
 function Speedrun.Overwrite(raidID)
 		local formatID = raidID
-		-- if raidID == 677 then  --for vMA
-		-- 		formatID = raidID .. GetUnitName("player")
-		-- 		if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
-		-- 				formatID = raidID
-		-- 		end
-		-- end
 		for k, v in pairs(Speedrun.raidList[formatID]) do
 				if Speedrun.customTimerSteps[formatID][k] then
 						Speedrun.sV.raidList[formatID][k] = Speedrun.customTimerSteps[formatID][k]
@@ -152,12 +146,6 @@ end
 
 function Speedrun.ResetData(raidID)
     local formatID = raidID
-    -- if raidID == 677 then  --for vMA
-    --     formatID = raidID .. GetUnitName("player")
-    --     if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
-    --         formatID = raidID
-    --     end
-    -- end
     if Speedrun.raidList[formatID].timerSteps then
         Speedrun.raidList[formatID].timerSteps = {}
         Speedrun.sV.raidList = Speedrun.raidList
@@ -167,12 +155,6 @@ end
 
 function Speedrun.CreateOptionTable(raidID, step)
     local formatID = raidID
-    -- if raidID == 677 then  --for vMA
-    --     formatID = raidID .. GetUnitName("player")
-    --     if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
-    --         formatID = raidID
-    --     end
-    -- end
     return
 		{		type = "editbox",
         name = zo_strformat(SI_SPEEDRUN_STEP_NAME, Speedrun.stepList[raidID][step]),
@@ -272,7 +254,7 @@ function Speedrun.CreateSettingsWindow()
         type = "panel",
         name = "Speedrun",
         displayName = "Speed|cdf4242Run|r",
-        author = "Floliroy, Panaa, |cc0c0c0@|rn|cc0c0c0ogetrandom|r",
+        author = "Floliroy, Panaa, |cc0c0c0@|r|cff6666n|r|cc0c0c0ogetrandom|r", --|cc0c0c0@|rn|cc0c0c0ogetrandom|r",
         version = Speedrun.version,
         slashCommand = "/speed",
         registerForRefresh = true,
