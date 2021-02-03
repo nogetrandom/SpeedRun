@@ -25,7 +25,9 @@ Speedrun.Default = {
 		lastRaidID	 								= 0,
 		Step 												= 1,
 		isBossDead 									= true,
+		isComplete									= false,
 		totalTime										= 10,
+		finalScore									= 0,
 		--UI
 		segmentTimer 								= {},
     --settings

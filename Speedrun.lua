@@ -15,7 +15,7 @@ Speedrun.currentBossName	= ""
 Speedrun.raidID 					= 0
 Speedrun.isBossDead 			= true
 Speedrun.Step 						= 1
--- Speedrun.totalTime 				= 10
+Speedrun.isComplete				= false
 ---------------------------
 ---- Variables Default ----
 ---------------------------
@@ -110,11 +110,11 @@ end
 
 function Speedrun.GetScore(timer, vitality, raidID)
     if type(raidID) == "string" then --for vMA
-			if GetZoneId(GetUnitZoneIndex("player")) == 667 then
-					raidID = tonumber(string.sub(raidID,1,3))
-			elseif GetZoneId(GetUnitZoneIndex("player")) == 1227 then
-					raidID = tonumber(string.sub(raidID,1,4))
-			end
+				if GetZoneId(GetUnitZoneIndex("player")) == 667 then
+						raidID = tonumber(string.sub(raidID,1,3))
+				elseif GetZoneId(GetUnitZoneIndex("player")) == 1227 then
+						raidID = tonumber(string.sub(raidID,1,4))
+				end
     end
     if raidID == 638 then --AA
         return (124300 + (1000 * vitality)) * (1 + (900 - timer) / 10000)
@@ -487,27 +487,22 @@ function Speedrun.Reset()
 				Speedrun:dbg(1, "Reset Aborted (not in trial)")
 				return
 		end
-		-- elseif GetRaidDuration() > 1 then
-		-- 		Speedrun:dbg(1, "Reset Aborted (Trial in progress)")
-		-- 		return
-		-- end
-		-- else
-				-- Speedrun.scores = Speedrun.GetDefaultScores()
-				-- Speedrun.savedVariables.scores = Speedrun.scores
-		    Speedrun.displayVitality = ""
-				Speedrun.currentRaidTimer = {}
-				Speedrun.savedVariables.currentRaidTimer = Speedrun.currentRaidTimer
-				Speedrun.Step = 1
-				Speedrun.savedVariables.Step = Speedrun.Step
-				Speedrun.raidID = 0
-				Speedrun.savedVariables.raidID = Speedrun.raidID
-				Speedrun.isBossDead = true
-				Speedrun.savedVariables.isBossDead = Speedrun.isBossDead
-				Speedrun.lastBossName = ""
-				Speedrun.savedVariables.lastBossName = Speedrun.lastBossName
-				Speedrun.currentBossName = ""
-				Speedrun.savedVariables.currentBossName = Speedrun.currentBossName
-		-- end
+
+    Speedrun.displayVitality = ""
+		Speedrun.currentRaidTimer = {}
+		Speedrun.savedVariables.currentRaidTimer = Speedrun.currentRaidTimer
+		Speedrun.Step = 1
+		Speedrun.savedVariables.Step = Speedrun.Step
+		Speedrun.raidID = 0
+		Speedrun.savedVariables.raidID = Speedrun.raidID
+		Speedrun.lastBossName = ""
+		Speedrun.savedVariables.lastBossName = Speedrun.lastBossName
+		Speedrun.currentBossName = ""
+		Speedrun.savedVariables.currentBossName = Speedrun.currentBossName
+		Speedrun.isBossDead = true
+		Speedrun.savedVariables.isBossDead = Speedrun.isBossDead
+		Speedrun.isComplete = false
+		Speedrun.savedVariables.isComplete = Speedrun.isComplete
 end
 
 function Speedrun.ResetTracking()
@@ -520,12 +515,12 @@ function Speedrun.ResetTracking()
 		Speedrun.savedVariables.Step = Speedrun.Step
 		Speedrun.raidID = 0
 		Speedrun.savedVariables.raidID = Speedrun.raidID
-		Speedrun.isBossDead = true
-		Speedrun.savedVariables.isBossDead = Speedrun.isBossDead
 		Speedrun.lastBossName = ""
 		Speedrun.savedVariables.lastBossName = Speedrun.lastBossName
 		Speedrun.currentBossName = ""
 		Speedrun.savedVariables.currentBossName = Speedrun.currentBossName
+		Speedrun.isBossDead = true
+		Speedrun.savedVariables.isBossDead = Speedrun.isBossDead
 end
 
 function Speedrun.UnregisterTrialsEvents()
@@ -590,19 +585,24 @@ Speedrun.OnTrialComplete = function(eventCode, trialName, score, totalTime)
 						Speedrun.UpdateWaypointNew(GetRaidDuration())
 				end, 1000)
 		end
-		local s = Speedrun.FormatRaidScore(score)
+		Speedrun.finalScore = Speedrun.FormatRaidScore(score)
+		Speedrun.savedVariables.finalScore = Speedrun.finalScore
 		Speedrun.totalTime = totalTime
 		Speedrun.savedVariables.totalTime = Speedrun.totalTime
-    SpeedRun_Score_Label:SetText(s)
-    SpeedRun_TotalTimer_Title:SetText(Speedrun.FormatRaidTimer(GetRaidDuration() +1000, true))
+    SpeedRun_Score_Label:SetText(Speedrun.finalScore)
+		SpeedRun_TotalTimer_Title:SetText(Speedrun.FormatRaidTimer(Speedrun.totalTime, true))
+    -- SpeedRun_TotalTimer_Title:SetText(Speedrun.FormatRaidTimer(GetRaidDuration() +1000, true))
 		Speedrun.SetLastTrial()
+
+		Speedrun.isComplete = true
+		Speedrun.savedVariables.isComplete = Speedrun.isComplete
 
 		Speedrun.UnregisterTrialsEvents()
 		zo_callLater(function()
 				Speedrun.raidID = 0
 				Speedrun.savedVariables.raidID = Speedrun.raidID
 		end, 5000)
-		Speedrun:dbg(1, "|ce6b800<<3>>|r Complete!\n[Time: |cffffff<<1>>|r]  [Score: |cffffff<<2>>|r]", Speedrun.FormatRaidTimer(GetRaidDuration() +1000, true), s, trialName)
+		Speedrun:dbg(1, "|ce6b800<<3>>|r Complete!\n[Time: |cffffff<<1>>|r]  [Score: |cffffff<<2>>|r]", Speedrun.FormatRaidTimer(GetRaidDuration() +1000, true), 	Speedrun.finalScore, trialName)
 end
 
 function Speedrun.OnTrialStarted()
@@ -653,8 +653,8 @@ function Speedrun.OnPlayerActivated()
 						Speedrun.RegisterTrialsEvents()
 						SpeedRun_TotalTimer_Title:SetText(Speedrun.FormatRaidTimer(GetRaidDuration() +1000, true))
 				end
-				if GetRaidDuration() == 0 then --or GetRaidDuration() == nil then
-						SpeedRun_Score_Label:SetText(Speedrun.BestPossible(zoneID))
+				if GetRaidDuration() == 0 then
+						SpeedRun_Score_Label:SetText(Speedrun.BestPossible(Speedrun.raidID))
 	      end
 		else
 				Speedrun.raidID = zoneID
@@ -709,8 +709,9 @@ function Speedrun:Initialize()
     Speedrun.lastBossName = Speedrun.savedVariables.lastBossName
 		Speedrun.currentBossName = Speedrun.savedVariables.currentBossName
     Speedrun.raidID = Speedrun.savedVariables.raidID
+		Speedrun.Step = Speedrun.savedVariables.Step
     Speedrun.isBossDead = Speedrun.savedVariables.isBossDead
-    Speedrun.Step = Speedrun.savedVariables.Step
+		Speedrun.isComplete = Speedrun.savedVariables.isComplete
 
     Speedrun.addsOnCR = Speedrun.savedVariables.addsOnCR
     Speedrun.hmOnSS = Speedrun.savedVariables.hmOnSS
@@ -725,12 +726,6 @@ function Speedrun:Initialize()
 		Speedrun.lastRaidID = Speedrun.savedVariables.lastRaidID
 
 		Speedrun.isTracking = Speedrun.savedVariables.isTracking
-
-		-- Speedrun.mapName = Speedrun.savedVariables.mapName
-
-		-- zo_callLater(function()
-		-- 		Speedrun.HideGroup(Speedrun.groupHidden)
-		-- end, 5000)
 
     --Settings
     Speedrun.CreateSettingsWindow()

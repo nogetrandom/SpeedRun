@@ -127,11 +127,21 @@ function Speedrun.BestPossible(raidID)
 		end
 
 		local timer = 0
-    for i, x in pairs(Speedrun.customTimerSteps[formatID]) do
-        if Speedrun.GetSavedTimer(raidID,i) then
-            timer = math.floor(Speedrun.GetSavedTimer(formatID,i) / 1000) + timer
-        end
-    end
+
+		do
+				if type(raidID) == "string" then --for vMA
+						if GetZoneId(GetUnitZoneIndex("player")) == 667 then
+								raidID = tonumber(string.sub(raidID,1,3))
+						elseif GetZoneId(GetUnitZoneIndex("player")) == 1227 then
+								raidID = tonumber(string.sub(raidID,1,4))
+						end
+				end
+				for i, x in pairs(Speedrun.customTimerSteps[raidID]) do
+	        	if Speedrun.GetSavedTimer(raidID,i) then
+	            	timer = math.floor(Speedrun.GetSavedTimer(raidID,i) / 1000) + timer
+	        	end
+	    	end
+		end
 
 		local vL = GetRaidReviveCountersRemaining()
 		local vitality = vL or 0

@@ -107,9 +107,11 @@ function Speedrun.UpdateCurrentScore()
 
     local score
 		-- in case trial is completed but player is only moving between areas inside the trial.
-		if Speedrun.IsInTrialZone() and (GetRaidDuration() > 0) then -- IsRaidInProgress() then
+		if IsRaidInProgress() then
 				score = math.floor(Speedrun.GetScore(timer+1,GetCurrentRaidLifeScoreBonus()/1000,Speedrun.raidID))
 				SpeedRun_Score_Label:SetText(Speedrun.FormatRaidScore(score))
+		elseif Speedrun.isComplete == true then
+				SpeedRun_Score_Label:SetText(Speedrun.finalScore)
 		end
 end
 
