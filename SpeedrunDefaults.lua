@@ -3,6 +3,7 @@ local Speedrun = Speedrun
 ---------------------------
 ---- Variables Default ----
 ---------------------------
+--account wide
 Speedrun.Default = {
     --table
 		scores 											= {},
@@ -24,23 +25,28 @@ Speedrun.Default = {
 		lastRaidID	 								= 0,
 		Step 												= 1,
 		isBossDead 									= true,
-		totalTime										= 0,
+		isComplete									= false,
+		totalTime										= 10,
+		finalScore									= 0,
 		--UI
 		segmentTimer 								= {},
     --settings
     addsOnCR 										= true,
     hmOnSS 											= 4,
 		debugMode 									= 0,
+		--hide group
 		groupHidden 								= false,
 		nameplates 									= GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_NAMEPLATES),
 		healthBars 									= GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_HEALTHBARS),
+		--addon on / off
+		isTracking									= true,
 }
-
-Speedrun.svDefault = {
-		--Table
-		raidList 										= {},
-		customTimerSteps 						= {},
-}
+--character unique
+-- Speedrun.DefaultSolo = {
+-- 		--table
+-- 		arenaList 									= {},
+-- 		customArenaSteps 						= {},
+-- }
 -------------------
 ---- Functions ----
 -------------------

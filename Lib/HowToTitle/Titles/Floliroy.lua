@@ -43,11 +43,12 @@ HTT:RegisterTitle("@Porkkanalaatikko", nil, true, {en = "Healthy Sleep Schedule"
 HTT:RegisterTitle("@Saphorius", nil, true, {en = "Throwing for UA"}, {color="#df4242", hidden = true})
 
 -- Unchained Animals
-HTT:RegisterTitle("@WHoitsma", nil, true, {en = "Akatsuki"}, {color="#D10000", hidden = true})
+HTT:RegisterTitle("@WHoitsma", nil, true, {en = "Support btw"}, {color="#99cc00", hidden = true})
 
 -- Homies
 HTT:RegisterTitle("@EstarossaOfLove", nil, 92, {en = "Tri Focus"}, {color={"#FF3300", "#3366FF"}})
 HTT:RegisterTitle("@EstarossaOfLove", nil, true, {en = "|cFFAE00A|r|cFFBE33n|r|cFFCE66g|r|cFFDC8Fe|r|cFFDF99l|r |cFFDF99O|r|cFFDF99f|r |cFFCE66D|r|cFFC23De|r|cFFBB29a|r|cFFB414t|r|cFFAE00h|r"}, {hidden = true})
+HTT:RegisterTitle("@frozzzen101", nil, true, {en = "Schap"}, {color= "#ffcc00", hidden = true})
 
 --Divinity
 HTT:RegisterTitle("@LadyYousha", nil, true, {en = "Mama Mia"}, {color="#da5ee5", hidden = true})

@@ -104,11 +104,13 @@ function Speedrun.UpdateCurrentScore()
         timer = GetRaidDuration()/1000
     end
     local score
-		-- in case trial is completed but player is only moving between areas inside the trial.
-    if Speedrun.IsInTrialZone() and (GetRaidDuration() > 0) then -- IsRaidInProgress() then
-        score = math.floor(Speedrun.GetScore(timer+1,GetCurrentRaidLifeScoreBonus()/1000,Speedrun.raidID))
-        SpeedRun_Score_Label:SetText(Speedrun.FormatRaidScore(score))
-    end
+		if IsRaidInProgress() then
+				score = math.floor(Speedrun.GetScore(timer+1,GetCurrentRaidLifeScoreBonus()/1000,Speedrun.raidID))
+				SpeedRun_Score_Label:SetText(Speedrun.FormatRaidScore(score))
+		elseif Speedrun.isComplete == true then
+			-- in case trial is completed but player is only moving between areas inside the trial.
+				SpeedRun_Score_Label:SetText(Speedrun.finalScore)
+		end
 end
 
 function Speedrun.UpdateWindowPanel(waypoint, raid)
@@ -123,17 +125,32 @@ end
 function Speedrun.CreateRaidSegment(id)
     --Reset segment control
     Speedrun.segmentTimer = {}
+
+    local formatID = id
+    if type(formatID) == "string" then --for vMA
+				if GetZoneId(GetUnitZoneIndex("player")) == 667 then
+        		formatID = tonumber(string.sub(formatID,1,3))
+				elseif GetZoneId(GetUnitZoneIndex("player")) == 1227 then
+						formatID = tonumber(string.sub(formatID,1,4))
+				end
+        if Speedrun.raidList[id] == nil then
+            Speedrun.raidList[id] = Speedrun.raidList[formatID]
+            Speedrun.raidList[id].timerSteps = {}
+            Speedrun.savedVariables.raidList = Speedrun.raidList
+        end
+    end
+
     local raid = Speedrun.raidList[id]
-    SpeedRun_Timer_Container_Raid:SetText("|ce6b800" .. zo_strformat(SI_ZONE_NAME, GetZoneNameById(id)).. "|r")
-    -- SpeedRun_Timer_Container_Raid:SetColor("#e6b800")
-    for i, x in ipairs(Speedrun.stepList[id]) do
+    SpeedRun_Timer_Container_Raid:SetText("|ce6b800" .. zo_strformat(SI_ZONE_NAME, GetZoneNameById(formatID)).. "|r")
+    for i, x in ipairs(Speedrun.stepList[formatID]) do
         local segmentRow
         if WM:GetControlByName("SpeedRun_Segment", i) then
             segmentRow = WM:GetControlByName("SpeedRun_Segment", i)
         else
             segmentRow = WM:CreateControlFromVirtual("SpeedRun_Segment", SpeedRun_Timer_Container, "SpeedRun_Segment", i)
         end
-        segmentRow:GetNamedChild('_Name'):SetText(x);
+
+				segmentRow:GetNamedChild('_Name'):SetText(x);
         if Speedrun.GetSavedTimer(raid.id, i) then
             if i == 1 then
                 Speedrun.segmentTimer[i] = Speedrun.GetSavedTimer(raid.id, i)
@@ -141,10 +158,10 @@ function Speedrun.CreateRaidSegment(id)
                 Speedrun.segmentTimer[i] = Speedrun.GetSavedTimer(raid.id, i) + Speedrun.segmentTimer[i - 1]
             end
             segmentRow:GetNamedChild('_Best'):SetText(Speedrun.FormatRaidTimer(Speedrun.segmentTimer[i], true))
+
             bestPossibleTime = Speedrun.segmentTimer[i]
 						local bestTime = Speedrun.FormatRaidTimer(Speedrun.segmentTimer[i], true)
             SpeedRun_Advanced_BestPossible_Value:SetText(bestTime)
-		        -- SpeedRun_Score_Label:SetText(Speedrun.BestPossible(Speedrun.raidID))
         else
             if i == 1 then
                 Speedrun.segmentTimer[i] = 0
