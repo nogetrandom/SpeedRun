@@ -28,7 +28,8 @@ end
 function Speedrun.Simulate(raidID)
     local timer = 0
     for i, x in pairs(Speedrun.customTimerSteps[raidID]) do
-        if Speedrun.GetSavedTimer(raidID,i) then
+
+				if Speedrun.GetSavedTimer(raidID,i) then
             timer = math.floor(Speedrun.GetSavedTimer(raidID,i) / 1000) + timer
         end
     end
@@ -36,9 +37,11 @@ function Speedrun.Simulate(raidID)
     local vitality
     if raidID == 638 or raidID == 636 or raidID == 639 or raidID == 1082 or raidID == 635 then
         vitality = 24
-    elseif raidID == 725 or raidID == 975 or raidID == 1000 or raidID == 1051 or raidID == 1121 or raidID == 1196 then
+
+		elseif raidID == 725 or raidID == 975 or raidID == 1000 or raidID == 1051 or raidID == 1121 or raidID == 1196 then
         vitality = 36
-    elseif raidID == 677 or raidID == 1227 then
+
+		elseif raidID == 677 or raidID == 1227 then
         vitality = 15
     end
 
@@ -55,15 +58,18 @@ function Speedrun.Overwrite(raidID)
 		local formatID = raidID
 		if raidID == 677 or raidID == 1227 then  --for vMA
         formatID = raidID .. GetUnitName("player")
-        if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
+
+				if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
             formatID = raidID
         end
     end
+
 		for k, v in pairs(Speedrun.raidList[formatID]) do
 				if Speedrun.customTimerSteps[formatID][k] then
 						Speedrun.sV.raidList[formatID][k] = Speedrun.customTimerSteps[formatID][k]
 				end
 		end
+
 		if Speedrun.IsInTrialZone() then
 				ReloadUI("ingame")
 		end
@@ -73,11 +79,13 @@ function Speedrun.ResetData(raidID)
     local formatID = raidID
     if raidID == 677 or raidID == 1227 then  --for vMA
         formatID = raidID .. GetUnitName("player")
-        if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
+
+				if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
             formatID = raidID
         end
     end
-    if Speedrun.raidList[formatID].timerSteps then
+
+		if Speedrun.raidList[formatID].timerSteps then
         Speedrun.raidList[formatID].timerSteps = {}
         Speedrun.savedVariables.raidList = Speedrun.raidList
         ReloadUI("ingame")
@@ -86,9 +94,11 @@ end
 
 function Speedrun.CreateOptionTable(raidID, step)
     local formatID = raidID
-    if raidID == 677 or raidID == 1227 then  --for vMA
+
+		if raidID == 677 or raidID == 1227 then  --for vMA
         formatID = raidID .. GetUnitName("player")
-        if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
+
+				if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
             formatID = raidID
         end
     end
@@ -107,12 +117,15 @@ end
 
 function Speedrun.CreateRaidMenu(raidID)
     local raidMenu = {}
-    table.insert(raidMenu, {    type = "description",
-                                text = zo_strformat(SI_SPEEDRUN_RAID_DESC),
+
+		table.insert(raidMenu,
+		{   type = "description",
+				text = zo_strformat(SI_SPEEDRUN_RAID_DESC),
     })
 
     if raidID == 1051 then
-        table.insert(raidMenu, {type = "checkbox",
+        table.insert(raidMenu,
+				{		type = "checkbox",
             name = zo_strformat(SI_SPEEDRUN_ADDS_CR_NAME),
             tooltip = zo_strformat(SI_SPEEDRUN_ADDS_CR_DESC),
             default = true,
@@ -131,20 +144,21 @@ function Speedrun.CreateRaidMenu(raidID)
             [3] = zo_strformat(SI_SPEEDRUN_TWO),
             [4] = zo_strformat(SI_SPEEDRUN_THREE),
         }
-        table.insert(raidMenu, {type = "dropdown",
+        table.insert(raidMenu,
+				{		type = "dropdown",
             name = zo_strformat(SI_SPEEDRUN_HM_SS_NAME),
             tooltip = zo_strformat(SI_SPEEDRUN_HM_SS_DESC),
             choices = choices,
 						default = choices[4],
 						getFunc = function() return choices[Speedrun.savedVariables.hmOnSS] end,
 						setFunc = function(selected)
-							for index, name in ipairs(choices) do
-								if name == selected then
-									Speedrun.savedVariables.hmOnSS = index
-									Speedrun.hmOnSS = index
-									break
+								for index, name in ipairs(choices) do
+										if name == selected then
+												Speedrun.savedVariables.hmOnSS = index
+												Speedrun.hmOnSS = index
+												break
+										end
 								end
-							end
 						end,
         })
     end
@@ -152,37 +166,45 @@ function Speedrun.CreateRaidMenu(raidID)
     for i, x in ipairs(Speedrun.stepList[raidID]) do
         table.insert(raidMenu, Speedrun.CreateOptionTable(raidID, i))
     end
-    table.insert(raidMenu, {    type = "button",
-                                name = zo_strformat(SI_SPEEDRUN_SIMULATE_NAME),
-                                tooltip = zo_strformat(SI_SPEEDRUN_SIMULATE_DESC),
-                                func = function()
-                                    Speedrun.Simulate(raidID)
-                                end,
-                                width = "half",
+
+		table.insert(raidMenu,
+		{   type = "button",
+				name = zo_strformat(SI_SPEEDRUN_SIMULATE_NAME),
+        tooltip = zo_strformat(SI_SPEEDRUN_SIMULATE_DESC),
+        func = function()
+            Speedrun.Simulate(raidID)
+        end,
+        width = "half",
     })
-		table.insert(raidMenu, {    type = "button",
-                                name = "Apply Times",
-                                tooltip = "Overwrite current saved times with entered custom times",
-                                func = function()
-                                    Speedrun.Overwrite(raidID)
-                                end,
-                                width = "half",
-																isDangerous = true,
-                                warning = "Confirm Changes.\n|cff0000If you are currently in a trial you this will also reload ui|r  ",
+
+		table.insert(raidMenu,
+		{		type = "button",
+        name = "Apply Times",
+        tooltip = "Overwrite current saved times with entered custom times",
+        func = function()
+          	Speedrun.Overwrite(raidID)
+        end,
+        width = "half",
+				isDangerous = true,
+        warning = "Confirm Changes.\n|cff0000If you are currently in a trial you this will also reload ui|r  ",
     })
-    table.insert(raidMenu, {    type = "button",
-                                name = zo_strformat(SI_SPEEDRUN_RESET_NAME),
-                                tooltip = zo_strformat(SI_SPEEDRUN_RESET_DESC),
-                                func = function()
-                                    Speedrun.ResetData(raidID)
-                                end,
-                                width = "half",
-                                isDangerous = true,
-                                warning = zo_strformat(SI_SPEEDRUN_RESET_WARNING),
+
+		table.insert(raidMenu,
+		{		type = "button",
+        name = zo_strformat(SI_SPEEDRUN_RESET_NAME),
+        tooltip = zo_strformat(SI_SPEEDRUN_RESET_DESC),
+        func = function()
+            Speedrun.ResetData(raidID)
+        end,
+        width = "half",
+        isDangerous = true,
+        warning = zo_strformat(SI_SPEEDRUN_RESET_WARNING),
     })
-    return {    type = "submenu",
-                name = (zo_strformat(SI_ZONE_NAME, GetZoneNameById(raidID))),
-                controls = raidMenu,
+
+    return
+		{		type = "submenu",
+        name = (zo_strformat(SI_ZONE_NAME, GetZoneNameById(raidID))),
+        controls = raidMenu,
     }
 end
 -------------------------
@@ -193,7 +215,7 @@ function Speedrun.CreateSettingsWindow()
         type = "panel",
         name = "Speedrun",
         displayName = "Speed|cdf4242Run|r",
-        author = "Floliroy, Panaa, |cc0c0c0@|r|cff6666n|r|cc0c0c0oget|r|cff6666r|r|cc0c0c0andom|r",
+        author = "Floliroy, Panaa, @nogetrandom[PC/EU]",
         version = Speedrun.version,
         slashCommand = "/speed",
         registerForRefresh = true,
@@ -241,7 +263,8 @@ function Speedrun.CreateSettingsWindow()
                 Speedrun.SetUIHidden(newValue)
             end,
         },
-        -- {   type = "checkbox",
+        -- {   TODO
+				--		 type = "checkbox",
         --     name = "Simple Display",
         --     tooltip = "Display only score, vitality and timer",
         --     default = false,

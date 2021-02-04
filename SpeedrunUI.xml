@@ -1,6 +1,7 @@
 <GuiXml>
     <Controls>
 
+<!--	[[	Main Window ]]	-->
         <TopLevelControl name="SpeedRun_Timer_Container" mouseEnabled="true" movable="true" resizeToFitDescendents="true" hidden="true" clampedToScreen="true">
             <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="TOPLEFT" />
             <OnMoveStop>
@@ -23,6 +24,7 @@
             </Controls>
         </TopLevelControl>
 
+<!--	[[	Segments / Steps ]]	-->
         <Control name="SpeedRun_Segment" virtual="true" resizeToFitDescendents="true" hidden="true">
             <ResizeToFitPadding width="5" height="0" />
             <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="0" offsetY="10" />
@@ -42,6 +44,7 @@
             </Controls>
         </Control>
 
+<!--	[[	Timer Display ]]	-->
         <TopLevelControl name="SpeedRun_TotalTimer" mouseEnabled="true" movable="false" hidden="false">
             <Anchor point="TOPRIGHT" relativeTo="SpeedRun_Timer_Container" relativePoint="BOTTOMRIGHT" />
             <Controls>
@@ -51,6 +54,7 @@
             </Controls>
         </TopLevelControl>
 
+<!--	[[	Score Display ]]	-->
         <TopLevelControl name="SpeedRun_Score" mouseEnabled="true" movable="false" hidden="false">
             <Anchor point="TOPLEFT" relativeTo="SpeedRun_Timer_Container" relativePoint="BOTTOMLEFT" />
             <Controls>
@@ -60,6 +64,7 @@
             </Controls>
         </TopLevelControl>
 
+<!--	[[	Vitality Display	]]	-->
         <TopLevelControl name="SpeedRun_Vitality" mouseEnabled="true" movable="false" hidden="false">
             <Anchor point="CENTER" relativeTo="SpeedRun_Timer_Container" relativePoint="BOTTOM" />
             <Controls>
@@ -69,6 +74,8 @@
             </Controls>
         </TopLevelControl>
 
+<!-- 	[[	+ / - Seconds gained on Last step.
+					Updated "New Best Possible".	]]	-->
         <TopLevelControl name="SpeedRun_Advanced" resizeToFitDescendents="true" mouseEnabled="true" movable="false" hidden="true">
             <Anchor point="TOPRIGHT" relativeTo="SpeedRun_TotalTimer" relativePoint="BOTTOMRIGHT" offsetX="0" offsetY="-10"/>
 
@@ -97,10 +104,12 @@
             </Controls>
         </TopLevelControl>
 
+<!-- 	[[	Adds in VH.
+					Will most likely use this for other trials also. 	]]-->
 				<TopLevelControl name="SpeedRun_Adds" resizeToFitDescendents="true" mouseEnabled="true" movable="false" hidden="true">
 						<Dimensions x="280" y="0"/>
             <Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="SpeedRun_TotalTimer" offsetX="0" offsetY="80"/>
-
+						<!-- Small Adds -->
 						<Controls>
                 <Label name="$(parent)_SA_Counter" horizontalAlignment="RIGHT" font="ZoFontWinH5" text="0 / 68">
                     <Dimensions x="160" y="20"/>
@@ -113,6 +122,7 @@
                 </Label>
             </Controls>
 
+						<!-- Large Adds -->
 						<Controls>
 								<Label name="$(parent)_LA_Counter" horizontalAlignment="RIGHT" font="ZoFontWinH5" text="0 / 33">
 										<Dimensions x="160" y="20"/>
@@ -125,6 +135,7 @@
                 </Label>
             </Controls>
 
+						<!-- Elite Adds -->
 						<Controls>
 								<Label name="$(parent)_EA_Counter" horizontalAlignment="RIGHT" font="ZoFontWinH5" text="0 / 15">
                     <Dimensions x="160" y="20"/>
@@ -137,6 +148,8 @@
                 </Label>
             </Controls>
 
+
+<!-- 	[[	Used these for debugging 	]]	-->
 						<!-- <Controls>
 								<Label name="$(parent)_Boss1" horizontalAlignment="LEFT" font="ZoFontWinH5" text="|cffcc00Boss|r">
                     <Dimensions x="160" y="20"/>

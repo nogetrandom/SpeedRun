@@ -1,6 +1,6 @@
 ## Title: Speed|cdf4242Run|r
 ## APIVersion: 100033
-## Author: Floliroy, Panaa, @|cffbf00n|roget|cffbf00r|random
+## Author: Floliroy, Panaa, @nogetrandom[PC/EU]
 ## Version: 0.1.8.3
 ## DependsOn: LibAddonMenu-2.0
 ## SavedVariables: SpeedrunVariables

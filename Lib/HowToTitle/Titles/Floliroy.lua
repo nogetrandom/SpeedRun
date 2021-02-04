@@ -39,7 +39,7 @@ HTT:RegisterTitle("@SShortRound", nil, true, {en = "Still using Thrassians"}, {c
 HTT:RegisterTitle("@Tyreh", nil, 2467, {en = "Bread"}, {color="#ffb366", hidden = true})
 HTT:RegisterTitle("@Tyreh", nil, true, {en = "Brad"}, {color="#ffb366", hidden = true})
 HTT:RegisterTitle("@Pebbs", nil, true, {en = "Proper Northern Necro"}, {color="#cc66ff", hidden = true})
-HTT:RegisterTitle("@Porkkanalaatikko", nil, true, {en = "Healthy Sleep Schedule"}, {color={"#40C833", "#FF9900"}, hidden = true})
+HTT:RegisterTitle("@Porkkanalaatikko", nil, true, {en = "Healthy Sleep Schedule"}, {color="#f8db3a", hidden = true})
 HTT:RegisterTitle("@Saphorius", nil, true, {en = "Throwing for UA"}, {color="#df4242", hidden = true})
 
 -- Unchained Animals

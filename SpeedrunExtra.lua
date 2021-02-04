@@ -9,51 +9,52 @@ Speedrun.debugMode 						= 0
 ---- Functions    -------
 -------------------------
 function Speedrun.SlashCommand(command)
-    -- Debug Options ----------------------------------------------------------
+	  -- Debug Options ----------------------------------------------------------
     if command == "track 0" then
-        d(Speedrun.prefix .. "Tracking: Off")
+			  d(Speedrun.prefix .. "Tracking: Off")
         Speedrun.debugMode = 0
         Speedrun.savedVariables.debugMode = 0
-    elseif command == "track 1" then
-        d(Speedrun.prefix .. "Tracking: low (only checkpoints)")
+
+	  elseif command == "track 1" then
+			  d(Speedrun.prefix .. "Tracking: low (only checkpoints)")
         Speedrun.debugMode = 1
         Speedrun.savedVariables.debugMode = 1
+
 		elseif command == "track 2" then
-	      d(Speedrun.prefix .. "Tracking: high (all score updates)")
-	      Speedrun.debugMode = 2
-	      Speedrun.savedVariables.debugMode = 2
+			   d(Speedrun.prefix .. "Tracking: high (all score updates)")
+	       Speedrun.debugMode = 2
+	       Speedrun.savedVariables.debugMode = 2
+
 		-- UI Options -------------------------------------------------------------
+		elseif command == "move" or command == "lock" or command == "unlock" then
+				Speedrun.isMoveable = not Speedrun.isMoveable
+				Speedrun.savedVariables.isMoveable = Speedrun.isMoveable
+				Speedrun.ToggleMovable()
+
 		elseif command == "hide" or command == "show" then
 				Speedrun.uiIsHidden = not Speedrun.uiIsHidden
 				Speedrun.savedVariables.uiIsHidden = Speedrun.uiIsHidden
 				Speedrun.SetUIHidden(Speedrun.uiIsHidden)
+
 				if GetZoneId(GetUnitZoneIndex("player")) == 1227 then
 						Speedrun.addsAreHidden = not Speedrun.addsAreHidden
 						Speedrun.savedVariables.addsAreHidden = Speedrun.addsAreHidden
 						Speedrun.HideAdds(Speedrun.uiIsHidden)
 				end
-		elseif command == "lock" or command == "unlock" or command == "move" then
-				Speedrun.isMovable = not Speedrun.isMovable
-				Speedrun.savedVariables.isMovable =	Speedrun.isMovable
-				Speedrun.ToggleMovable()
+
 		-- Hide Group -------------------------------------------------------------
 		elseif command == "hg" or command == "hidegroup" then
 				Speedrun.HideGroupToggle()
-    -- Adds -------------------------------------------------------------------
+
+	  -- Adds -------------------------------------------------------------------
 		elseif command == "score" then
 				Speedrun.PrintScoreReasons()
+
 		elseif command == "lastscore" then
 				Speedrun.PrintLastScoreReasons()
+
 		-- Default ----------------------------------------------------------------
-
-		elseif command == "layers" then
-				d("Listing all action layers:")
-				for i = 1, GetNumActionLayers() do
- 						local name, categoryCount = GetActionLayerInfo(i)
- 						d(name)
-				end
-
-	  else
+    else
         d(Speedrun.prefix .. " Command not recognized!\n[ |cffffff/speed|r (|cffffffcommand|r) ] options are:\n[ |cfffffftrack|r |cffffff0|r - |cffffff2|r ] To post selection in chat.\n    [ |cffffff0|r ]: Only settings changes.\n    [ |cffffff1|r ]: Trial Checkpoint Updates.\n    [ |cffffff2|r ]: Every score update (adds included).\n[ |cffffffhg|r ] or [ |cffffffhidegroup|r ]: Toggle function on/off.\n[ |cffffffscore|r ]: List current trial score variables in chat")
     end
 end
@@ -104,8 +105,10 @@ end
 function Speedrun.PrintScoreReasons()
 		Speedrun:dbg(0, "Current Trial Score Factors:")
 		for k, v in pairs(Speedrun.scores) do
+
 				local score = Speedrun.scores[k]
 				if score.id ~= RAID_POINT_REASON_LIFE_REMAINING then
+
 						if score.times > 0 then
 								Speedrun:dbg(0,'|cdf4242' .. score.name .. '|r' .. ' x ' .. score.times .. ' = ' .. score.total .. ' points.')
 						end
@@ -121,6 +124,7 @@ function Speedrun.BestPossible(raidID)
 		local formatID = raidID
 		if raidID == 677 or raidID == 1227 then  --for vMA
 				formatID = raidID .. GetUnitName("player")
+
 				if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
 						formatID = raidID
 				end
@@ -130,14 +134,18 @@ function Speedrun.BestPossible(raidID)
 
 		do
 				if type(raidID) == "string" then --for vMA
+
 						if GetZoneId(GetUnitZoneIndex("player")) == 667 then
 								raidID = tonumber(string.sub(raidID,1,3))
+
 						elseif GetZoneId(GetUnitZoneIndex("player")) == 1227 then
 								raidID = tonumber(string.sub(raidID,1,4))
 						end
 				end
+
 				for i, x in pairs(Speedrun.customTimerSteps[raidID]) do
-	        	if Speedrun.GetSavedTimer(raidID,i) then
+
+						if Speedrun.GetSavedTimer(raidID,i) then
 	            	timer = math.floor(Speedrun.GetSavedTimer(raidID,i) / 1000) + timer
 	        	end
 	    	end
@@ -147,6 +155,7 @@ function Speedrun.BestPossible(raidID)
 		local vitality = vL or 0
     local score = tostring(math.floor(Speedrun.GetScore(timer, vitality, formatID)))
 
+		--TODO do this for all trials after getting facts
 		if raidID == 1051 then
 				score = score - 2250 + Speedrun.scores[3].total -- adds at side bosses in CR
 		end
@@ -157,7 +166,7 @@ function Speedrun.BestPossible(raidID)
     return score
 end
 
--- functions to use for debugging
+-- functions for debugging and maybe useful for new functions
 function Speedrun.SetLastTrial()
 		Speedrun.lastScores = Speedrun.scores
 		Speedrun.savedVariables.lastScores = Speedrun.lastScores
@@ -184,8 +193,10 @@ end
 function Speedrun.PrintLastScoreReasons()
 		Speedrun:dbg(0, "Last Trial Score Points:")
 		for k, v in pairs(Speedrun.lastScores) do
+
 				local lastScore = Speedrun.lastScores[k]
 				if lastScore.id ~= RAID_POINT_REASON_LIFE_REMAINING then
+
 						if lastScore.times > 0 then
 								Speedrun:dbg(0,'|cdf4242' .. lastScore.name .. '|r' .. ' x ' .. lastScore.times .. ' = ' .. lastScore.total .. ' points.')
 						end

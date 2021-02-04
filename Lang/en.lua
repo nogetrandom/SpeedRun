@@ -99,7 +99,7 @@
 	---- Menu Strings ----
 	----------------------
 	--Global --("/esoui/art/trials/vitalitydepletion.dds")
-	SI_SPEEDRUN_GLOBAL_DESC 						= "Below here you can calculate scores for each trial (without deaths).\nEach section will have options for each boss encounter:\n- Enter custom fight times (in seconds).\n- Leave the box blank to use your own best times recorded by SpeedRun.\n- Mouse over encounters to see your personnal best.",
+	SI_SPEEDRUN_GLOBAL_DESC 						= "Below here you can calculate scores for each trial (without deaths).\nEach section will have options for each boss encounter:\n- Enter custom fight times (in seconds).\n- Leave the box blank to use your own best times recorded by SpeedRun.\n- Mouse over encounters to see your personnal best.\n- Overwrite current best times with entered custom times",
 	SI_SPEEDRUN_AUTHOR_DESC							= "This addon is still a beta version and is currently being updated and maintained by a sub 70 IQ gamer with no education in programming.\nFeedback and suggestions are most welcome.\n@nogetrandom [PC-EU]",
 	SI_SPEEDRUN_ENABLE_NAME 						= "Enabled",
 	SI_SPEEDRUN_ENABLE_DESC 						= "Not working for now, it will always be enabled",
