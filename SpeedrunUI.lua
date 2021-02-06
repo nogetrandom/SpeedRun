@@ -54,6 +54,26 @@ function Speedrun.ToggleMovable()
     end
 end
 
+-- function Speedrun.ToggleUI(value)
+-- 		SpeedRun_Timer_Container:SetHidden(value)
+-- 		SpeedRun_TotalTimer_Title:SetHidden(value)
+-- 		SpeedRun_Vitality_Label:SetHidden(value)
+-- 		SpeedRun_Score_Label:SetHidden(value)
+-- 		SpeedRun_Advanced:SetHidden(value)
+-- 		Speedrun.uiIsHidden = value
+-- 		Speedrun.savedVariables.uiIsHidden = value
+--
+-- 		if GetZoneId(GetUnitZoneIndex("player")) == 1227 then
+-- 				SpeedRun_Adds:SetHidden(Speedrun.uiIsHidden)
+-- 				Speedrun.addsAreHidden = Speedrun.uiIsHidden
+-- 				Speedrun.savedVariables.addsAreHidden = Speedrun.uiIsHidden
+-- 		else
+-- 				SpeedRun_Adds:SetHidden(true)
+-- 				Speedrun.addsAreHidden = true
+-- 				Speedrun.savedVariables.addsAreHidden = true
+-- 		end
+-- end
+
 function Speedrun.SetUIHidden(hide)
     SpeedRun_Timer_Container:SetHidden(hide)
     SpeedRun_TotalTimer_Title:SetHidden(hide)

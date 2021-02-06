@@ -1,7 +1,7 @@
 Speedrun = Speedrun or {}
 local Speedrun = Speedrun
 
-Speedrun.slash      					= "/speed"
+Speedrun.slash      					= "/speed" or "/SPEED"
 Speedrun.prefix     					= "|cffffffSpeed|r|cdf4242Run|r: "
 Speedrun.debugMode 						= 0
 -- Speedrun.mapName 							= ""
@@ -9,48 +9,58 @@ Speedrun.debugMode 						= 0
 ---- Functions    -------
 -------------------------
 function Speedrun.SlashCommand(command)
+		local value
 	  -- Debug Options ----------------------------------------------------------
-    if command == "track 0" then
+    if command == "track 0" or command == "TRACK 0" then
 			  d(Speedrun.prefix .. "Tracking: Off")
         Speedrun.debugMode = 0
         Speedrun.savedVariables.debugMode = 0
 
-	  elseif command == "track 1" then
+	  elseif command == "track 1" or command == "TRACK 1" then
 			  d(Speedrun.prefix .. "Tracking: low (only checkpoints)")
         Speedrun.debugMode = 1
         Speedrun.savedVariables.debugMode = 1
 
-		elseif command == "track 2" then
+		elseif command == "track 2" or command == "TRACK 2" then
 			   d(Speedrun.prefix .. "Tracking: high (all score updates)")
 	       Speedrun.debugMode = 2
 	       Speedrun.savedVariables.debugMode = 2
 
 		-- UI Options -------------------------------------------------------------
-		elseif command == "move" or command == "lock" or command == "unlock" then
+		elseif command == "move" or command == "lock" or command == "MOVE" or command == "LOCK" then
+				Speedrun.ToggleMovable()
 				Speedrun.isMoveable = not Speedrun.isMoveable
 				Speedrun.savedVariables.isMoveable = Speedrun.isMoveable
-				Speedrun.ToggleMovable()
 
-		elseif command == "hide" or command == "show" then
-				Speedrun.uiIsHidden = not Speedrun.uiIsHidden
-				Speedrun.savedVariables.uiIsHidden = Speedrun.uiIsHidden
-				Speedrun.SetUIHidden(Speedrun.uiIsHidden)
+		elseif command == "hide" or command == "HIDE" then
+				value =	true
+				Speedrun.uiIsHidden = value
+				Speedrun.savedVariables.uiIsHidden = value
+				Speedrun.SetUIHidden(value)
 
 				if GetZoneId(GetUnitZoneIndex("player")) == 1227 then
-						Speedrun.addsAreHidden = not Speedrun.addsAreHidden
-						Speedrun.savedVariables.addsAreHidden = Speedrun.addsAreHidden
-						Speedrun.HideAdds(Speedrun.uiIsHidden)
+						Speedrun.HideAdds(value)
+				end
+
+		elseif command == "show" or command == "SHOW" then
+				value =	false
+				Speedrun.uiIsHidden = value
+				Speedrun.savedVariables.uiIsHidden = value
+				Speedrun.SetUIHidden(value)
+
+				if GetZoneId(GetUnitZoneIndex("player")) == 1227 then
+						Speedrun.HideAdds(Speedrun.savedVariables.addsAreHidden)
 				end
 
 		-- Hide Group -------------------------------------------------------------
-		elseif command == "hg" or command == "hidegroup" then
+		elseif command == "hg" or command == "HG" or command == "hidegroup" then
 				Speedrun.HideGroupToggle()
 
 	  -- Adds -------------------------------------------------------------------
-		elseif command == "score" then
+		elseif command == "score" or command == "SCORE" then
 				Speedrun.PrintScoreReasons()
 
-		elseif command == "lastscore" then
+		elseif command == "lastscore" or command == "LASTSCORE" then
 				Speedrun.PrintLastScoreReasons()
 
 		-- Default ----------------------------------------------------------------
@@ -131,29 +141,47 @@ function Speedrun.BestPossible(raidID)
 		end
 
 		local timer = 0
+		local raid = 0
 
 		do
-				if type(raidID) == "string" then --for vMA
+				if type(raidID) == "string" then --for MA and VH
 
 						if GetZoneId(GetUnitZoneIndex("player")) == 667 then
-								raidID = tonumber(string.sub(raidID,1,3))
+								raid = tonumber(string.sub(raidID,1,3))
 
 						elseif GetZoneId(GetUnitZoneIndex("player")) == 1227 then
-								raidID = tonumber(string.sub(raidID,1,4))
+								raid = tonumber(string.sub(raidID,1,4))
 						end
+
+						for i, x in pairs(Speedrun.customTimerSteps[raid]) do
+
+								if Speedrun.GetSavedTimer(raid,i) then
+			            	timer = math.floor(Speedrun.GetSavedTimer(raid,i) / 1000) + timer
+			        	end
+			    	end
+
+				else
+
+						for i, x in pairs(Speedrun.customTimerSteps[raidID]) do
+
+								if Speedrun.GetSavedTimer(raidID,i) then
+	            			timer = math.floor(Speedrun.GetSavedTimer(raidID,i) / 1000) + timer
+	        			end
+	    			end
 				end
-
-				for i, x in pairs(Speedrun.customTimerSteps[raidID]) do
-
-						if Speedrun.GetSavedTimer(raidID,i) then
-	            	timer = math.floor(Speedrun.GetSavedTimer(raidID,i) / 1000) + timer
-	        	end
-	    	end
 		end
 
-		local vL = GetRaidReviveCountersRemaining()
-		local vitality = vL or 0
-    local score = tostring(math.floor(Speedrun.GetScore(timer, vitality, formatID)))
+		local vitality = 0
+		if GetRaidReviveCountersRemaining() > 0 and GetRaidReviveCountersRemaining() ~= nil then
+				vitality = GetRaidReviveCountersRemaining()
+		end
+
+    local score = 0
+		if raidID == 1051 then
+				score = tostring(math.floor(Speedrun.GetScore(timer, vitality, 1051) - 2250 + Speedrun.scores[3].total)) -- adds at side bosses in CR
+		else
+			 	score = tostring(math.floor(Speedrun.GetScore(timer, vitality, formatID)))
+		end
 
 		--TODO do this for all trials after getting facts
 		if raidID == 1051 then

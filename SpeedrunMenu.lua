@@ -5,14 +5,9 @@ local LAM2 = LibAddonMenu2
 function Speedrun.GetTime(seconds)
     if seconds then
         if seconds < 3600 then
-            return string.format("%02d:%02d",
-                math.floor((seconds / 60) % 60),
-                seconds % 60)
+            return 	string.format("%02d:%02d", math.floor((seconds / 60) % 60), seconds % 60)
         else
-            return string.format("%02d:%02d:%02d",
-                math.floor(seconds / 3600),
-                math.floor((seconds / 60) % 60),
-                seconds % 60)
+            return string.format("%02d:%02d:%02d", math.floor(seconds / 3600), math.floor((seconds / 60) % 60), seconds % 60)
         end
     end
 end
@@ -215,7 +210,7 @@ function Speedrun.CreateSettingsWindow()
         type = "panel",
         name = "Speedrun",
         displayName = "Speed|cdf4242Run|r",
-        author = "Floliroy, Panaa, @nogetrandom[PC/EU]",
+        author = "Floliroy, Panaa, @nogetrandom [PC/EU]",
         version = Speedrun.version,
         slashCommand = "/speed",
         registerForRefresh = true,
@@ -231,14 +226,11 @@ function Speedrun.CreateSettingsWindow()
             name = "Enable Tracking",--zo_strformat(SI_SPEEDRUN_ENABLE_NAME),
             tooltip = "Turn trial time and score tracking on / off",--zo_strformat(SI_SPEEDRUN_ENABLE_DESC),
             default = true,
-						isDangerous = true,
-						warning = "Changing this will reload UI.",
-            getFunc = function() return Speedrun.isTracking end,
+						-- isDangerous = true,
+						-- warning = "If you are in a trial, then data from current instance will be lost.",
+            getFunc = function() return Speedrun.savedVariables.isTracking end,
             setFunc = function(newValue)
-								Speedrun.isTracking = newValue
-								Speedrun.savedVariables.isTracking = newValue
-								Speedrun.Tracking()
-								ReloadUI("ingame")
+								Speedrun.ToggleTracking()
             end,
         },
         {   type = "checkbox",
