@@ -2,6 +2,77 @@ Speedrun = Speedrun or {}
 local Speedrun = Speedrun
 local LAM2 = LibAddonMenu2
 
+function Speedrun:GetProfileNames()
+		local profiles = {}
+		for name, v in pairs(Speedrun.savedVariables.profiles) do
+				table.insert(profiles, name)
+		end
+		return profiles
+end
+
+function Speedrun.AddProfile()
+		local name = Speedrun_ProfileEditbox.editbox:GetText()
+		Speedrun:dbg(0, "Adding new profile [<<1>>]", name)
+
+		if name == "Default" then return end
+		if Speedrun.savedVariables.profiles[name] ~= nil then
+				Speedrun:dbg(0, "Profile [".. name .."] Already Exist!")
+				return
+		end
+
+		if (name ~= "") then
+				Speedrun.savedVariables.profiles[name] = Speedrun.GetDefaultProfile()
+				Speedrun.savedVariables.activeProfile = name
+				-- Update the dropbox
+				Speedrun_ProfileDropdown:UpdateChoices(Speedrun:GetProfileNames())
+				Speedrun.LoadProfile(name)
+		else
+				Speedrun:dbg(0, "Failed to add profile!")
+		end
+end
+
+function Speedrun.DeleteProfile()
+		local name = Speedrun_ProfileDropdown.data.getFunc()
+		Speedrun:dbg(0, "Deleting profile: [<<1>>]", name)
+
+		-- "Default" profile can't be deleted
+		if name == "Default" then
+				Speedrun:dbg(0, "Profile [Default] cannot deleted!")
+				return
+		end
+
+		-- update profile vars
+		local new_list = { }
+		for k, v in pairs(Speedrun.savedVariables.profiles) do
+				if name ~= k then
+						new_list[k] = v
+				end
+		end
+		Speedrun.savedVariables.profiles = new_list
+
+		-- set "Default" as active
+		Speedrun.LoadProfile("Default")
+		-- update dropdown
+		Speedrun_ProfileDropdown:UpdateChoices(Speedrun:GetProfileNames())
+end
+
+function Speedrun.LoadProfile(name)
+		Speedrun:dbg(0, "Loading profile: [<<1>>]", name)
+		if Speedrun.savedVariables.profiles[name] == nil then
+				return
+		end
+		Speedrun.savedVariables.activeProfile = name
+		Speedrun.RefreshData()
+end
+
+function Speedrun.RefreshData()
+		Speedrun:dbg(2, "Updating Menu")
+		Speedrun.customTimerSteps = Speedrun.savedVariables.activeProfile.customTimerSteps
+		Speedrun.raidList = Speedrun.savedVariables.activeProfile.raidList
+		Speedrun.addsOnCR = Speedrun.savedVariables.activeProfile.addsOnCR
+		Speedrun.hmOnSS = Speedrun.savedVariables.activeProfile.hmOnSS
+end
+
 function Speedrun.GetTime(seconds)
     if seconds then
         if seconds < 3600 then
@@ -51,7 +122,8 @@ end
 
 function Speedrun.Overwrite(raidID)
 		local formatID = raidID
-		if raidID == 677 or raidID == 1227 then  --for vMA
+		-- For MA and VH
+		if raidID == 677 or raidID == 1227 then
         formatID = raidID .. GetUnitName("player")
 
 				if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
@@ -61,7 +133,7 @@ function Speedrun.Overwrite(raidID)
 
 		for k, v in pairs(Speedrun.raidList[formatID]) do
 				if Speedrun.customTimerSteps[formatID][k] then
-						Speedrun.sV.raidList[formatID][k] = Speedrun.customTimerSteps[formatID][k]
+						Speedrun.savedVariables.profiles[Speedrun.activeProfile].raidList[formatID][k] = Speedrun.customTimerSteps[formatID][k]
 				end
 		end
 
@@ -72,7 +144,8 @@ end
 
 function Speedrun.ResetData(raidID)
     local formatID = raidID
-    if raidID == 677 or raidID == 1227 then  --for vMA
+		-- For MA and VH
+    if raidID == 677 or raidID == 1227 then
         formatID = raidID .. GetUnitName("player")
 
 				if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
@@ -82,7 +155,7 @@ function Speedrun.ResetData(raidID)
 
 		if Speedrun.raidList[formatID].timerSteps then
         Speedrun.raidList[formatID].timerSteps = {}
-        Speedrun.savedVariables.raidList = Speedrun.raidList
+        Speedrun.savedVariables.profiles[Speedrun.activeProfile].raidList = Speedrun.raidList
         ReloadUI("ingame")
     end
 end
@@ -90,7 +163,8 @@ end
 function Speedrun.CreateOptionTable(raidID, step)
     local formatID = raidID
 
-		if raidID == 677 or raidID == 1227 then  --for vMA
+		-- For MA and VH
+		if raidID == 677 or raidID == 1227 then
         formatID = raidID .. GetUnitName("player")
 
 				if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
@@ -104,7 +178,7 @@ function Speedrun.CreateOptionTable(raidID, step)
             default = "",
             getFunc = function() return tostring(Speedrun.customTimerSteps[raidID][step]) end,
             setFunc = function(newValue)
-                Speedrun.savedVariables.customTimerSteps[raidID][step] = newValue
+                Speedrun.savedVariables.profiles[Speedrun.activeProfile].customTimerSteps[raidID][step] = newValue
                 Speedrun.customTimerSteps[raidID][step] = newValue
             end,
     }
@@ -124,9 +198,9 @@ function Speedrun.CreateRaidMenu(raidID)
             name = zo_strformat(SI_SPEEDRUN_ADDS_CR_NAME),
             tooltip = zo_strformat(SI_SPEEDRUN_ADDS_CR_DESC),
             default = true,
-            getFunc = function() return Speedrun.savedVariables.addsOnCR end,
+            getFunc = function() return Speedrun.savedVariables.profiles[Speedrun.activeProfile].addsOnCR end,
             setFunc = function(newValue)
-                Speedrun.savedVariables.addsOnCR = newValue
+                Speedrun.savedVariables.profiles[Speedrun.activeProfile].addsOnCR = newValue
                 Speedrun.addsOnCR = newValue
             end,
         })
@@ -145,11 +219,11 @@ function Speedrun.CreateRaidMenu(raidID)
             tooltip = zo_strformat(SI_SPEEDRUN_HM_SS_DESC),
             choices = choices,
 						default = choices[4],
-						getFunc = function() return choices[Speedrun.savedVariables.hmOnSS] end,
+						getFunc = function() return choices[Speedrun.savedVariables.profiles[Speedrun.activeProfile].hmOnSS] end,
 						setFunc = function(selected)
 								for index, name in ipairs(choices) do
 										if name == selected then
-												Speedrun.savedVariables.hmOnSS = index
+												Speedrun.savedVariables.profiles[Speedrun.activeProfile].hmOnSS = index
 												Speedrun.hmOnSS = index
 												break
 										end
@@ -169,6 +243,12 @@ function Speedrun.CreateRaidMenu(raidID)
         func = function()
             Speedrun.Simulate(raidID)
         end,
+        width = "half",
+    })
+
+		table.insert(raidMenu,
+		{   type = "description",
+				name = "",
         width = "half",
     })
 
@@ -210,20 +290,18 @@ function Speedrun.CreateSettingsWindow()
         type = "panel",
         name = "Speedrun",
         displayName = "Speed|cdf4242Run|r",
-        author = "Floliroy, Panaa, @nogetrandom [PC/EU]",
+        author = "Floliroy, Panaa, @nogetrandom [PC-EU]",
         version = Speedrun.version,
         slashCommand = "/speed",
         registerForRefresh = true,
-        registerForDefaults = true,
+        -- registerForDefaults = true,
     }
     local cntrlOptionsPanel = LAM2:RegisterAddonPanel("Speedrun_Settings", panelData)
     local optionsData = {
         {   type = "divider",
         },
-        -- {   type = "divider",
-        -- },
-        {   type = "checkbox",
-            name = "Enable Tracking",--zo_strformat(SI_SPEEDRUN_ENABLE_NAME),
+        {   type = "checkbox",	-- Tracking
+			      name = "Enable Tracking",--zo_strformat(SI_SPEEDRUN_ENABLE_NAME),
             tooltip = "Turn trial time and score tracking on / off",--zo_strformat(SI_SPEEDRUN_ENABLE_DESC),
             default = true,
 						-- isDangerous = true,
@@ -233,7 +311,9 @@ function Speedrun.CreateSettingsWindow()
 								Speedrun.ToggleTracking()
             end,
         },
-        {   type = "checkbox",
+				{   type = "divider",
+				},
+        {   type = "checkbox",	-- UI unlock / lock
             name = zo_strformat(SI_SPEEDRUN_LOCK_NAME),
             tooltip = zo_strformat(SI_SPEEDRUN_LOCK_DESC),
             default = true,
@@ -243,8 +323,9 @@ function Speedrun.CreateSettingsWindow()
                 Speedrun.savedVariables.isMovable = newValue
                 Speedrun.ToggleMovable()
             end,
+						width = "half",
         },
-        {   type = "checkbox",
+        {   type = "checkbox",	-- UI show / hide
             name = zo_strformat(SI_SPEEDRUN_ENABLEUI_NAME),
             tooltip = zo_strformat(SI_SPEEDRUN_ENABLEUI_DESC),
             default = true,
@@ -254,6 +335,7 @@ function Speedrun.CreateSettingsWindow()
                 Speedrun.savedVariables.uiIsHidden = newValue
                 Speedrun.SetUIHidden(newValue)
             end,
+						width = "half",
         },
         -- {   TODO
 				--		 type = "checkbox",
@@ -267,11 +349,53 @@ function Speedrun.CreateSettingsWindow()
         --         Speedrun.ToggleUISimple(newValue)
         --     end,
         -- },
-        {
-            type = "header",
+				-- {   type = "header",
+        --     name = "Profile Options",
+				-- },
+				{	  type = "submenu",		-- Profile Options
+						name = "Profile Options",
+						controls = {
+								{		type = "editbox",		-- Create New Profile
+										name = "Create New Profile",
+										tooltip = "Write the name of the new profile and click the Save button to confirm",
+										getFunc = function() return Speedrun.savedVariables.activeProfile end,
+										setFunc = function(value) end,
+										reference = "Speedrun_ProfileEditbox",
+										-- width = "half",
+								},
+								{		type = "button",		-- Save
+										name = "Save",
+										func = Speedrun.AddProfile,
+										-- width = "half",
+								},
+								{		type = 'dropdown',	-- Load Profile
+										name = "Load Profile",
+										choices = Speedrun:GetProfileNames(),
+										getFunc = function() return Speedrun.savedVariables.activeProfile end,
+										setFunc = function(value)
+												Speedrun.LoadProfile(value)
+										end,
+										scrollable = 12,
+										reference = "Speedrun_ProfileDropdown",
+										-- width = "half",
+								},
+								-- {		type = "description",
+								-- 		text = "",
+								-- 		width = "half",
+								-- },
+								{		type = "button",		-- Delete Profile
+										name = "Delete Profile",
+										func = Speedrun.DeleteProfile,
+										isDangerous = true,
+										warning = "This can't be undone. Are you sure?",
+										-- width = "half",
+								},
+						},
+				},
+				{   type = "header",
             name = "Score Simulator and Records",
         },
-        {   type = "submenu",
+        {   type = "submenu", 	-- info
             name = "info",
             controls = {
 		            {   type = "description",
@@ -297,7 +421,7 @@ function Speedrun.CreateSettingsWindow()
 								},
           	},
         },
-        {   type = "submenu",
+        {   type = "submenu",		-- Trials
             name = "Trials",
             controls = {
 				        Speedrun.CreateRaidMenu(638),
@@ -311,7 +435,7 @@ function Speedrun.CreateSettingsWindow()
 				        Speedrun.CreateRaidMenu(1196),
           	},
         },
-        {   type = "submenu",
+        {   type = "submenu",		-- Arenas
             name = "Arenas",
             controls = {
 								{   type = "checkbox",

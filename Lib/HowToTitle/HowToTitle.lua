@@ -71,7 +71,7 @@ local HowToTitle = HowToTitle
 
 local HTT = HowToTitle
 HTT.name = "HowToTitle"
-HTT.version = 23
+HTT.version = 23.1
 if HTCT or HowToCustomTitle then
 	zo_callLater(function()
 		HowToCustomTitleModules = {}
@@ -79,20 +79,17 @@ if HTCT or HowToCustomTitle then
 end
 if not HTT then return end
 --
+local function RegisterTitle(module, ...)
+	table.insert(module.titles, {...})
+end
+
 HowToTitleModules = HowToTitleModules or {}
 function HowToTitle:RegisterModule(name, version)
 
 	local module = HowToTitleModules[name]
-	local m
-	if module then
-		for name, v in pairs(HowToTitleModules) do
-			if module.version then
-				m = module
-			end
-			if module == m and version < m.version then
-				return nil
-			end
-		end
+
+	if (module and module.version) and (module.version > version) then
+		return nil
 	end
 
 	module = {}

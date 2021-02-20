@@ -3,71 +3,149 @@ local Speedrun = Speedrun
 -------------------
 ---- Raid List ----
 -------------------
-Speedrun.raidList = {
+Speedrun.defaultRaidList = {
     [638] = {
         name = "AA",
         id = 638,
         timerSteps = {},
+				scoreFactors = {
+						vitality = 0,
+						bestTime = nil,
+						bestScore = 0,
+						scoreReasons = {},
+				},
     },
     [636] = {
         name = "HRC",
         id = 636,
-        timerSteps = {},
+				timerSteps = {},
+				scoreFactors = {
+						vitality = 0,
+						bestTime = nil,
+						bestScore = 0,
+						scoreReasons = {},
+				},
     },
     [639] = {
         name = "SO",
         id = 639,
-        timerSteps = {},
+				timerSteps = {},
+				scoreFactors = {
+						vitality = 0,
+						bestTime = nil,
+						bestScore = 0,
+						scoreReasons = {},
+				},
     },
     [725] = {
         name = "MoL",
         id = 725,
-        timerSteps = {},
+				timerSteps = {},
+				scoreFactors = {
+						vitality = 0,
+						bestTime = nil,
+						bestScore = 0,
+						scoreReasons = {},
+				},
     },
     [975] = {
         name = "HoF",
         id = 975,
-        timerSteps = {},
+				timerSteps = {},
+				scoreFactors = {
+						vitality = 0,
+						bestTime = nil,
+						bestScore = 0,
+						scoreReasons = {},
+				},
     },
     [1000] = {
         name = "AS",
         id = 1000,
-        timerSteps = {},
+				timerSteps = {},
+				scoreFactors = {
+						vitality = 0,
+						bestTime = nil,
+						bestScore = 0,
+						scoreReasons = {},
+				},
     },
     [1051] = {
         name = "CR",
         id = 1051,
-        timerSteps = {},
+				timerSteps = {},
+				scoreFactors = {
+						vitality = 0,
+						bestTime = nil,
+						bestScore = 0,
+						scoreReasons = {},
+				},
     },
     [1121] = {
         name = "SS",
         id = 1121,
-        timerSteps = {},
+				timerSteps = {},
+				scoreFactors = {
+						vitality = 0,
+						bestTime = nil,
+						bestScore = 0,
+						scoreReasons = {},
+				},
     },
     [1196] = {
         name = "KA",
         id = 1196,
-        timerSteps = {},
+				timerSteps = {},
+				scoreFactors = {
+						vitality = 0,
+						bestTime = nil,
+						bestScore = 0,
+						scoreReasons = {},
+				},
     },
     [1082] = {
         name = "BRP",
         id = 1082,
-        timerSteps = {},
-    },
-    [677] = {
-        name = "MA",
-        id = 677,
-        timerSteps = {},
+				timerSteps = {},
+				scoreFactors = {
+						vitality = 0,
+						bestTime = nil,
+						bestScore = 0,
+						scoreReasons = {},
+				},
     },
     [635] = {
         name = "DSA",
         id = 635,
-        timerSteps = {},
+				timerSteps = {},
+				scoreFactors = {
+						vitality = 0,
+						bestTime = nil,
+						bestScore = 0,
+						scoreReasons = {},
+				},
     },
+		[677] = {
+				name = "MA",
+				id = 677,
+				timerSteps = {},
+				scoreFactors = {
+						vitality = 0,
+						bestTime = nil,
+						bestScore = 0,
+						scoreReasons = {},
+				},
+		},
 		[1227] = {
 				name = "VH",
 				id = 1227,
 				timerSteps = {},
+				scoreFactors = {
+						vitality = 0,
+						bestTime = nil,
+						bestScore = 0,
+						scoreReasons = {},
+				},
 		},
 }
 
@@ -86,7 +164,7 @@ Speedrun.raidList = {
 -----------------------
 ---- Custom Timers ----
 -----------------------
-Speedrun.customTimerSteps = {
+Speedrun.defaultCustomTimerSteps = {
     [638] = { --AA
         [1] = "",
         [2] = "",
