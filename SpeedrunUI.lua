@@ -16,6 +16,11 @@ function Speedrun.SaveLoc()
     Speedrun.savedVariables["speedrun_container_OffsetY"] = SpeedRun_Timer_Container:GetTop()
 end
 
+function Speedrun.GetActiveProfileDisplay()
+		local profileDisplay = zo_strformat("[ |cffdf80" .. Speedrun.savedSettings.activeProfile .. "|r ]")
+		return profileDisplay
+end
+
 function Speedrun.ResetUI()
     SpeedRun_Timer_Container:SetHeight(0)
     SpeedRun_TotalTimer_Title:SetText(" ")
@@ -46,12 +51,14 @@ function Speedrun.ToggleMovable()
     local self = Speedrun
     if not Speedrun.isMovable then
         SpeedRun_Timer_Container:SetMovable(true)
-        Speedrun.SetUIHidden(false)
-				Speedrun.HideAdds(false)
+				-- if Speedrun.savedVariables.uiIsHidden ~= true then
+						Speedrun.SetUIHidden(false)
+				-- end
     else
         SpeedRun_Timer_Container:SetMovable(false)
-        Speedrun.SetUIHidden(true)
-				Speedrun.HideAdds(true)
+				if Speedrun.savedVariables.uiIsHidden == true then
+						Speedrun.SetUIHidden(true)
+				end
     end
 end
 
@@ -67,11 +74,11 @@ end
 -- 		if GetZoneId(GetUnitZoneIndex("player")) == 1227 then
 -- 				SpeedRun_Adds:SetHidden(Speedrun.uiIsHidden)
 -- 				Speedrun.addsAreHidden = Speedrun.uiIsHidden
--- 				Speedrun.savedVariables.addsAreHidden = Speedrun.uiIsHidden
+-- 				Speedrun.savedSettings.addsAreHidden = Speedrun.uiIsHidden
 -- 		else
 -- 				SpeedRun_Adds:SetHidden(true)
 -- 				Speedrun.addsAreHidden = true
--- 				Speedrun.savedVariables.addsAreHidden = true
+-- 				Speedrun.savedSettings.addsAreHidden = true
 -- 		end
 -- end
 
@@ -80,7 +87,13 @@ function Speedrun.SetUIHidden(hide)
     SpeedRun_TotalTimer_Title:SetHidden(hide)
     SpeedRun_Vitality_Label:SetHidden(hide)
     SpeedRun_Score_Label:SetHidden(hide)
+		SpeedRun_Profile_Label:SetHidden(hide)
     SpeedRun_Advanced:SetHidden(hide)
+		if (GetUnitZone("player") == 1227 and Speedrun.savedVariables.addsAreHidden ~= true) then
+				SpeedRun_Adds:SetHidden(false)
+		else
+				SpeedRun_Adds:SetHidden(true)
+		end
 end
 
 function Speedrun.SetUIHidden(hide)
@@ -89,7 +102,13 @@ function Speedrun.SetUIHidden(hide)
         SpeedRun_TotalTimer_Title:SetHidden(hide)
         SpeedRun_Vitality_Label:SetHidden(hide)
         SpeedRun_Score_Label:SetHidden(hide)
+				SpeedRun_Profile_Label:SetHidden(hide)
         SpeedRun_Advanced:SetHidden(hide)
+				if (GetUnitZone("player") == 1227 and Speedrun.savedVariables.addsAreHidden ~= true) then
+						SpeedRun_Adds:SetHidden(false)
+				else
+						SpeedRun_Adds:SetHidden(true)
+				end
     end
 end
 
@@ -179,8 +198,12 @@ function Speedrun.CreateRaidSegment(id)
         end
     end
 
+		SpeedRun_Profile_Label:SetText(Speedrun.GetActiveProfileDisplay())
+
     local raid = Speedrun.raidList[id]
-    SpeedRun_Timer_Container_Raid:SetText("|ce6b800" .. zo_strformat(SI_ZONE_NAME, GetZoneNameById(formatID)).. "|r")
+		SpeedRun_Timer_Container_Raid:SetText("|ce6b800" .. zo_strformat(SI_ZONE_NAME, GetZoneNameById(formatID)).. "|r")
+
+		-- SpeedRun_Timer_Container_Raid:SetText("|ce6b800"..zo_strformat(SI_ZONE_NAME, GetZoneNameById(formatID)).." |r "..Speedrun.GetActiveProfileDisplay())
 
 		for i, x in ipairs(Speedrun.stepList[formatID]) do
 
@@ -228,6 +251,13 @@ function Speedrun.CreateRaidSegment(id)
     end
 
 	  Speedrun.SetUIHidden(false)
+
+		if (GetUnitZone("player") == 1227 and Speedrun.savedVariables.addsAreHidden ~= true) then
+				SpeedRun_Adds:SetHidden(false)
+		else
+				SpeedRun_Adds:SetHidden(true)
+		end
+
     SpeedRun_Timer_Container_Title:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
     SpeedRun_Timer_Container_Raid:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
 

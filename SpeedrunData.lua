@@ -3,7 +3,7 @@ local Speedrun = Speedrun
 -------------------
 ---- Raid List ----
 -------------------
-Speedrun.defaultRaidList = {
+Speedrun.raidList = {
     [638] = {
         name = "AA",
         id = 638,
@@ -164,7 +164,7 @@ Speedrun.defaultRaidList = {
 -----------------------
 ---- Custom Timers ----
 -----------------------
-Speedrun.defaultCustomTimerSteps = {
+Speedrun.customTimerSteps = {
     [638] = { --AA
         [1] = "",
         [2] = "",

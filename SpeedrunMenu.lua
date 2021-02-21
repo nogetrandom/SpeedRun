@@ -1,6 +1,58 @@
 Speedrun = Speedrun or {}
 local Speedrun = Speedrun
 local LAM2 = LibAddonMenu2
+local wm = WINDOW_MANAGER
+----------------------------------------------------------------------------------------------------------
+------------------------------------[ 		PROFILE    ]----------------------------------------------------
+----------------------------------------------------------------------------------------------------------
+local profileToAdd 					= ""
+local profileToLoad 				= ""
+local profileToDelete 			= ""
+-- local profileToCopyFrom 		= ""
+-- local profileToCopyTo 			= ""
+
+-- function Speedrun.CreateProfileDescriptionTitle()
+-- 		local parent = Speedrun_ProfileSubmenu
+-- 		local data = {
+-- 				type = "description"
+-- 		}
+-- 		local name = "Speedrun_ActiveProfileDecriptionTitle"
+-- 		local control = LAM2.util.CreateBaseControl(parent, data, name)
+-- 		-- local control = wm:CreateControl(name, parent, CT_CONTROL)
+-- 		local width = (parent:GetWidth() - 60) / 2	--225
+--
+-- 		control:SetWidth(width)
+-- 		control:SetResizeToFitDescendents(true)
+-- 		control:SetDimensionConstraints(width, 0, width, 0)
+--
+-- 		control.title =	wm:CreateControl(nil, control, CT_LABEL)
+-- 		local title = control.title
+-- 		title:SetWidth(width)
+-- 		title:SetAnchor(TOPLEFT, control, TOPLEFT)
+-- 		title:SetFont("ZoFontWinH4")
+-- 		title:SetText("Currently Active Profile:")
+--
+-- 		return control
+-- end
+--
+-- function Speedrun.CreateProfileDescriptionDisplay()
+-- 		local parent = "Speedrun_ProfileSubmenu"
+-- 		local name = "Speedrun_ActiveProfileDecriptionName"
+-- 		local control = wm:CreateControl(name, parent, CT_CONTROL)
+-- 		local width = 225
+--
+-- 		control:SetWidth(width)
+-- 		control:SetResizeToFitDescendents(true)
+-- 		control:SetDimensionConstraints(width, 0, width, 0)
+--
+-- 		local title = wm:CreateControl(nil, control, CT_LABEL)
+-- 		title:SetWidth(width)
+-- 		title:SetAnchor(TOPRIGHT, control, TOPRIGHT)
+-- 		title:SetFont("ZoFontWinH4")
+-- 		title:SetText(Speedrun.GetActiveProfileDisplay())
+--
+-- 		return control
+-- end
 
 function Speedrun:GetProfileNames()
 		local profiles = {}
@@ -9,6 +61,16 @@ function Speedrun:GetProfileNames()
 		end
 		return profiles
 end
+
+-- function Speedrun:GetProfileNamesToCopyTo()
+-- 		local profilesToCopyTo = {}
+-- 		for name, v in pairs(Speedrun.savedVariables.profiles) do
+-- 				if name ~= profileToCopyFrom then
+-- 						table.insert(profilesToCopyTo, name)
+-- 				end
+-- 		end
+-- 		return profilesToCopyTo
+-- end
 
 function Speedrun.AddProfile()
 		local name = Speedrun_ProfileEditbox.editbox:GetText()
@@ -22,18 +84,40 @@ function Speedrun.AddProfile()
 
 		if (name ~= "") then
 				Speedrun.savedVariables.profiles[name] = Speedrun.GetDefaultProfile()
-				Speedrun.savedVariables.activeProfile = name
+				Speedrun.savedSettings.activeProfile = name
+				Speedrun.activeProfile = name
 				-- Update the dropbox
 				Speedrun_ProfileDropdown:UpdateChoices(Speedrun:GetProfileNames())
+				Speedrun_ProfileDeleteDropdown:UpdateChoices(Speedrun:GetProfileNames())
+				-- Speedrun_ProfileCopyFrom:UpdateChoices(Speedrun:GetProfileNames())
+				-- Speedrun_ProfileCopyTo:UpdateChoices(Speedrun:GetProfileNamesToCopyTo())
+				Speedrun_ProfileImportTo:UpdateChoices(Speedrun:GetProfileNames())
 				Speedrun.LoadProfile(name)
 		else
 				Speedrun:dbg(0, "Failed to add profile!")
 		end
+		profileToAdd = ""
 end
 
-function Speedrun.DeleteProfile()
-		local name = Speedrun_ProfileDropdown.data.getFunc()
+-- function Speedrun.CopyProfile(from, to)
+-- 		for k, v in pairs(Speedrun.savedVariables.profiles) do
+-- 				if Speedrun.savedVariables.profiles[k] == to then
+-- 						Speedrun.savedVariables.profiles[k] = {}
+-- 						Speedrun.savedVariables.profiles[k] = Speedrun.savedVariables.profiles[from]
+-- 				end
+-- 		end
+-- 		if (Speedrun.savedVariables.profiles[to] == Speedrun.savedSettings.activeProfile and Speedrun.IsInTrialZone()) then
+-- 				ReloadUI("ingame")
+-- 		end
+-- 		profileToCopyFrom = ""
+-- 		profileToCopyTo = ""
+-- end
+
+function Speedrun.DeleteProfile(name)
+		local name = profileToDelete	-- = Speedrun_ProfileDeleteDropdown.data.getFunc() -- profileToDelete
 		Speedrun:dbg(0, "Deleting profile: [<<1>>]", name)
+
+		local setDefault = profileToDelete == Speedrun.activeProfile and true or false
 
 		-- "Default" profile can't be deleted
 		if name == "Default" then
@@ -50,10 +134,14 @@ function Speedrun.DeleteProfile()
 		end
 		Speedrun.savedVariables.profiles = new_list
 
-		-- set "Default" as active
-		Speedrun.LoadProfile("Default")
+		-- set "Default" as active if deleted profile was active
+		if setDefault == true then
+				Speedrun.LoadProfile("Default")
+		end
+		profileToDelete = ""
 		-- update dropdown
 		Speedrun_ProfileDropdown:UpdateChoices(Speedrun:GetProfileNames())
+		Speedrun_ProfileDeleteDropdown:UpdateChoices(Speedrun:GetProfileNames())
 end
 
 function Speedrun.LoadProfile(name)
@@ -61,18 +149,33 @@ function Speedrun.LoadProfile(name)
 		if Speedrun.savedVariables.profiles[name] == nil then
 				return
 		end
-		Speedrun.savedVariables.activeProfile = name
-		Speedrun.RefreshData()
+
+		Speedrun.activeProfile = name
+		Speedrun.savedSettings.activeProfile = name
+
+		profileToLoad = ""
+
+		if Speedrun.IsInTrialZone() then
+				ReloadUI("ingame")
+		else
+				Speedrun.RefreshProfileSettings()
+		end
 end
 
-function Speedrun.RefreshData()
+local function GetActiveProfileName()
+		return Speedrun.activeProfile
+end
+
+function Speedrun.RefreshProfileSettings()
 		Speedrun:dbg(2, "Updating Menu")
-		Speedrun.customTimerSteps = Speedrun.savedVariables.activeProfile.customTimerSteps
-		Speedrun.raidList = Speedrun.savedVariables.activeProfile.raidList
-		Speedrun.addsOnCR = Speedrun.savedVariables.activeProfile.addsOnCR
-		Speedrun.hmOnSS = Speedrun.savedVariables.activeProfile.hmOnSS
+		Speedrun.customTimerSteps = Speedrun.savedVariables.profiles[Speedrun.activeProfile].customTimerSteps
+		Speedrun.raidList = Speedrun.savedVariables.profiles[Speedrun.activeProfile].raidList
+		Speedrun.addsOnCR = Speedrun.savedVariables.profiles[Speedrun.activeProfile].addsOnCR
+		Speedrun.hmOnSS = Speedrun.savedVariables.profiles[Speedrun.activeProfile].hmOnSS
 end
-
+----------------------------------------------------------------------------------------------------------
+------------------------------------[ 		TRIAL    ]------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
 function Speedrun.GetTime(seconds)
     if seconds then
         if seconds < 3600 then
@@ -261,7 +364,7 @@ function Speedrun.CreateRaidMenu(raidID)
         end,
         width = "half",
 				isDangerous = true,
-        warning = "Confirm Changes.\n|cff0000If you are currently in a trial you this will also reload ui|r  ",
+        warning = "Confirm Changes.\n|cdf4242NOTICE!|r If you are currently in a trial this will reload UI.",
     })
 
 		table.insert(raidMenu,
@@ -282,9 +385,9 @@ function Speedrun.CreateRaidMenu(raidID)
         controls = raidMenu,
     }
 end
--------------------------
----- Settings Window ----
--------------------------
+----------------------------------------------------------------------------------------------------------
+-----------------------------------[ 		SETTINGS WINDOW    ]----------------------------------------------
+----------------------------------------------------------------------------------------------------------
 function Speedrun.CreateSettingsWindow()
     local panelData = {
         type = "panel",
@@ -292,7 +395,7 @@ function Speedrun.CreateSettingsWindow()
         displayName = "Speed|cdf4242Run|r",
         author = "Floliroy, Panaa, @nogetrandom [PC-EU]",
         version = Speedrun.version,
-        slashCommand = "/speed",
+        slashCommand = "/speed menu",
         registerForRefresh = true,
         -- registerForDefaults = true,
     }
@@ -306,7 +409,7 @@ function Speedrun.CreateSettingsWindow()
             default = true,
 						-- isDangerous = true,
 						-- warning = "If you are in a trial, then data from current instance will be lost.",
-            getFunc = function() return Speedrun.savedVariables.isTracking end,
+            getFunc = function() return Speedrun.savedSettings.isTracking end,
             setFunc = function(newValue)
 								Speedrun.ToggleTracking()
             end,
@@ -320,7 +423,7 @@ function Speedrun.CreateSettingsWindow()
             getFunc = function() return Speedrun.isMovable end,
             setFunc = function(newValue)
                 Speedrun.isMovable = newValue
-                Speedrun.savedVariables.isMovable = newValue
+                Speedrun.savedSettings.isMovable = newValue
                 Speedrun.ToggleMovable()
             end,
 						width = "half",
@@ -345,7 +448,7 @@ function Speedrun.CreateSettingsWindow()
         --     getFunc = function() return Speedrun.uiSimple end,
         --     setFunc = function(newValue)
         --         Speedrun.uiSimple = newValue
-        --         Speedrun.savedVariables.uiSimple = newValue
+        --         Speedrun.savedSettings.uiSimple = newValue
         --         Speedrun.ToggleUISimple(newValue)
         --     end,
         -- },
@@ -354,41 +457,132 @@ function Speedrun.CreateSettingsWindow()
 				-- },
 				{	  type = "submenu",		-- Profile Options
 						name = "Profile Options",
+						reference = "Speedrun_ProfileSubmenu",
 						controls = {
+								-- Speedrun.CreateProfileDescriptionTitle(),
+								-- Speedrun.CreateProfileDescriptionDisplay(),
+								{   type = "description",
+										title = "Currently Active Profile:",
+										text = "",
+										width = "half",
+										reference = "Speedrun_ActiveProfileDescriptionTitle",
+								},
+								{   type = "description",
+										title = function() return Speedrun.GetActiveProfileDisplay() end,
+										text = "",
+										width = "half",
+										reference = "Speedrun_ActiveProfileDescriptionName",
+								},
+								{		type = 'dropdown',	-- Load Profile
+										name = "Select Profile To Use",
+										choices = Speedrun:GetProfileNames(),
+										getFunc = function() return "" end,
+										setFunc = function(value)
+												profileToLoad = value
+										end,
+										scrollable = 12,
+										reference = "Speedrun_ProfileDropdown",
+								},
+								{		type = "button",
+						        name = "Load Profile",
+						        func = function()
+						            Speedrun.LoadProfile(profileToLoad)
+												SpeedRun_Profile_Label:SetText(Speedrun.GetActiveProfileDisplay())
+						        end,
+										disabled = function() return profileToLoad == "" and true or false end,
+						        warning = "|cdf4242NOTICE!|r If you are currently in a trial this will reload UI.",
+								},
+								{		type = "divider",
+								},
 								{		type = "editbox",		-- Create New Profile
 										name = "Create New Profile",
-										tooltip = "Write the name of the new profile and click the Save button to confirm",
-										getFunc = function() return Speedrun.savedVariables.activeProfile end,
-										setFunc = function(value) end,
+										tooltip = "Enter the new profile name and click the Save button to confirm",
+										getFunc = function() return "" end,
+										setFunc = function(value)
+												profileToAdd = value
+										end,
 										reference = "Speedrun_ProfileEditbox",
-										-- width = "half",
 								},
 								{		type = "button",		-- Save
 										name = "Save",
 										func = Speedrun.AddProfile,
-										-- width = "half",
+										disabled = function() return profileToAdd == "" and true or false end,
+										warning = "|cdf4242NOTICE!|r If you are currently in a trial this will reload UI.",
 								},
-								{		type = 'dropdown',	-- Load Profile
-										name = "Load Profile",
+								{		type = "divider",
+								},
+								{		type = 'dropdown',	-- Delete Profile
+										name = "Select Profile To Delete",
 										choices = Speedrun:GetProfileNames(),
-										getFunc = function() return Speedrun.savedVariables.activeProfile end,
+										getFunc = function() return "" end,
 										setFunc = function(value)
-												Speedrun.LoadProfile(value)
+												profileToDelete = value
 										end,
 										scrollable = 12,
-										reference = "Speedrun_ProfileDropdown",
-										-- width = "half",
+										reference = "Speedrun_ProfileDeleteDropdown",
 								},
-								-- {		type = "description",
-								-- 		text = "",
-								-- 		width = "half",
-								-- },
-								{		type = "button",		-- Delete Profile
+								{		type = "button",
 										name = "Delete Profile",
 										func = Speedrun.DeleteProfile,
+										disabled = function() return profileToDelete == "" and true or false end,
 										isDangerous = true,
-										warning = "This can't be undone. Are you sure?",
-										-- width = "half",
+										warning = "This can't be undone. Are you sure?\n|cdf4242NOTICE!|r If you are currently in a trial this will reload UI.",
+								},
+								-- {		type = "divider",
+								-- },
+								-- {		type = "description",
+								-- 		title = "Copy Data",
+								-- 		text = "Below you can copy data from one profile to another.\nIf you used this addon before profiles were intruduced, then you can copy that data on to selected profile.\n|cdf4242NOTICE!|r This will wipe any new data collected on targeted profile.",
+								-- },
+								-- {		type = 'dropdown',	-- Profile To Copy From
+								-- 		name = "Profile To Copy From",
+								-- 		choices = Speedrun:GetProfileNames(),
+								-- 		getFunc = function() return "" end,
+								-- 		setFunc = function(value)
+								-- 				profileToCopyFrom = value
+								-- 		end,
+								-- 		scrollable = 12,
+								-- 		reference = "Speedrun_ProfileCopyFrom",
+								-- },
+								-- {		type = 'dropdown',	-- Profile To Copy To
+								-- 		name = "Profile To Copy To",
+								-- 		choices = Speedrun:GetProfileNamesToCopyTo(),
+								-- 		getFunc = function() return "" end,
+								-- 		setFunc = function(value)
+								-- 				profileToCopyTo = value
+								-- 		end,
+								-- 		scrollable = 12,
+								-- 		reference = "Speedrun_ProfileCopyTo",
+								-- },
+								-- {		type = "button",
+								-- 		name = "Confirm Copy",
+								-- 		func = Speedrun.CopyProfile(profileToCopyFrom, profileToCopyTo),
+								-- 		disabled = function() return (profileToCopyTo ~= "" and profileToCopyFrom ~= "") and false or true end,
+								-- 		isDangerous = true,
+								-- 		warning = "This can't be undone. Are you sure?\n|cdf4242NOTICE!|r If you are currently in a trial and [Profile To Copy To] is currently set as active, then this will reload UI.",
+								-- },
+								{		type = "divider",
+								},
+								{		type = "description",
+										title = "Import Data From Old",
+										text = "If you used this addon before profiles were intruduced you can then copy that data on to selected profile.\n|cdf4242NOTICE!|r This will wipe any new data collected on targeted profile.",
+								},
+								{		type = 'dropdown',	-- Profile To Import To
+										name = "Profile To Import To",
+										choices = Speedrun:GetProfileNames(),
+										getFunc = function() return "" end,
+										setFunc = function(value)
+												Speedrun.profileToImportTo = value
+										end,
+										scrollable = 12,
+										reference = "Speedrun_ProfileImportTo",
+								},
+								{		type = "button",
+										name = "Confirm Import",
+										disabled = function() return Speedrun.profileToImportTo == "" and true or false end,
+										isDangerous = true,
+										func = function() Speedrun.ImportVariables() end,
+										warning = "This can't be undone. Are you sure?\n|cdf4242NOTICE!|r If you are currently in a trial and [Profile To Import To] is currently set as active, then this will reload UI.",
 								},
 						},
 				},

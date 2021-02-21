@@ -14,22 +14,22 @@ function Speedrun.SlashCommand(command)
     if command == "track 0" or command == "TRACK 0" then
 			  d(Speedrun.prefix .. "Tracking: Off")
         Speedrun.debugMode = 0
-        Speedrun.savedVariables.debugMode = 0
+        Speedrun.savedSettings.debugMode = 0
 
 	  elseif command == "track 1" or command == "TRACK 1" then
 			  d(Speedrun.prefix .. "Tracking: low (only checkpoints)")
         Speedrun.debugMode = 1
-        Speedrun.savedVariables.debugMode = 1
+        Speedrun.savedSettings.debugMode = 1
 
 		elseif command == "track 2" or command == "TRACK 2" then
 			   d(Speedrun.prefix .. "Tracking: medium (checkpoints and some function updates)")
 	       Speedrun.debugMode = 2
-	       Speedrun.savedVariables.debugMode = 2
+	       Speedrun.savedSettings.debugMode = 2
 
 	 elseif command == "track 3" or command == "TRACK 3" then
 				 d(Speedrun.prefix .. "Tracking: high (everything. can be a lot of spam.)")
 				 Speedrun.debugMode = 3
-				 Speedrun.savedVariables.debugMode = 3
+				 Speedrun.savedSettings.debugMode = 3
 
 		-- UI Options -------------------------------------------------------------
 		elseif command == "move" or command == "lock" or command == "MOVE" or command == "LOCK" then
@@ -101,14 +101,14 @@ function Speedrun.AudioToggle( )
 end
 
 function Speedrun.HideGroupToggle()
-		Speedrun.HideGroup(not Speedrun.savedVariables.groupHidden)
+		Speedrun.HideGroup(not Speedrun.savedSettings.groupHidden)
 end
 
 function Speedrun.HideGroup(hide) --copied from HideGroup by Wheels - thanks!
 		if hide == true then
 				SetCrownCrateNPCVisible(true)
 				if Speedrun.savedVariables.groupHidden ~= hide then
-						Speedrun:dbg(0, "Hiding group members")
+						Speedrun:dbg(0, "Hiding Group Members")
 						Speedrun.savedVariables.nameplates = GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_NAMEPLATES)
 						Speedrun.savedVariables.healthBars = GetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_HEALTHBARS)
 				end
@@ -117,12 +117,12 @@ function Speedrun.HideGroup(hide) --copied from HideGroup by Wheels - thanks!
 		else
 				SetCrownCrateNPCVisible(false)
 				if Speedrun.savedVariables.groupHidden ~= hide then
-						Speedrun:dbg(0, "Showing group members")
+						Speedrun:dbg(0, "Showing Group Members")
 						SetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_NAMEPLATES, tostring(Speedrun.savedVariables.nameplates))
 						SetSetting(SETTING_TYPE_NAMEPLATES, NAMEPLATE_TYPE_GROUP_MEMBER_HEALTHBARS, tostring(Speedrun.savedVariables.healthBars))
 				end
 		end
-		Speedrun.savedVariables.groupHidden = hide
+		Speedrun.savedSettings.groupHidden = hide
 end
 
 function Speedrun.PrintScoreReasons()
@@ -144,7 +144,18 @@ function Speedrun.PrintScoreReasons()
 end
 
 function Speedrun.UpdateScoreFactors()
-		local factor = Speedrun.savedVariables.profiles[Speedrun.activeProfile].raidList[Speedrun.raidID].scoreFactors
+		local formatID = Speedrun.raidID
+
+		if type(Speedrun.raidID) == "string" then
+				if GetZoneId(GetUnitZoneIndex("player")) == 677 then
+						formatID = tonumber(string.sub(Speedrun.raidID,1,3))
+				-- VH
+				elseif GetZoneId(GetUnitZoneIndex("player")) == 1227 then
+						formatID = tonumber(string.sub(Speedrun.raidID,1,4))
+				end
+		end
+
+		local factor = Speedrun.savedVariables.profiles[Speedrun.activeProfile].raidList[formatID].scoreFactors
 		local vit = GetRaidReviveCountersRemaining()
 
 		if vit > 0 then
@@ -169,9 +180,11 @@ function Speedrun.UpdateScoreFactors()
 				if (score.times > 0 and score.id ~= RAID_POINT_REASON_LIFE_REMAINING) then
 						if (best.times < score.times or best.times == nil) then
 								best.times = score.times
+								Speedrun.savedVariables.profiles[Speedrun.activeProfile].raidList[Speedrun.raidID].scoreFactors.scoreReasons[score].times = score.times
 						end
 						if (best.total < score.total or best.total == nil) then
 								best.total = score.total
+								Speedrun.savedVariables.profiles[Speedrun.activeProfile].raidList[Speedrun.raidID].scoreFactors.scoreReasons[score].total = score.total
 						end
 				end
 		end
@@ -183,7 +196,7 @@ function Speedrun.BestPossible(raidID)
 		if raidID == 677 or raidID == 1227 then
 				formatID = raidID .. GetUnitName("player")
 
-				if Speedrun.raidList[formatID] == nil or Speedrun.raidList[formatID] == {} then
+				if Speedrun.savedVariables.profiles[Speedrun.activeProfile].raidList[formatID] == nil or Speedrun.savedVariables.profiles[Speedrun.activeProfile].raidList[formatID] == {} then
 						formatID = raidID
 				end
 		end
@@ -201,10 +214,12 @@ function Speedrun.BestPossible(raidID)
 						raid = tonumber(string.sub(raidID,1,4))
 				end
 
-				for i, x in pairs(Speedrun.profiles[Speedrun.activeProfile].customTimerSteps[raid]) do
+				for i, x in pairs(Speedrun.savedVariables.profiles[Speedrun.activeProfile].customTimerSteps[raid]) do
 
 						if Speedrun.GetSavedTimer(raid,i) then
 	            	timer = math.floor(Speedrun.GetSavedTimer(raid,i) / 1000) + timer
+						else
+								timer = GetRaidDuration()
 	        	end
 	    	end
 
